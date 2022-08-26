@@ -12,7 +12,7 @@ function run(){
     *.cpp | *.hpp) g++ $file ;;
     *.js | *.ts) deno run $file ;;
     *.html | *.htm | *.xhtm) xdg-open $file ;;
-
+    *.php) php -f $file;;
     *.mp3 | *.mp4 | *.m4a | *.aac | *.flac) xdg-open $file ;;
     *.pdf) xdg-open $file ;;
     *.jpg | *.jpeg | *.png | *.gif | *.bmp | *.tiff | *.svg) feh $file ;;

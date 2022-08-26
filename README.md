@@ -8,3 +8,4 @@ Collection with shell scripts to use in a linux distro.
 - Create a new local repository.
 - Open/Exec a file in the default editor.
 - Open a file in terminal view or in browser
+- Create a playlist
