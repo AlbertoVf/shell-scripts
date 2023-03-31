@@ -9,3 +9,5 @@ Collection with shell scripts to use in a linux distro.
 - Open/Exec a file in the default editor.
 - Open a file in terminal view or in browser
 - Create a playlist
+- Convert images to png
+- enable service at the moment and on init
