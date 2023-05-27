@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Get your IP address from the command line
+# Get your IP address from the command line.
 # Get your private IP and public IP.
 my_ip() {
     privada="$(ip addr show | grep 'inet.*brd' | awk '{print $2}' | cut -f1 -d'/' | head -n1)"

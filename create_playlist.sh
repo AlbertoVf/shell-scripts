@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# create a playlist with mp3 and mp4 files in folder
+# create a playlist with mp3 and mp4 files in folder.
 create_playlist() {
     if [ $1 ]; then
         folder_name=$1

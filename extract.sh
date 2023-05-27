@@ -2,6 +2,7 @@
 
 # Extract a compressed file.
 extract() {
+    file=$1
     case $file in
     *.7z) 7z x $file ;;
     *.gz) gunzip $file ;;

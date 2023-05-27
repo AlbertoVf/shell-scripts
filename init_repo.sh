@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# init_repo -n "name" -l "license" -i "languages"
-# Build project folder with git and open on vscode
+# init_repo -n "name" -l "license" -i "languages".
+# Build project folder with git and open on vscode.
 init_repo () {
     files=('LICENSE.md' 'README.md' '.gitignore' '.editorconfig' '.env' 'Makefile')
     while getopts ":n:l:i:" opt; do
@@ -11,6 +11,7 @@ init_repo () {
             mkdir $name && cd $name && git init
             mkdir -p src test assets/{data,img,docs} .github/{ISSUE_TEMPLATE,workflows}
             echo "# $name" | sed 's/-/ /g' | tr '[:upper:]' '[:lower:]' | sed 's/\b[a-z]/\u&/g' >> README.md
+            xdg-open . &
         ;;
         i)
             ignore="$OPTARG,visualstudiocode,$(uname -s)"
@@ -37,7 +38,7 @@ init_repo () {
         if [ -s $i ]; then
             git add $i
         else
-            echo "🧪 Generate $i"
+            echo "🧪 Generate $i" | tee -a todo.md
         fi
     done
 

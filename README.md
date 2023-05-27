@@ -1,13 +1,14 @@
 # Shell scripts
 
-Collection with shell scripts to use in a linux distro.
+Collection with shell scripts to use in linux distro.
 
-- Change the visibility of a file.
-- Extract a compressed file.
-- Get your IP address
-- Create a new local repository.
-- Open/Exec a file in the default editor.
-- Open a file in terminal view or in browser
-- Create a playlist
-- Convert images to png
-- enable service at the moment and on init
+- `convert_image`   : Convert image to png format.
+- `create_playlist` : create a playlist with mp3 and mp4 files in folder.
+- `create_sxhkdrc`  : Build a sxhkdrc shortcut file with json file.
+- `enable_service`  : Start service, start service on init.
+- `extract`         : Extract a compressed file.
+- `init_repo`       : Build project folder with git and open on vscode.
+- `my_ip`           : Get your private IP and public IP.
+- `run`             : Open/Exec a file in the default editor.
+- `visibility`      : Change the visibility of a file.
+- `watch`           : View a file in terminal. If it is a web service open in explorer.
