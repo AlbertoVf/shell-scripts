@@ -10,6 +10,6 @@ create_playlist() {
         root="$(pwd)"
     fi
     name="playlist_$folder_name.m3u"
-    echo -e "# $(date)\n# $root\n" >$name
+    echo -e "#!/usr/bin/vlc\n# $(date)\n# $root\n" >$name
     fd "mp\d$" -a -d1 --base-directory $root >>$name
 }

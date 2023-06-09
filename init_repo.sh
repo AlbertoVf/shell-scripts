@@ -9,6 +9,10 @@ init_repo () {
         n)
             name="$(echo $OPTARG | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')"
             mkdir $name && cd $name && git init
+
+            alias_properties=$(awk '/^\[alias\]/ {p=1; next} /^\[.*\]/ {p=0} p' ~/.gitconfig)
+            echo -e "\n[alias]\n$alias_properties" >> .git/config
+
             mkdir -p src test assets/{data,img,docs} .github/{ISSUE_TEMPLATE,workflows}
             echo "# $name" | sed 's/-/ /g' | tr '[:upper:]' '[:lower:]' | sed 's/\b[a-z]/\u&/g' >> README.md
             xdg-open . &

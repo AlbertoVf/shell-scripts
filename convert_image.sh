@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/bin/sh
 
 # Convert image to png format.
 convert_image(){
@@ -8,8 +8,9 @@ convert_image(){
     done
     for f in "${files[@]}"; do
         name=$(basename "$f")
+        folder=$(dirname "$f")
         name="${name%.*}"
-        convert "$f" "$name.png"
-        echo "Imagen convertida: $f -> $name.png"
+        convert "$f" "$folder/$name.png"
+        echo "Imagen convertida: $name -> $name.png"
     done
 }
