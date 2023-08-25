@@ -10,7 +10,7 @@ convert_image(){
         name=$(basename "$f")
         folder=$(dirname "$f")
         name="${name%.*}"
-        convert "$f" "$folder/$name.png"
+        convert "$f" -background white "$folder/$name.png"
         echo "Imagen convertida: $name -> $name.png"
     done
 }
