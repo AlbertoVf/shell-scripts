@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
+## ? Help : Print shortcuts from kitty, qtile and sxhkd.
+## ? Usage:
+## ?	get_shortcuts
 
-##? Print shortcuts from kitty, qtile and sxhkd.
-##? Usage:
-##?    get_shortcuts
 get_shortcuts() {
 	# * kitty
 	echo -e '\033[1;34m KITTY \033[37;0m'

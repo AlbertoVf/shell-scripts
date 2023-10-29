@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
+## ? Help : Get your IP address from the command line.
+## ? Usage:
+## ?    my_ip
 
-##? Get your IP address from the command line.
-##? Usage:
-##?    my_ip
 my_ip() {
 	privada="$(ip addr show | grep 'inet.*brd' | awk '{print $2}' | cut -f1 -d'/' | head -n1)"
 	publica="$(curl -s ifconfig.me | awk '{print $1}')"

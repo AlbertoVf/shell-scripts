@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
+## ? Help : Build project folder with git and open on vscode.
+## ? Usage:
+## ?    init_repo -n "name" -l "license" -i "languages".
 
-##? Build project folder with git and open on vscode.
-##? Usage:
-##?    init_repo -n "name" -l "license" -i "languages".
 init_repo () {
 	files=('LICENSE.md' 'README.md' '.gitignore' '.editorconfig' '.env' 'Makefile' '.vscode/settings.json' '.vscode/code.code-snippets' '.vscode/tasks.json')
 

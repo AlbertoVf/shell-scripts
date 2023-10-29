@@ -1,11 +1,9 @@
 #!/usr/bin/env sh
+## ? Help : Move files to folder by MIME.
+## ? Usage:
+## ?    refactor_files <folder>
 
-##? Move files to folder by MIME.
-##? Usage:
-##?    refactor_files <folder>
 refactor_files() {
-	# logfile="refactor_files-$(date +'%Y%m%d_%H%M%S').log"
-
 	for archivo in *; do
 		mimetype=$(file -b --mime-type "$archivo")
 		mime=$(echo $mimetype | cut -d '/' -f1)

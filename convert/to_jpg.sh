@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
+## ? Help : Convert image to jpg format.
+## ? Usage:
+## ?    to_jpg <file>
 
-##? Convert image to jpg format.
-##? Usage:
-##?    to_jpg <file>
-to_jpg(){
+to_jpg() {
 	for f in "$@"; do
 		name=$(basename "$f")
 		folder=$(dirname "$f")

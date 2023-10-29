@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
+## ? Help : Build a sxhkdrc shortcut file with json file.
+## ? Usage:
+## ?    create_sxhkdrc
 
-##? Build a sxhkdrc shortcut file with json file.
-##? Usage:
-##?    create_sxhkdrc
 create_sxhkdrc() {
 	input_file="$HOME/.dotfiles/doc/shortcuts.json"
 	output_file="$HOME/.dotfiles/os/linux/sxhkd/sxhkdrc"

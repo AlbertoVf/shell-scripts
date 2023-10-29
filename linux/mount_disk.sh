@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
+## ? Help : Mount the partition with LABEL on the media folder.
+## ? Usage:
+## ?    mount_disk <name>
 
-##? Mount the partition with LABEL on the media folder.
-##? Usage:
-##?    mount_disk <name>
 mount_disk() {
 	label=$(lsblk -o LABEL | grep "$1")
 	device=$(blkid -l -o device -t LABEL="$label")

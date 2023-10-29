@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
+## ? Help : Change the visibility of a file.
+## ? Usage:
+## ?    visibility <file>
 
-##? Change the visibility of a file.
-##? Usage:
-##?    visibility <file>
 visibility() {
 	if [ ${1:0:1} = "." ]; then
 		file=${1:1}

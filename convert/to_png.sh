@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
+## ? Help : Convert image to png format.
+## ? Usage:
+## ?    to_png <file>
 
-##? Convert image to png format.
-##? Usage:
-##?    to_png <file>
-to_png(){
+to_png() {
 	for f in "$@"; do
 		name=$(basename "$f")
 		folder=$(dirname "$f")

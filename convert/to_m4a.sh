@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
+## ? Help : Convert audio to m4a/mp4 format.
+## ? Usage:
+## ?    tp_m4a <file>
 
-##? Convert audio to m4a/mp4 format.
-##? Usage:
-##?    tp_m4a <file>
 to_m4a() {
 	for f in "$@"; do
 		name=$(basename "$f")

@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
+## ? Help : Open/Exec a file in the default editor.
+## ? Usage:
+## ?    run <file>
 
-##? Open/Exec a file in the default editor.
-##? Usage:
-##?    run <file>
 run() {
 	file=$1
 	extension="$(echo $file | cut -d '.' -f2-)"
