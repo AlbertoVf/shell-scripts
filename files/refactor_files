@@ -1,6 +1,8 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
-# Move files to folder by MIME.
+##? Move files to folder by MIME.
+##? Usage:
+##?    refactor_files <folder>
 refactor_files() {
 	# logfile="refactor_files-$(date +'%Y%m%d_%H%M%S').log"
 

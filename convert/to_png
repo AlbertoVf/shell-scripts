@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+##? Convert image to png format.
+##? Usage:
+##?    to_png <file>
+to_png(){
+	for f in "$@"; do
+		name=$(basename "$f")
+		folder=$(dirname "$f")
+		name="${name%.*}"
+		convert "$f" -background white "$folder/$name.png"
+		echo "Imagen convertida: $name -> $name.png"
+	done
+}
