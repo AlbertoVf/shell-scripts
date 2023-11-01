@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+## ? Help : Convert audio to mp3 format.
+## ? Usage:
+## ?    to_mp3 <file>
+
+for f in "$@"; do
+	name=$(basename "$f")
+	folder=$(dirname "$f")
+	filename="${name%.*}"
+	ffmpeg -i "$f" -codec:v copy -codec:a mp3 -q:a 0 "$folder/$filename.mp3"
+	if [ $? -eq 0 ]; then
+		echo "Convertido: $f -> $folder/$filename.mp3"
+	else
+		echo "Error al convertir: $f"
+	fi
+done

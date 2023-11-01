@@ -3,6 +3,4 @@
 ## ? Usage:
 ## ?    find_repos
 
-find_repos() {
-	fd -sHapL -d 2 --regex '\.git$' "$1/" -x echo {//}
-}
+fd -sHapL -d 2 --regex '\.git$' "$1/" -x echo {//}

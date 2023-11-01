@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+## ? Help : Convert audio to m4a/mp4 format.
+## ? Usage:
+## ?    tp_m4a <file>
+
+for f in "$@"; do
+	name=$(basename "$f")
+	folder=$(dirname "$f")
+	filename="${name%.*}"
+	ffmpeg -i "$f" -c:v copy -c:a aac -strict experimental -b:a 192k "$folder/$filename.m4a"
+
+	if [ $? -eq 0 ]; then
+		echo "Convertido: $f -> $folder/$filename.m4a"
+	else
+		echo "Error al convertir: $f"
+	fi
+done

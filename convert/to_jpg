@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+## ? Help : Convert image to jpg format.
+## ? Usage:
+## ?    to_jpg <file>
+
+for f in "$@"; do
+	name=$(basename "$f")
+	folder=$(dirname "$f")
+	name="${name%.*}"
+	convert -quality 100 "$f" "$folder/$name.jpg"
+	echo "Imagen convertida: $name -> $name.jpg"
+done
