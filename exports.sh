@@ -1,0 +1,7 @@
+export PATH="$PATH:$DOTFILES_PATH/scripts/convert"
+export PATH="$PATH:$DOTFILES_PATH/scripts/files"
+export PATH="$PATH:$DOTFILES_PATH/scripts/folders"
+export PATH="$PATH:$DOTFILES_PATH/scripts/git"
+export PATH="$PATH:$DOTFILES_PATH/scripts/linux"
+export PATH="$PATH:$DOTFILES_PATH/scripts/shortcuts"
+export PATH="$PATH:$DOTFILES_PATH/scripts/yt"
