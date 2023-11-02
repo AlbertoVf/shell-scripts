@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
-## ? Help : Extract a compressed file.
-## ? Usage:
-## ?    extract <file>
+##? Help : Extract a compressed file.
+##? Usage: extract <file>
 
 file=$1
 case $file in

@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
-## ? Help : Convert audio to mp3 format.
-## ? Usage:
-## ?    to_mp3 <file>
+##? Help : Convert audio to mp3 format.
+##? Usage: to_mp3 <file>
 
 for f in "$@"; do
 	name=$(basename "$f")

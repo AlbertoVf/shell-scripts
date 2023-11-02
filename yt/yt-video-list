@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 ## ? Help : Descarga una playlist.
-## ? Usage:
-## ?    yt-video-list <url>
+## ? Usage: yt-video-list <url>
 
 yt-dlp -w \
 	--embed-metadata \

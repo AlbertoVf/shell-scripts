@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
-## ? Help : Convert image to jpg format.
-## ? Usage:
-## ?    to_jpg <file>
+##? Help : Convert image to jpg format.
+##? Usage: to_jpg <file>
 
 for f in "$@"; do
 	name=$(basename "$f")

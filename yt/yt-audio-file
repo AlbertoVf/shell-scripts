@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 ## ? Help : Descarga el audio de las url guardadas en un archivo.
-## ? Usage:
-## ?    yt-audio-file <file>
+## ? Usage: yt-audio-file <file>
 
 yt-dlp -i --no-playlist \
 	--embed-metadata --embed-thumbnail \
