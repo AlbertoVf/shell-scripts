@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+##? Help : Move files to folder by MIME.
+##? Usage: refactor_files <folder|empty>
+
+for file in *; do
+	mimetype=$(file -b --mime-type "$file")
+	mime=$(echo $mimetype | cut -d '/' -f1)
+	type=$(echo $mimetype | cut -d '/' -f2)
+	case $mime in
+	audio) mv -v "$file" "$(xdg-user-dir MUSIC)/" ;;
+	font) mv "$file" "$(xdg-user-dir USERFONTS)" ;;
+	image) mv -v "$file" "$(xdg-user-dir PICTURES)/" ;;
+	video) mv -v "$file" "$(xdg-user-dir VIDEOS)/" ;;
+	esac
+
+	case $type in
+	pdf | *opendocument*) mv -v "$file" "$(xdg-user-dir DOCUMENTS)/" ;;
+	*template) mv -v "$file" "$(xdg-user-dir TEMPLATES)/" ;;
+	*rom | octet-stream) mv -v "$file" "$HOME/Games/" ;;
+	esac
+done

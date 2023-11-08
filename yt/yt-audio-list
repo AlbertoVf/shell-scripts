@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-## ? Help : Descarga una playlist.
-## ? Usage: yt-audio-list <url>
+##? Help : Download audio playlist.
+##? Usage: yt-audio-list <url>
 
 yt-dlp -w -i \
 	--embed-metadata --embed-thumbnail \

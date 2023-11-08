@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-## ? Help : Find git repository folders.
-## ? Usage: find_repos
+##? Help : Find git repository folders.
+##? Usage: find_repos <folder|.>
 
 fd -sHapL -d 2 --regex '\.git$' "$1/" -x echo {//}

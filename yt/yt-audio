@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-## ? Help : Descarga el audio de un video.
-## ? Usage: yt-audio <url>
+##? Help : Download audio
+##? Usage: yt-audio <url>
 
 yt-dlp -i --no-playlist \
 	--embed-metadata --embed-thumbnail \
