@@ -2,13 +2,17 @@
 ##? Help : create a playlist with mp3 and mp4 files in folder.
 ##? Usage: create_playlist <folder>
 
-if [ $1 ]; then
-	folder=$1
-	root="$(pwd)/$1"
-else
+if [ $# -eq 0 ]; then
 	folder="$(pwd | awk -F '/' '{print $NF}')"
-	root="$(pwd)"
+	path="$(pwd)"
+else
+	folder="$1"
+	path="$(realpath "$folder")"
+	if [ $folder == "." ]; then
+		folder=$(basename "$path")
+	fi
 fi
+
 name="playlist_$folder.m3u"
-echo -e "#!/usr/bin/vlc\n# $(date)\n# $root\n" >$name
-fd "mp\d$" -a -d1 --base-directory $root >>$name
+echo -e "#!/usr/bin/vlc\n# $(date)\n# $path\n" >$name
+fd -t f --regex "mp\d$" -d1 "$path" | sort >> $name

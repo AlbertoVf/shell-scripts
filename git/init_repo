@@ -4,14 +4,19 @@
 
 files=('LICENSE.md' 'README.md' '.gitignore' '.editorconfig' '.env' 'Makefile' '.vscode/settings.json' '.vscode/code.code-snippets' '.vscode/tasks.json')
 
-folder=$(basename "$(pwd)")
-name="$(echo $folder | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')"
-
-mkdir -p src test assets/{data,img,docs} .github/{ISSUE_TEMPLATE,workflows} .vscode && git init
-echo "# $name" | sed 's/-/ /g' | tr '[:upper:]' '[:lower:]' | sed 's/\b[a-z]/\u&/g' >>README.md
-
-while getopts ":l:i:" opt; do
+while getopts ":n:l:i:" opt; do
 	case $opt in
+	n)
+		name="$OPTARG"
+		folder=$(basename "$(pwd)")
+		if [ $name == "$folder" ]; then
+			echo "Build files"
+		else
+			mkdir -p $name
+			cd $name
+		fi
+	;;
+
 	i)
 		alias_properties=$(awk '/^\[alias\]/ {p=1; next} /^\[.*\]/ {p=0} p' ~/.gitconfig)
 		echo -e "\n[alias]\n$alias_properties" >>.git/config
@@ -22,6 +27,7 @@ while getopts ":l:i:" opt; do
 			curl -fLw '\n' https://www.gitignore.io/api/$gitignores >>.gitignore
 		fi
 		;;
+
 	l)
 		license=$OPTARG
 		if [ $license ]; then
@@ -35,6 +41,10 @@ while getopts ":l:i:" opt; do
 		;;
 	esac
 done
+
+mkdir -p src test assets/{data,img,docs} .github/{ISSUE_TEMPLATE,workflows} .vscode && git init
+name="$(echo $name | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')"
+echo "# $name" | sed 's/-/ /g' | tr '[:upper:]' '[:lower:]' | sed 's/\b[a-z]/\u&/g' >>README.md
 
 for i in "${files[@]}"; do
 	if [ -s $i ]; then

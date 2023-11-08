@@ -3,7 +3,7 @@
 ##? Usage: run <file>
 
 file=$1
-extension="$(echo $file | cut -d '.' -f2-)"
+extension=$(basename "$file" | awk -F . '{print $NF}')
 case $file in
 *.sh | *.zsh | *.bash) $extension $file ;;
 *.py) python $file ;;
