@@ -1,58 +1,66 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python
 ##? Help : Build project folder with git and open on vscode.
 ##? Usage: init_repo -n "name" -l "license" -i "languages".
 
-files=('LICENSE.md' 'README.md' '.gitignore' '.editorconfig' '.env' 'Makefile' '.vscode/settings.json' '.vscode/code.code-snippets' '.vscode/tasks.json')
+import argparse, os, subprocess
+from datetime import datetime
+import requests
 
-while getopts ":n:l:i:" opt; do
-	case $opt in
-	n)
-		name="$OPTARG"
-		folder=$(basename "$(pwd)")
-		if [ $name == "$folder" ]; then
-			echo "Build files"
-		else
-			mkdir -p $name
-			cd $name
-		fi
-	;;
+folders = [ "src", "test", "assets/data", "assets/img", "assets/docs", ".github/workflows", ".github/ISSUE_TEMPLATE", ".vscode", ]
+files = [ "LICENSE.md", "README.md", ".gitignore", ".editorconfig", ".env", "Makefile", ".vscode/settings.json", ".vscode/code.code-snippets", ".vscode/tasks.json", ]
 
-	i)
-		alias_properties=$(awk '/^\[alias\]/ {p=1; next} /^\[.*\]/ {p=0} p' ~/.gitconfig)
-		echo -e "\n[alias]\n$alias_properties" >>.git/config
 
-		ignore="$OPTARG"
-		if [ $ignore ]; then
-			gitignores="${ignore//" "/","}"
-			curl -fLw '\n' https://www.gitignore.io/api/$gitignores >>.gitignore
-		fi
-		;;
+def build_structure():
+    for f in folders:
+        os.makedirs(f)
+    subprocess.run(["git", "init"], cwd=os.getcwd())
 
-	l)
-		license=$OPTARG
-		if [ $license ]; then
-			response=$(curl -sLX GET "https://api.github.com/licenses/$license" | jq ".body")
-			echo -en $response >LICENSE.md
-			sed -Ee 's/(\\"|\")//g' \
-				-e s/"\[year\]"/"$(date +%Y)"/g \
-				-e s/"\[fullname\]"/"$(git config user.name)"/g \
-				-i LICENSE.md
-		fi
-		;;
-	esac
-done
 
-mkdir -p src test assets/{data,img,docs} .github/{ISSUE_TEMPLATE,workflows} .vscode && git init
-name="$(echo $name | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')"
-echo "# $name" | sed 's/-/ /g' | tr '[:upper:]' '[:lower:]' | sed 's/\b[a-z]/\u&/g' >>README.md
+def prepare_files():
+    with open("todo.md", "w") as todo:
+        for f in files:
+            if not os.path.exists(f):
+                print(f"🧪 Generate {f}")
+                todo.write(f"🧪 Generate {f}\n")
+            elif os.path.getsize(f) != 0:
+                subprocess.run(["git", "add", f])
+    subprocess.run(["git", "commit", "-m 🎉 init(build): Set project environment."])
 
-for i in "${files[@]}"; do
-	if [ -s $i ]; then
-		git add $i
-	else
-		echo "🧪 Generate $i" | tee -a todo.md
-	fi
-done
+def name(folder_name: str):
+    path = os.path.basename(os.getcwd())
+    if not (folder_name == path):
+        os.makedirs(folder_name)
+        os.chdir(folder_name)
+    with open("README.md", "a") as readme:
+        title = f"{folder_name.capitalize().replace('-',' ')}"
+        readme.write(f"# {title}\n")
 
-git commit -m "🎉 init(build): Set project environment."
-code .
+
+def license(license_name: str):
+    response = (requests.get(f"https://api.github.com/licenses/{license_name}").json().get("body"))
+    git_user = (subprocess.check_output(["git", "config", "user.name"]).decode("utf-8").strip())
+    response = response.replace("[year]", str(datetime.now().year)).replace( "[fullname]", git_user)
+    open("LICENSE.md", "w").write(response)
+
+
+def ignore(langs: str):
+    langs = ",".join(langs.split(" "))
+    response = requests.get(f"https://www.gitignore.io/api/{langs}").text
+    open(".gitignore", "w").write(response)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Inicializar un proyecto git en vscode.")
+    parser.add_argument("-n", "--name", help="Nombre del proyecto")
+    parser.add_argument("-l", "--license", help="Licencia del proyecto")
+    parser.add_argument("-i", "--ignore", help="Git ignore")
+    args = parser.parse_args()
+
+    if args.name: name(args.name)
+    if args.license: license(args.license)
+    if args.ignore: ignore(args.ignore)
+    build_structure()
+    prepare_files()
+    subprocess.run(["code", "."])
+
+main()
