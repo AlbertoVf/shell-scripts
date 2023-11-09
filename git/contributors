@@ -1,0 +1,17 @@
+#!/bin/bash
+##? Help : Imprime los contributtors de un repositorio de github con los commits realizados.
+##? Usage: contributors <folder|empty>
+
+if [ $# -gt 0 ]; then
+	cd $1
+fi
+
+remote_url=$(git config --get remote.origin.url)
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+echo "Contributors: [$current_branch] <$remote_url>"
+
+git log --format='%an' | sort -u | while read author; do
+	commit_count=$(git log --author="$author" --oneline | wc -l)
+	echo "- $author: ($commit_count)"
+done

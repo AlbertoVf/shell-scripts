@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+##? Help : Print difference between 2 folders.
+##? Usage: compare_folder <folder|.> <folder|.>
+
+folder1="$(realpath "$1")"
+folder2="$(realpath "$2")"
+
+diffs=$(diff -rq "$folder1" "$folder2")
+
+if [ -n "$diffs" ]; then
+  echo "Difference found:"
+  echo "$diffs"
+else
+  echo "Folders are equales."
+fi

@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+##? Help : Rename all files in folder with the name "folder_id".ext, the `id` is a number ordered by date creation
+##? Usage: rename_by_date <folder|.>
+
+folder="$1"
+
+if [ $folder == "." ]; then
+	folder=$(realpath .)
+elif [ ! -d "$folder" ]; then
+	echo "$folder not exist."
+	exit 1
+else
+	cd "$folder"
+fi
+
+files=($(ls -t -1))
+cont=1
+
+for file in "${files[@]}"; do
+	extension="${file##*.}"
+	nuevo_nombre="${folder}_${cont}"
+	if [ -n "$extension" ]; then
+		nuevo_nombre="$nuevo_nombre.$extension"
+	fi
+
+	mv "$file" "$nuevo_nombre"
+	echo "$file -> $nuevo_nombre"
+	cont=$((cont + 1))
+done
