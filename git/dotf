@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-##? Help : Open dotfiles path on (editor,git,terminal,filemanager) or update symlinks
-##? Usage: dotf [-e | --editor] | [-g | --git] | [-t | --terminal] | [-m | --manager] | [-u | --update]
+##? usage : dotf [-h] [-e] [-g] [-m] [-t] [-u]
+##? help  : Open dotfiles path on (editor,git,terminal,filemanager) or update symlinks
 
 import argparse
 from os import path
@@ -21,7 +21,7 @@ update = lambda: subprocess.run(["dot", "symlinks", "apply"], cwd=DOTFILES_PATH)
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Work with Dotfiles.")
+    parser = argparse.ArgumentParser(description="Open dotfiles path on (editor,git,terminal,filemanager) or update symlinks")
     parser.add_argument("-e", "--editor", action="store_true", help="Open with vscode")
     parser.add_argument("-g", "--git", action="store_true", help="Check git status")
     parser.add_argument(

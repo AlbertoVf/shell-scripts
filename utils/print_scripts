@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? Help : Print script helper and usage.
-##? Usage: print_scripts <empty>
+##? usage : print_scripts [empty]
+##? help  : Print script helper and usage.
 
 path="$DOTFILES_PATH/scripts"
 

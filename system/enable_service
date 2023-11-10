@@ -1,6 +1,6 @@
-#!/usr/bin/env sh
-##? Help : Start service, start service on init.
-##? Usage: enable_service <service>
+#!/usr/bin/env bash
+##? usage : enable_service [service]
+##? help  : Start service, start service on init.
 
 sudo systemctl start $1
 sudo systemctl enable $1

@@ -1,6 +1,6 @@
-#!/usr/bin/env sh
-##? Help : Print difference between 2 folders.
-##? Usage: compare_folder <folder|.> <folder|.>
+#!/usr/bin/env bash
+##? usage : compare_folder [folder] [folder]
+##? help  : Print difference between 2 folders.
 
 folder1="$(realpath "$1")"
 folder2="$(realpath "$2")"

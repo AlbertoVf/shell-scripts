@@ -1,6 +1,6 @@
-#!/usr/bin/env sh
-##? Help : Open/Exec a file in the default editor.
-##? Usage: run <file>
+#!/usr/bin/env bash
+##? usage : run [file]
+##? help  : Open/Exec a file in the default editor.
 
 file=$1
 extension=$(basename "$file" | awk -F . '{print $NF}')

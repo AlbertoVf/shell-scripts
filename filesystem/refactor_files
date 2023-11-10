@@ -1,8 +1,15 @@
 #!/usr/bin/env sh
-##? Help : Move files to folder by MIME.
-##? Usage: refactor_files <folder|empty>
+##? usage : refactor_files [folder|empty]
+##? help  : Move files to folder by MIME.
 
-for file in *; do
+if [ $# -eq 0 ]; then
+	folder="$(pwd | awk -F '/' '{print $NF}')"
+	path="$(realpath .)"
+else
+	path="$(realpath $1)"
+fi
+
+for file in $path/*; do
 	mimetype=$(file -b --mime-type "$file")
 	mime=$(echo $mimetype | cut -d '/' -f1)
 	type=$(echo $mimetype | cut -d '/' -f2)

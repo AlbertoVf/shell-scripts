@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? Help : Download video playlist.
-##? Usage: yt-video-list <url>
+##? usage : yt-video-list [url]
+##? help  : Download video playlist.
 
 yt-dlp -w \
 	--embed-metadata \

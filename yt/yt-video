@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? Help : Download video.
-##? Usage: yt-video <url>
+##? usage : yt-video [url]
+##? help  : Download video.
 
 yt-dlp --no-playlist --embed-metadata \
 	-f mp4 \

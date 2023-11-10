@@ -1,5 +1,5 @@
-#!/usr/bin/env sh
-##? Help : Show the meteo in a city
-##? Usage: meteo <city>
+#!/usr/bin/env bash
+##? usage : meteo [city]
+##? help  : Show the meteo in a city.
 
 curl -4 http://wttr.in/$1

@@ -1,6 +1,6 @@
-#!/bin/bash
-##? Help : Imprime los contributtors de un repositorio de github con los commits realizados.
-##? Usage: contributors <folder|empty>
+#!/usr/bin/env bash
+##? usage : contributors [folder|empty]
+##? help  : View Github repository contributtors and their number of committs.
 
 if [ $# -gt 0 ]; then
 	cd $1

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? Help : Download all video from url save in file.
-##? Usage: yt-video-file <file>
+##? usage : yt-video-file [file]
+##? help  : Download all video from url save in file.
 
 yt-dlp --no-playlist \
 	--embed-metadata \

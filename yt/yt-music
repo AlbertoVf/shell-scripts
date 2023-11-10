@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? Help : Download song.
-##? Usage: yt-music <url>
+##? usage : yt-music [url]
+##? help  : Download song.
 
 yt-dlp -i --no-playlist \
 	--embed-metadata --embed-thumbnail \

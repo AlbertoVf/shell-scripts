@@ -1,6 +1,6 @@
-#!/usr/bin/env sh
-##? Help : Convert image to png format.
-##? Usage: to_png <file|files>
+#!/usr/bin/env bash
+##? usage : to_png [file...]
+##? help  : Convert image to png format.
 
 for f in "$@"; do
 	name=$(basename "$f")

@@ -1,6 +1,6 @@
-#!/usr/bin/env sh
-##? Help : Convert audio to m4a/mp4 format.
-##? Usage: to_m4a <file|files>
+#!/usr/bin/env bash
+##? usage : to_m4a [file...]
+##? help  : Convert audio to m4a/mp4 format.
 
 for f in "$@"; do
 	name=$(basename "$f")

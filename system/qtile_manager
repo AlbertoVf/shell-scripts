@@ -1,16 +1,6 @@
 #!/usr/bin/env python
-##? help    : Scripts para modificar los ajustes y configuracion de qtile
-##? usage   : qtile_manager.py [-h] [-f FONT] [-m MAIL] [-c CONSOLE] [-t THEME] [-d] [-l] [-r]
-##? options :
-##?
-##? -h,         --help        : show this help message and exit
-##? -f FONT,    --font FONT   : Modifica la fuente de la barra de tareas
-##? -m MAIL,    --mail MAIL   : Modifica la aplicacion por defecto de correo
-##? -c CONSOLE, --console     : CONSOLE Modifica la consola por defecto en qtile
-##? -t THEME,   --theme THEME : Modifica el tema de qtile
-##? -d,         --docs        : Actualiza Previews.md
-##? -l,         --logout      : Cierra sesion
-##? -r,         --restart     : Reinicia qtile
+##? usage : qtile_manager [-h] [-f FONT] [-m MAIL] [-c CONSOLE] [-t THEME] [-d] [-l] [-r]
+##? help  : qtile updater settings and docs.
 
 import argparse, subprocess, os, json
 from enum import Enum
@@ -80,14 +70,14 @@ def docs():
 
 
 def main():
-    parser = argparse.ArgumentParser( description="Scripts para modificar los ajustes y configuracion de qtile" )
-    parser.add_argument("-f", "--font", help="Modifica la fuente de la barra de tareas")
-    parser.add_argument( "-m", "--mail", help="Modifica la aplicacion por defecto de correo" )
-    parser.add_argument( "-c", "--console", help="Modifica la consola por defecto en qtile" )
-    parser.add_argument("-t", "--theme", help="Modifica el tema de qtile")
-    parser.add_argument( "-d", "--docs", action="store_true", help="Actualiza Previews.md" )
-    parser.add_argument("-l", "--logout", action="store_true", help="Cierra sesion")
-    parser.add_argument("-r", "--restart", action="store_true", help="Reinicia qtile")
+    parser = argparse.ArgumentParser( description="Modify settings from qtile" )
+    parser.add_argument("-f", "--font", help="Change widget bar font")
+    parser.add_argument( "-m", "--mail", help="Update mail" )
+    parser.add_argument( "-c", "--console", help="Update the terminal" )
+    parser.add_argument("-t", "--theme", help="Change theme")
+    parser.add_argument( "-d", "--docs", action="store_true", help="Update Previews.md" )
+    parser.add_argument("-l", "--logout", action="store_true", help="Close sesión")
+    parser.add_argument("-r", "--restart", action="store_true", help="Restart qtile")
 
     args = parser.parse_args()
     if args.logout: logout()

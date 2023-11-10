@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? Help : Rename all files in folder with the name "folder_id".ext, the `id` is a number ordered by date creation
-##? Usage: rename_by_date <folder|.>
+##? usage : rename_by_date [folder]
+##? help  : Rename all files in folder with the name "folder_id".ext, the `id` is a number ordered by date creation
 
 folder="$1"
 

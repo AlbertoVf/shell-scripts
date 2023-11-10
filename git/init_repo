@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-##? Help : Build project folder with git and open on vscode.
-##? Usage: init_repo -n "name" -l "license" -i "languages".
+##? usage : init_repo [-h] [-n NAME] [-l LICENSE] [-i IGNORE].
+##? help  : Build project folder with git and open on vscode.
 
 import argparse, os, subprocess
 from datetime import datetime
@@ -50,7 +50,7 @@ def ignore(langs: str):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Inicializar un proyecto git en vscode.")
+    parser = argparse.ArgumentParser(description="Build project folder with git and open on vscode.")
     parser.add_argument("-n", "--name", help="Nombre del proyecto")
     parser.add_argument("-l", "--license", help="Licencia del proyecto")
     parser.add_argument("-i", "--ignore", help="Git ignore")
