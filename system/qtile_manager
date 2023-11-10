@@ -1,0 +1,102 @@
+#!/usr/bin/env python
+##? help    : Scripts para modificar los ajustes y configuracion de qtile
+##? usage   : qtile_manager.py [-h] [-f FONT] [-m MAIL] [-c CONSOLE] [-t THEME] [-d] [-l] [-r]
+##? options :
+##?
+##? -h,         --help        : show this help message and exit
+##? -f FONT,    --font FONT   : Modifica la fuente de la barra de tareas
+##? -m MAIL,    --mail MAIL   : Modifica la aplicacion por defecto de correo
+##? -c CONSOLE, --console     : CONSOLE Modifica la consola por defecto en qtile
+##? -t THEME,   --theme THEME : Modifica el tema de qtile
+##? -d,         --docs        : Actualiza Previews.md
+##? -l,         --logout      : Cierra sesion
+##? -r,         --restart     : Reinicia qtile
+
+import argparse, subprocess, os, json
+from enum import Enum
+from dataclasses import dataclass
+
+QTILE_PATH = os.path.join(os.path.expanduser("~"), ".config", "qtile")
+ENV_FILE = os.path.join(QTILE_PATH, ".env")
+
+
+@dataclass
+class Env:
+    font: str
+    mail: str
+    console: str
+    theme: str
+
+    @staticmethod
+    def from_dict(obj: dict) -> "Env":
+        _font = str(obj.get("font"))
+        _mail = str(obj.get("mail"))
+        _console = str(obj.get("console"))
+        _theme = str(obj.get("theme"))
+        return Env(_font, _mail, _console, _theme)
+
+    def saveJson(self):
+        with open(ENV_FILE, "w") as f:
+            json.dump(self.__dict__, f, indent=2)
+
+
+readJson = lambda: Env.from_dict(json.load(open(ENV_FILE, "r")))
+
+logout = lambda: subprocess.run("qtile cmd-obj -o cmd -f shutdown", shell=True)
+
+restart = lambda: subprocess.run("qtile cmd-obj -o cmd -f restart", shell=True)
+
+
+def changeValue(key: str, value: str):
+    env = readJson()
+    if key == "font":
+        env.font = value
+    elif key == "mail":
+        env.mail = value
+    elif key == "console":
+        env.console = value
+    elif key == "theme":
+        env.theme = value
+    env.saveJson()
+
+
+def docs():
+    themes = []
+    qtile_themes = os.path.join(QTILE_PATH, "themes")
+    with open(f"{qtile_themes}/themes.json", "r") as f:
+        data = json.load(f)
+
+    for t in data:
+        themes.append(t)
+        scheme = data[t]
+        with open(f"{qtile_themes}/{t}.json", "w") as outfile:
+            json.dump(scheme, outfile, indent=4)
+
+    with open(f"{qtile_themes}/Previews.md", "w") as f:
+        f.write("# Previews\n")
+        for theme in themes:
+            l = f"\n## {theme}\n\n![{theme}](./scheme/{theme}.jpg)\n"
+            f.write(l)
+
+
+def main():
+    parser = argparse.ArgumentParser( description="Scripts para modificar los ajustes y configuracion de qtile" )
+    parser.add_argument("-f", "--font", help="Modifica la fuente de la barra de tareas")
+    parser.add_argument( "-m", "--mail", help="Modifica la aplicacion por defecto de correo" )
+    parser.add_argument( "-c", "--console", help="Modifica la consola por defecto en qtile" )
+    parser.add_argument("-t", "--theme", help="Modifica el tema de qtile")
+    parser.add_argument( "-d", "--docs", action="store_true", help="Actualiza Previews.md" )
+    parser.add_argument("-l", "--logout", action="store_true", help="Cierra sesion")
+    parser.add_argument("-r", "--restart", action="store_true", help="Reinicia qtile")
+
+    args = parser.parse_args()
+    if args.logout: logout()
+    if args.restart: restart()
+    if args.theme: changeValue("theme", args.theme)
+    if args.font: changeValue("font", args.font)
+    if args.mail: changeValue("mail", args.mail)
+    if args.console: changeValue("console", args.console)
+    if args.docs: docs()
+
+
+main()
