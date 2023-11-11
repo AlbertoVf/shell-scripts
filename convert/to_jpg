@@ -2,10 +2,16 @@
 ##? usage : to_jpg [file...]
 ##? help  : Convert image to jpg format.
 
+source "$DOTFILES_PATH/scripts/_main.sh"
+
 for f in "$@"; do
 	name=$(basename "$f")
 	folder=$(dirname "$f")
 	name="${name%.*}"
 	convert -quality 100 "$f" "$folder/$name.jpg"
-	echo "Imagen convertida: $name -] $name.jpg"
+	if [ $? -eq 0 ]; then
+		_success "Convertido: $f -> $name.jpg"
+	else
+		_error "Error al convertir $f"
+	fi
 done

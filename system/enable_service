@@ -2,5 +2,8 @@
 ##? usage : enable_service [service]
 ##? help  : Start service, start service on init.
 
+source "$DOTFILES_PATH/scripts/_main.sh"
+
 sudo systemctl start $1
 sudo systemctl enable $1
+_log "Inicializado $1"

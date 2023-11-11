@@ -2,6 +2,8 @@
 ##? usage : create_sxhkdrc [empty]
 ##? help  : Build a sxhkdrc shortcut file with json file.
 
+source "$DOTFILES_PATH/scripts/_main.sh"
+
 input_file="$HOME/.dotfiles/doc/shortcuts.json"
 output_file="$HOME/.dotfiles/os/linux/sxhkd/sxhkdrc"
 
@@ -13,4 +15,4 @@ sed -i 's/\t/\n\t/g' "$output_file"
 
 sed -i "1i # Generated on $(date +'%Y-%m-%d %H:%M')" "$output_file"
 sed -i "1i #!/usr/bin/env bash" "$output_file"
-echo "Reiniciar sxhkd"
+_warning "Reiniciar sxhkd"

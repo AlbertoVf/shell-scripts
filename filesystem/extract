@@ -2,6 +2,8 @@
 ##? usage : extract [file]
 ##? help  : Extract a compressed file.
 
+source "$DOTFILES_PATH/scripts/_main.sh"
+
 file=$1
 case $file in
 *.7z) 7z x $file ;;
@@ -9,5 +11,5 @@ case $file in
 *.bz2) bunzip2 $file ;;
 *.zip) unzip $file ;;
 *.tar) tar $file ;;
-*) echo "Not compressed file" ;;
+*) _error "Not compressed file" ;;
 esac

@@ -2,6 +2,7 @@
 ##? usage : contributors [folder|empty]
 ##? help  : View Github repository contributtors and their number of committs.
 
+source "$DOTFILES_PATH/scripts/_main.sh"
 if [ $# -gt 0 ]; then
 	cd $1
 fi
@@ -9,7 +10,7 @@ fi
 remote_url=$(git config --get remote.origin.url)
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 
-echo "Contributors: [$current_branch] <$remote_url>"
+_log "Contributors: [$current_branch] <$remote_url>"
 
 git log --format='%an' | sort -u | while read author; do
 	commit_count=$(git log --author="$author" --oneline | wc -l)

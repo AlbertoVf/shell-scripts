@@ -2,14 +2,16 @@
 ##? usage : compare_folder [folder] [folder]
 ##? help  : Print difference between 2 folders.
 
+source "$DOTFILES_PATH/scripts/_main.sh"
+
 folder1="$(realpath "$1")"
 folder2="$(realpath "$2")"
 
 diffs=$(diff -rq "$folder1" "$folder2")
 
 if [ -n "$diffs" ]; then
-  echo "Difference found:"
+  _warning "Difference found:"
   echo "$diffs"
 else
-  echo "Folders are equales."
+  _error "Folders are equales."
 fi

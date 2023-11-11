@@ -2,13 +2,13 @@
 ##? usage : get_ shortcuts [empty]
 ##? help  : Print shortcuts from kitty, qtile and sxhkd.
 
-_l(){ echo -e "\033[1;34m $1 \033[37;0m";}
+source "$DOTFILES_PATH/scripts/_main.sh"
 
-_l 'KITTY'
+_log 'KITTY'
 grep '^map' $HOME/.config/kitty/kitty.conf | awk '{for (i=2; i <= NF; i++) printf "%s ", $i; printf "\n"}'
 
-_l 'SXHKDRC'
+_log 'SXHKDRC'
 cat $HOME/.config/sxhkd/sxhkdrc | tail -n +2 | sed ':a;N;$!ba;s/\n\t/: /g'
 
-_l 'QTILE'
+_log 'QTILE'
 grep '^[[:space:]]*\(Key\|Click\|Drag\)' $HOME/.config/qtile/settings/keys.py | sed 's/^[[:space:]]*//'

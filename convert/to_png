@@ -2,10 +2,16 @@
 ##? usage : to_png [file...]
 ##? help  : Convert image to png format.
 
+source "$DOTFILES_PATH/scripts/_main.sh"
+
 for f in "$@"; do
 	name=$(basename "$f")
 	folder=$(dirname "$f")
 	name="${name%.*}"
 	convert "$f" -background white "$folder/$name.png"
-	echo "Imagen convertida: $name -> $name.png"
+	if [ $? -eq 0 ]; then
+		_success "Convertido: $f -> $name.pnh"
+	else
+		_error "Error al convertir: $f"
+	fi
 done

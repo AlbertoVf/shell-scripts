@@ -2,12 +2,13 @@
 ##? usage : rename_by_date [folder]
 ##? help  : Rename all files in folder with the name "folder_id".ext, the `id` is a number ordered by date creation
 
+source "$DOTFILES_PATH/scripts/_main.sh"
 folder="$1"
 
 if [ $folder == "." ]; then
 	folder=$(realpath .)
 elif [ ! -d "$folder" ]; then
-	echo "$folder not exist."
+	_error "$folder not exist."
 	exit 1
 else
 	cd "$folder"
@@ -24,6 +25,6 @@ for file in "${files[@]}"; do
 	fi
 
 	mv "$file" "$nuevo_nombre"
-	echo "$file -> $nuevo_nombre"
+	_success "Renombrado: $file -> $nuevo_nombre"
 	cont=$((cont + 1))
 done
