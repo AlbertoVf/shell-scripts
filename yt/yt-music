@@ -2,8 +2,17 @@
 ##? usage : yt-music [url]
 ##? help  : Download song.
 
+source "$DOTFILES_PATH/scripts/_main.sh"
+
 yt-dlp -i --no-playlist \
 	--embed-metadata --embed-thumbnail \
+	--quiet --progress \
 	--parse-metadata "title:%(artist)s - %(title)s" \
 	--audio-quality 0 -f bestaudio -x --audio-format "mp3" \
-	-o "$formato/%(title)s - %(artist)s.%(ext)s" $@
+	-o "$(xdg-user-dir DOWNLOAD)/%(title)s - %(artist)s.%(ext)s" $@
+
+if [ $? -eq 0 ]; then
+	_success "Cancion descargada"
+else
+	_error "Error al descargar"
+fi

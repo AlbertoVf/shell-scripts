@@ -2,8 +2,17 @@
 ##? usage : yt-audio-file [file]
 ##? help  : Download all audio from url save in file.
 
+source "$DOTFILES_PATH/scripts/_main.sh"
+
 yt-dlp -i --no-playlist \
 	--embed-metadata --embed-thumbnail \
+	--quiet --progress \
 	--audio-quality 0 -f bestaudio -x --audio-format mp3 \
 	-o "$(xdg-user-dir DOWNLOAD)/%(title)s.%(ext)s" \
 	--batch-file $@
+
+if [ $? -eq 0 ]; then
+	_success "Audios descargados"
+else
+	_error "Error al descargar"
+fi

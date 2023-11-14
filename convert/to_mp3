@@ -8,7 +8,7 @@ for f in "$@"; do
 	name=$(basename "$f")
 	folder=$(dirname "$f")
 	name="${name%.*}"
-	ffmpeg -i "$f" -codec:v copy -codec:a mp3 -q:a 0 "$folder/$name.mp3"
+	ffmpeg -i "$f" -codec:v copy -codec:a mp3 -q:a 0 "$folder/$name.mp3" > /dev/null 2>&1
 	if [ $? -eq 0 ]; then
 		_success "Convertido: $f -> $name.mp3"
 	else

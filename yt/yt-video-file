@@ -2,8 +2,17 @@
 ##? usage : yt-video-file [file]
 ##? help  : Download all video from url save in file.
 
+source "$DOTFILES_PATH/scripts/_main.sh"
+
 yt-dlp --no-playlist \
 	--embed-metadata \
+	--quiet --progress \
 	-f mp4 \
 	-o "$(xdg-user-dir DOWNLOAD)/%(title)s.%(ext)s" \
 	--batch-file $@
+
+if [ $? -eq 0 ]; then
+	_success "Videos descargado"
+else
+	_error "Error al descargar"
+fi

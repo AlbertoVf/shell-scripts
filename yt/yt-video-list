@@ -2,7 +2,16 @@
 ##? usage : yt-video-list [url]
 ##? help  : Download video playlist.
 
+source "$DOTFILES_PATH/scripts/_main.sh"
+
 yt-dlp -w \
 	--embed-metadata \
+	--quiet --progress \
 	-f mp4 \
 	-o "$(xdg-user-dir DOWNLOAD)/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s" $@
+
+if [ $? -eq 0 ]; then
+	_success "Videos descargado"
+else
+	_error "Error al descargar"
+fi

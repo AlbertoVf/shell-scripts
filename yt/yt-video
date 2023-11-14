@@ -2,6 +2,15 @@
 ##? usage : yt-video [url]
 ##? help  : Download video.
 
+source "$DOTFILES_PATH/scripts/_main.sh"
+
 yt-dlp --no-playlist --embed-metadata \
+	--quiet --progress \
 	-f mp4 \
 	-o "$(xdg-user-dir DOWNLOAD)/%(title)s.%(ext)s" $@
+
+if [ $? -eq 0 ]; then
+	_success "Video descargado"
+else
+	_error "Error al descargar"
+fi

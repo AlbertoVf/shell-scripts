@@ -2,7 +2,16 @@
 ##? usage : yt-audio [url]
 ##? help  : Download audio.
 
+source "$DOTFILES_PATH/scripts/_main.sh"
+
 yt-dlp -i --no-playlist \
 	--embed-metadata --embed-thumbnail \
+	--quiet --progress \
 	--audio-quality 0 -f bestaudio -x --audio-format mp3 \
 	-o "$(xdg-user-dir DOWNLOAD)/%(title)s.%(ext)s" $@
+
+if [ $? -eq 0 ]; then
+	_success "Audio descargado"
+else
+	_error "Error al descargar"
+fi

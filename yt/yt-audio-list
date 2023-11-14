@@ -2,7 +2,16 @@
 ##? usage : yt-audio-list [url]
 ##? help  : Download audio playlist.
 
+source "$DOTFILES_PATH/scripts/_main.sh"
+
 yt-dlp -w -i \
 	--embed-metadata --embed-thumbnail \
+	--quiet --progress \
 	--audio-quality 0 -f bestaudio -x --audio-format mp3 \
 	-o "$(xdg-user-dir DOWNLOAD)/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s" $@
+
+if [ $? -eq 0 ]; then
+	_success "Playlist de audio descargada"
+else
+	_error "Error al descargar"
+fi
