@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+##? usage : yt-episode [url]
+##? help  : Download episode from serie.
+
+source "$DOTFILES_PATH/scripts/_main.sh"
+
+yt-dlp -i --no-playlist \
+	--embed-metadata --embed-thumbnail \
+	--quiet --progress \
+	-f mp4 \
+	--parse-metadata "%(series)s S%(season_number)02dx%(episode_number)02d:%(title)s" \
+	-o "$(xdg-user-dir DOWNLOAD)/%(series)s/%(series)s - S%(season_number)02d/%(title)s.%(ext)s" $@
+
+if [ $? -eq 0 ]; then
+	_success "Capitulo descargado"
+else
+	_error "Error al descargar"
+fi

@@ -2,7 +2,8 @@
 ##? usage : qtile_manager [-h] [-f FONT] [-m MAIL] [-c CONSOLE] [-t THEME] [-d] [-l] [-r]
 ##? help  : qtile updater settings and docs.
 
-import argparse, subprocess, os, json
+import argparse, subprocess, os
+from yaml import dump,safe_load as load
 from enum import Enum
 from dataclasses import dataclass
 
@@ -19,18 +20,18 @@ class Env:
 
     @staticmethod
     def from_dict(obj: dict) -> "Env":
-        _font = str(obj.get("font"))
-        _mail = str(obj.get("mail"))
-        _console = str(obj.get("console"))
-        _theme = str(obj.get("theme"))
-        return Env(_font, _mail, _console, _theme)
+        return Env(
+            str(obj.get("font")),
+            str(obj.get("mail")),
+            str(obj.get("console")),
+            str(obj.get("theme")),
+        )
 
-    def saveJson(self):
-        with open(ENV_FILE, "w") as f:
-            json.dump(self.__dict__, f, indent=2)
+    def save(self):
+        dump(self.__dict__, open(ENV_FILE, "w"))
 
 
-readJson = lambda: Env.from_dict(json.load(open(ENV_FILE, "r")))
+read_env = lambda: Env.from_dict(load(open(ENV_FILE, "r")))
 
 logout = lambda: subprocess.run("qtile cmd-obj -o cmd -f shutdown", shell=True)
 
@@ -38,44 +39,38 @@ restart = lambda: subprocess.run("qtile cmd-obj -o cmd -f restart", shell=True)
 
 
 def changeValue(key: str, value: str):
-    env = readJson()
-    if key == "font":
-        env.font = value
-    elif key == "mail":
-        env.mail = value
-    elif key == "console":
-        env.console = value
-    elif key == "theme":
-        env.theme = value
-    env.saveJson()
+    env = read_env()
+    if key == "font": env.font = value
+    elif key == "mail": env.mail = value
+    elif key == "console": env.console = value
+    elif key == "theme": env.theme = value
+    env.save()
+    restart()
 
 
 def docs():
     themes = []
     qtile_themes = os.path.join(QTILE_PATH, "themes")
-    with open(f"{qtile_themes}/themes.json", "r") as f:
-        data = json.load(f)
+    data = load(open(f"{qtile_themes}/themes.yml", "r"))
 
     for t in data:
         themes.append(t)
-        scheme = data[t]
-        with open(f"{qtile_themes}/{t}.json", "w") as outfile:
-            json.dump(scheme, outfile, indent=4)
+        # scheme = data[t]
+        # dump(scheme, open(f"{qtile_themes}/{t}.yml", "w"))
 
     with open(f"{qtile_themes}/Previews.md", "w") as f:
         f.write("# Previews\n")
         for theme in themes:
-            l = f"\n## {theme}\n\n![{theme}](./scheme/{theme}.jpg)\n"
-            f.write(l)
+            f.write(f"\n## {theme}\n\n![{theme}](./scheme/{theme}.jpg)\n")
 
 
 def main():
-    parser = argparse.ArgumentParser( description="Modify settings from qtile" )
+    parser = argparse.ArgumentParser(description="Modify settings from qtile")
     parser.add_argument("-f", "--font", help="Change widget bar font")
-    parser.add_argument( "-m", "--mail", help="Update mail" )
-    parser.add_argument( "-c", "--console", help="Update the terminal" )
+    parser.add_argument("-m", "--mail", help="Update mail")
+    parser.add_argument("-c", "--console", help="Update the terminal")
     parser.add_argument("-t", "--theme", help="Change theme")
-    parser.add_argument( "-d", "--docs", action="store_true", help="Update Previews.md" )
+    parser.add_argument("-d", "--docs", action="store_true", help="Update Previews.md")
     parser.add_argument("-l", "--logout", action="store_true", help="Close sesión")
     parser.add_argument("-r", "--restart", action="store_true", help="Restart qtile")
 

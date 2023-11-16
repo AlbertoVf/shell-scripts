@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+source "$DOTFILES_PATH/scripts/_main.sh"
+
+servidor="8.8.8.8"
+
+if ping -c 3 $servidor > /dev/null 2>&1; then
+	_success "La conexión a Internet está bien."
+else
+	_error "¡Alerta! Problemas de conexión a Internet."
+fi

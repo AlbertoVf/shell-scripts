@@ -4,7 +4,7 @@
 
 source "$DOTFILES_PATH/scripts/_main.sh"
 
+publica=$(curl -s ifconfig.me)
 privada="$(ip addr show | grep 'inet.*brd' | awk '{print $2}' | cut -f1 -d'/' | head -n1)"
-publica="$(curl -s ifconfig.me | awk '{print $1}')"
-_log "{\"publica\":\"$publica\",\"privada\":\"$privada\"}" | jq '.'
+echo "{\"publica\":\"$publica\",\"privada\":\"$privada\"}" | jq '.'
 curl -s http://ip-api.com/json/$publica | jq '.'

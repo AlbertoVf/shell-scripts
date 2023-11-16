@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+##? usage : mimetype [empty]
+##? help  : Print mimetypes.
+
+for element in "$@"; do
+	file --mime-type "$element"
+done
