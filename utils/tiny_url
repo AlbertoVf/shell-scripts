@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+##? usage : tiny_url [url]
+##? help  : Short url and copy in clipboard.
+source "$DOTFILES_PATH/scripts/_main.sh"
+
+SHORTENED_URL=$(curl -s -d "url=$1" "http://tinyurl.com/api-create.php")
+
+echo -n $SHORTENED_URL | xclip -selection clipboard
+_log $SHORTENED_URL

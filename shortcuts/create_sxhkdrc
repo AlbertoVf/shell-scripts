@@ -1,18 +1,27 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python
 ##? usage : create_sxhkdrc [empty]
-##? help  : Build a sxhkdrc shortcut file with json file.
+##? help  : Build a sxhkdrc shortcut file with yaml file.
 
-source "$DOTFILES_PATH/scripts/_main.sh"
+from os import path
+from shutil import copy
+from yaml import safe_load as load
+from datetime import datetime
 
-input_file="$HOME/.dotfiles/doc/shortcuts.json"
-output_file="$HOME/.dotfiles/os/linux/sxhkd/sxhkdrc"
+DOTFILES_PATH = path.join(path.expanduser("~"), ".dotfiles")
+input_file    = path.join(DOTFILES_PATH, "doc", "shortcuts.yaml")
+output_file   = path.join(DOTFILES_PATH, "os", "linux", "sxhkd", "sxhkdrc")
+_sxhkd_format = lambda mods, keys: (f"\n{mods}\n\t{keys}")
 
-cp -f $output_file $HOME/.config/sxhkd/sxhkdrc.old
-jq -r 'keys[] as $k | "\($k) \(.[$k] | to_entries[] | [.key, .value] | @tsv)"' "$input_file" >"$output_file"
+date = datetime.now().strftime("Generated on %Y-%m-%d %H:%M")
+env = "#!/usr/bin/env bash"
+open(output_file,'w').write(f"{env}\n#{date}\n")
 
-sed -i 's/^ //g' "$output_file"
-sed -i 's/\t/\n\t/g' "$output_file"
-
-sed -i "1i # Generated on $(date +'%Y-%m-%d %H:%M')" "$output_file"
-sed -i "1i #!/usr/bin/env bash" "$output_file"
-_warning "Reiniciar sxhkd"
+data = load(open(input_file, "r"))
+with open(output_file,'a') as a:
+    # ; keys are <str> or <dict>
+    for mods, keys in data.items():
+        try:
+            for k, v in data[mods].items():
+                a.writelines(_sxhkd_format(f"{mods} + {k}", v))
+        except AttributeError as e:
+            a.writelines(_sxhkd_format(mods, keys))
