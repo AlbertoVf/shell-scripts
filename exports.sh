@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
-export PATH="$PATH:$DOTFILES_PATH/scripts/convert"
-export PATH="$PATH:$DOTFILES_PATH/scripts/filesystem"
-export PATH="$PATH:$DOTFILES_PATH/scripts/git"
-export PATH="$PATH:$DOTFILES_PATH/scripts/shortcuts"
-export PATH="$PATH:$DOTFILES_PATH/scripts/system"
-export PATH="$PATH:$DOTFILES_PATH/scripts/utils"
-export PATH="$PATH:$DOTFILES_PATH/scripts/yt"
+
+r="$HOME/bin"
+
+export PATH="$PATH:$r/convert"
+export PATH="$PATH:$r/filesystem"
+export PATH="$PATH:$r/git"
+export PATH="$PATH:$r/shortcuts"
+export PATH="$PATH:$r/system"
+export PATH="$PATH:$r/utils"
+export PATH="$PATH:$r/yt"

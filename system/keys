@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+##? usage : keys [none]
+##? help  : Updathe keys from archilux repository.
+
+sudo pacman -Sy archlinux-keyring
+sudo pacman -Sy archlinux-keyring
+sudo pacman-key --init
+sudo pacman-key --populate archlinux
+sudo pacman -Syu
