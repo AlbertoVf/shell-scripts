@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
-##? usage : mimetype [empty]
+##? usage : mimetype [element]
 ##? help  : Print mimetypes.
+
+source "$HOME/.bin/_main.sh"
+
+if [[ $# -lt 1 ]]; then
+	_params_required 1
+	exit 1
+fi
 
 for element in "$@"; do
 	file --mime-type "$element"

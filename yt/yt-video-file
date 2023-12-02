@@ -2,7 +2,12 @@
 ##? usage : yt-video-file [file]
 ##? help  : Download all video from url save in file.
 
-source "$DOTFILES_PATH/scripts/_main.sh"
+source "$HOME/.bin/_main.sh"
+
+if [[ $# -lt 1 ]]; then
+	_params_required 1
+	exit 1
+fi
 
 yt-dlp --no-playlist \
 	--embed-metadata \

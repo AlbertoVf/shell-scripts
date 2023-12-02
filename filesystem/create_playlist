@@ -15,4 +15,4 @@ fi
 
 name="playlist_$folder.m3u"
 echo -e "#!/usr/bin/vlc\n# $(date)\n# $path\n" >$name
-fd -t f --regex "mp\d$" -d1 "$path" >> $name
+fd -t f --regex "mp\d$" -d1 "$path" >>$name

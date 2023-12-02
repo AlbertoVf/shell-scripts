@@ -22,3 +22,8 @@ _error() {
 _warning() {
 	echo -e "$_WARNING[WARNING] $1 $_RESET"
 }
+
+_params_required(){
+	usage=$(sed -n '2p' "$0" | cut -c 5-)
+	_error "The script require $1 params\n\t $_WARNING$usage"
+}

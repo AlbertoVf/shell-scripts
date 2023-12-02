@@ -2,7 +2,12 @@
 ##? usage : extract [file]
 ##? help  : Extract a compressed file.
 
-source "$DOTFILES_PATH/scripts/_main.sh"
+source "$HOME/.bin/_main.sh"
+
+if [[ $# -lt 1 ]]; then
+	_params_required 1
+	exit 1
+fi
 
 file=$1
 case $file in

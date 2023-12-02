@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 ##? usage : tiny_url [url]
 ##? help  : Short url and copy in clipboard.
-source "$DOTFILES_PATH/scripts/_main.sh"
+source "$HOME/.bin/_main.sh"
+
+if [[ $# -lt 1 ]]; then
+	_params_required 1
+	exit 1
+fi
 
 SHORTENED_URL=$(curl -s -d "url=$1" "http://tinyurl.com/api-create.php")
 

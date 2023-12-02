@@ -2,7 +2,7 @@
 ##? usage : get_ shortcuts [empty]
 ##? help  : Print shortcuts from kitty, qtile and sxhkd.
 
-source "$DOTFILES_PATH/scripts/_main.sh"
+source "$HOME/.bin/_main.sh"
 
 _log 'KITTY'
 grep '^map' $HOME/.config/kitty/kitty.conf | awk '{for (i=2; i <= NF; i++) printf "%s ", $i; printf "\n"}'

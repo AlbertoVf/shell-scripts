@@ -2,4 +2,11 @@
 ##? usage : find_repos [folder]
 ##? help  : Find git repository folders.
 
+source "$HOME/.bin/_main.sh"
+
+if [[ $# -lt 1 ]]; then
+	_params_required 1
+	exit 1
+fi
+
 fd -sHapL -d 2 --regex '\.git$' "$1/" -x echo {//}

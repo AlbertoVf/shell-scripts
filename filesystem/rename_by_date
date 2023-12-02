@@ -2,7 +2,13 @@
 ##? usage : rename_by_date [folder]
 ##? help  : Rename all files in folder with the name "folder_id".ext, the `id` is a number ordered by date creation
 
-source "$DOTFILES_PATH/scripts/_main.sh"
+source "$HOME/.bin/_main.sh"
+
+if [[ $# -lt 1 ]]; then
+	_params_required 1
+	exit 1
+fi
+
 folder="$1"
 
 if [ $folder == "." ]; then

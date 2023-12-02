@@ -2,6 +2,13 @@
 ##? usage : run [file]
 ##? help  : Open/Exec a file in the default editor.
 
+source "$HOME/.bin/_main.sh"
+
+if [[ $# -lt 1 ]]; then
+	_params_required 1
+	exit 1
+fi
+
 file=$1
 extension=$(basename "$file" | awk -F . '{print $NF}')
 case $file in

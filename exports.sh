@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-r="$HOME/bin"
+r="$HOME/.bin"
 
 export PATH="$PATH:$r/convert"
 export PATH="$PATH:$r/filesystem"

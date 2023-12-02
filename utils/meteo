@@ -2,4 +2,11 @@
 ##? usage : meteo [city]
 ##? help  : Show the meteo in a city.
 
+source "$HOME/.bin/_main.sh"
+
+if [[ $# -lt 1 ]]; then
+	_params_required 1
+	exit 1
+fi
+
 curl -4 http://wttr.in/$1

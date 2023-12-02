@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "$DOTFILES_PATH/scripts/_main.sh"
+source "$HOME/.bin/_main.sh"
 
 servidor="8.8.8.8"
 

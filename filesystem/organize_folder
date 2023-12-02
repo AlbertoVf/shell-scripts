@@ -4,40 +4,45 @@
 
 import os, mimetypes, sys, shutil, subprocess, re
 
-xdg_user_dir = lambda type: subprocess.check_output( ["xdg-user-dir", type.upper()], universal_newlines=True ).strip()
+xdg_user_dir = lambda type: subprocess.check_output(
+    ["xdg-user-dir", type.upper()], universal_newlines=True
+).strip()
 
-#? include mimetypes, types, extensions. Find with regular expresion
-#? mimetype: audio/mp4 ; type=audio ; extension=mp4 ; opendocument=regex
+# ? include mimetypes, types, extensions. Find with regular expresion
+# ? mimetype: audio/mp4 ; type=audio ; extension=mp4 ; opendocument=regex
 mimeTypes = {
     xdg_user_dir("MUSIC")     : ["audio"],
     xdg_user_dir("USERFONTS") : ["font"],
     xdg_user_dir("PICTURES")  : ["image"],
     xdg_user_dir("VIDEOS")    : ["video"],
     xdg_user_dir("DOCUMENTS") : ["pdf", "opendocument"],
-    xdg_user_dir("TEMPLATES") : ["template"]
+    xdg_user_dir("TEMPLATES") : ["template"],
 }
 
 getMime = lambda file: mimetypes.guess_type(file)[0] or "None"
 
+
 def mv(file):
     try:
-        mime=getMime(file)
+        mime = getMime(file)
         extension = os.path.splitext(file)[1]
-        for folder,types in mimeTypes.items():
+        for folder, types in mimeTypes.items():
             for t in types:
                 regular = re.compile(rf".*{t}.*")
-                if re.search(regular,mime) or extension[1::] in types:
-                    shutil.move(file,folder)
+                if re.search(regular, mime) or extension[1::] in types:
+                    shutil.move(file, folder)
                     print(f"[OK] mv {file} -> {folder}")
                     break
     except Exception as e:
         print(f"[ERROR] {file} :: {e}")
 
+
 def refactor_files(ruta):
     try:
         for archivo in os.listdir(ruta):
             ruta_completa = os.path.join(ruta, f"{archivo}")
-            if os.path.isfile(ruta_completa): mv(ruta_completa)
+            if os.path.isfile(ruta_completa):
+                mv(ruta_completa)
     except OSError as e:
         print(f"Error al acceder al directorio {ruta}: {e}")
 
@@ -51,5 +56,6 @@ def main():
 
     directorio = os.path.join(directorio, folder)
     refactor_files(directorio)
+
 
 main()

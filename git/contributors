@@ -2,7 +2,8 @@
 ##? usage : contributors [folder|empty]
 ##? help  : View Github repository contributtors and their number of committs.
 
-source "$DOTFILES_PATH/scripts/_main.sh"
+source "$HOME/.bin/_main.sh"
+
 if [ $# -gt 0 ]; then
 	cd $1
 fi

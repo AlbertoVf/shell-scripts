@@ -59,7 +59,8 @@ def output(output_format, input_file):
     _input_format = _input_format[1:]
     output_file = f"{_file}.{output_format}"
 
-    if _input_format == output_format: return
+    if _input_format == output_format:
+        return
     # ? TRANSFORMAR CUALQUIER FORMATO A UN ARCHIVO JSON TEMPORAL
     if _input_format == Extension.JSON: data = _load_json(input_file)
     elif _input_format == Extension.XML: data = _xml_json(input_file)
