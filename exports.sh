@@ -2,6 +2,7 @@
 
 r="$HOME/.bin"
 
+export PATH="$PATH:$r/ascii"
 export PATH="$PATH:$r/convert"
 export PATH="$PATH:$r/filesystem"
 export PATH="$PATH:$r/git"
