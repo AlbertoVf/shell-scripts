@@ -5,7 +5,7 @@
 import subprocess, sys, os, re
 
 HELP_TAG = r"^\#\#\?"
-DOTFILES_PATH = f"{os.path.expanduser('~')}/.dotfiles/scripts"
+DOTFILES_PATH = f"{os.path.expanduser('~')}/.bin"
 
 
 def list_x(folder=DOTFILES_PATH):
@@ -24,8 +24,8 @@ def list_x(folder=DOTFILES_PATH):
 
 
 def decorate(f, h):
-    print(f"\n\033[37mFile:\033[1m {f}\033[0m")
-    print("\033[30m" + "\n".join(h) + "\033[0m")
+    print(f"\n\033[33mFile:\033[1m {f}\033[0m")
+    print("\033[36m" + "\n".join(h) + "\033[0m")
 
 
 def readHelp(file):
