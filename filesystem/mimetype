@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? usage : mimetype [element]
 ##? help  : Print mimetypes.
+##? usage : mimetype [element]
 
 source "$HOME/.bin/_main.sh"
 

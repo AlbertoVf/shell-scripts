@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-##? usage : tiny_url [url]
 ##? help  : Short url and copy in clipboard.
+##? usage : tiny_url [url]
+
 source "$HOME/.bin/_main.sh"
 
 if [[ $# -lt 1 ]]; then

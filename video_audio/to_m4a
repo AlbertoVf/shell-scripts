@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? usage : to_m4a [file...]
 ##? help  : Convert audio to m4a/mp4 format.
+##? usage : to_m4a [file...]
 
 source "$HOME/.bin/_main.sh"
 

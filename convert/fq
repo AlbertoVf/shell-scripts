@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-##? usage : fq [-h] -o {xml,json,yml,yaml} file
 ##? help  : Python script to convert configuration files
+##? usage : fq [-h] -o {xml,json,yml,yaml} file
 
 import argparse, subprocess, os
 import json, yaml, csv, dicttoxml as xml, xmltodict

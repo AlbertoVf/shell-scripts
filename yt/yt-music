@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? usage : yt-music [url]
 ##? help  : Download song.
+##? usage : yt-music [url]
 
 source "$HOME/.bin/_main.sh"
 

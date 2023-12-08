@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? usage : yt-video-list [url]
 ##? help  : Download video playlist.
+##? usage : yt-video-list [url]
 
 source "$HOME/.bin/_main.sh"
 

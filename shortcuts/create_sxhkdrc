@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-##? usage : create_sxhkdrc [empty]
 ##? help  : Build a sxhkdrc shortcut file with yaml file.
+##? usage : create_sxhkdrc [none]
 
 from os import path
 from yaml import safe_load as load

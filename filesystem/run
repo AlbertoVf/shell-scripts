@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? usage : run [file]
 ##? help  : Open/Exec a file in the default editor.
+##? usage : run [file]
 
 source "$HOME/.bin/_main.sh"
 

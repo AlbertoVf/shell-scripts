@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? usage : get_ shortcuts [empty]
 ##? help  : Print shortcuts from kitty, qtile and sxhkd.
+##? usage : get_ shortcuts [none]
 
 source "$HOME/.bin/_main.sh"
 

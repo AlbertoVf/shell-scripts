@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? usage : my_ip [empty]
 ##? help  : Get your IP address from the command line.
+##? usage : my_ip [none]
 
 source "$HOME/.bin/_main.sh"
 

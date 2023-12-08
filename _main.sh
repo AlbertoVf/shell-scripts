@@ -27,3 +27,10 @@ _params_required(){
 	usage=$(sed -n '2p' "$0" | cut -c 5-)
 	_error "The script require $1 params\n\t $_WARNING$usage"
 }
+
+notify() {
+	local app=$1
+	local mensaje=$2
+	command -v notify-send >/dev/null && notify-send "$app" "$mensaje"
+	paplay '/usr/share/sounds/freedesktop/stereo/complete.oga'
+}

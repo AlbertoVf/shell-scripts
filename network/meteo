@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? usage : meteo [city]
 ##? help  : Show the meteo in a city.
+##? usage : meteo [city]
 
 source "$HOME/.bin/_main.sh"
 

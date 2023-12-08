@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+##? help  : Check the conection.
+##? usage : check_connection [none]
 
 source "$HOME/.bin/_main.sh"
 

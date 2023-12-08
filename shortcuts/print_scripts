@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-##? usage : print_scripts [empty]
 ##? help  : Print script helper and usage.
+##? usage : print_scripts [none]
 
 import subprocess, sys, os, re
 

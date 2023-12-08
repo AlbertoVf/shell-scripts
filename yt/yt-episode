@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? usage : yt-episode [url]
 ##? help  : Download episode from serie.
+##? usage : yt-episode [url]
 
 source "$HOME/.bin/_main.sh"
 

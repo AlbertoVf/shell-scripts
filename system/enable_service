@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? usage : enable_service [service]
 ##? help  : Start service, start service on init.
+##? usage : enable_service [service]
 
 source "$HOME/.bin/_main.sh"
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? usage : to_jpg [file...]
 ##? help  : Convert image to jpg format.
+##? usage : to_jpg [file...]
 
 source "$HOME/.bin/_main.sh"
 

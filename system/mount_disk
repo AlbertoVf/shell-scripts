@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? usage : mount_disk [name]
 ##? help  : Mount the partition with LABEL on the media folder.
+##? usage : mount_disk [name]
 
 source "$HOME/.bin/_main.sh"
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? usage : yt-audio-file [file]
 ##? help  : Download all audio from url save in file.
+##? usage : yt-audio-file [file]
 
 source "$HOME/.bin/_main.sh"
 

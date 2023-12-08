@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? usage : to_png [file...]
 ##? help  : Convert image to png format.
+##? usage : to_png [file...]
 
 source "$HOME/.bin/_main.sh"
 

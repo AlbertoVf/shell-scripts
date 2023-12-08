@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? usage : extract [file]
 ##? help  : Extract a compressed file.
+##? usage : extract [file]
 
 source "$HOME/.bin/_main.sh"
 

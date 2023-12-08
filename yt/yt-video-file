@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? usage : yt-video-file [file]
 ##? help  : Download all video from url save in file.
+##? usage : yt-video-file [file]
 
 source "$HOME/.bin/_main.sh"
 

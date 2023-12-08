@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? usage : compare_folder [folder] [folder]
 ##? help  : Print difference between 2 folders.
+##? usage : compare_folder [folder] [folder]
 
 source "$HOME/.bin/_main.sh"
 

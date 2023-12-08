@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? usage : visibility [file|folder]
 ##? help  : Change the visibility of a file.
+##? usage : visibility [file|folder]
 
 source "$HOME/.bin/_main.sh"
 

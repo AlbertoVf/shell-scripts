@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? usage : yt-audio-list [url]
 ##? help  : Download audio playlist.
+##? usage : yt-audio-list [url]
 
 source "$HOME/.bin/_main.sh"
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-##? usage : to_mp3 [file...]
 ##? help  : Convert audio to mp3 format.
+##? usage : to_mp3 [file...]
 
 source "$HOME/.bin/_main.sh"
 
