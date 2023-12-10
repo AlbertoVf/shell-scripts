@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+##? help  : Show all broken symlinks in the current directory.
+##? usage : find_broken_symlinks [none]
+
+source "$HOME/.bin/_main.sh"
+
+find -L . -type l

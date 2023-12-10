@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+##? help  : Count files in the subdirectories.
+##? usage : count_files_subdirectory [none]
+
+source "$HOME/.bin/_main.sh"
+
+dirs=$(ls -d ./*/)
+
+echo "$dirs" | xargs -I _ sh -c 'find "_" -type f | wc -l | xargs echo "_"'

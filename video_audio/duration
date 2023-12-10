@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+##? usage : duration [foder|.]
+##? help  : Print the duration of all vide/audio files in folder.
+source "$HOME/.bin/_main.sh"
+
+if [[ $# -lt 1 ]]; then
+	_params_required 1
+	exit 1
+fi
+
+duration() {
+	ruta_archivo=$1
+	duracion=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$ruta_archivo")
+
+	horas_decimal=$(awk "BEGIN {printf \"%02d\", $duracion / 3600}")
+	minutos_decimal=$(awk "BEGIN {printf \"%02d\", ($duracion % 3600) / 60}")
+	segundos_decimal=$(awk "BEGIN {printf \"%02d\", $duracion % 60}")
+	echo "[$horas_decimal:$minutos_decimal:$segundos_decimal] - $ruta_archivo"
+}
+
+ruta=$1
+for f in "$ruta"/*; do
+	mime_type=$(file -b --mime-type "$f")
+	if echo "$mime_type" | grep -q "audio\|video"; then
+		duration "$f"
+	fi
+done

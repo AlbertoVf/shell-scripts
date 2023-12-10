@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+##? help  : Use method pomodoro to work
+##? usage : pomodoro [rounds]
+
+source "$HOME/.bin/_main.sh"
+
+if [[ $# -lt 1 ]]; then
+	_params_required 1
+	exit 1
+fi
+
+rounds=$1
+work_time=25
+sleep_time=$((work_time / 5))
+round=1
+
+echo -e "[$(date +'%H:%M:%S')] POMODORO:\ntiempo de trabajo: $work_time m.\ntiempo de descanso: $sleep_time m.\nrondas pomodoro: $rounds\n---\n"
+while [ $round -le $rounds ]; do
+
+	# Inicio de trabajo
+	notify "POMODORO" "[$(date +'%H:%M:%S')] ¡Pomodoro $round/$rounds start! Tiempo de trabajo: $work_time m"
+	espeak -v spanish "Tiempo de trabajo: $work_time minutos" >/dev/null 2>&1
+	sleep "${work_time}m"
+
+	# Inicio de descanso
+	if [ $((round % 4)) -eq 0 ]; then
+		sleep_time=$((sleep_time * 3))
+	fi
+
+	notify "[$(date +'%H:%M:%S')] ¡Descanso $round/$rounds! Tiempo de descanso: $sleep_time m"
+	espeak -v spanish "Tiempo de Descanso: $sleep_time minutos" >/dev/null 2>&1
+	sleep "${sleep_time}m"
+
+	echo "[$(date +'%H:%M:%S')] Ronda $round/$rounds completada"
+	espeak -v spanish "Ronda $round completada" >/dev/null 2>&1
+
+	round=$((round + 1))
+done
