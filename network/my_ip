@@ -8,3 +8,5 @@ publica=$(curl -s ifconfig.me)
 privada="$(ip addr show | grep 'inet.*brd' | awk '{print $2}' | cut -f1 -d'/' | head -n1)"
 echo "{\"publica\":\"$publica\",\"privada\":\"$privada\"}" | jq '.'
 curl -s http://ip-api.com/json/$publica | jq '.'
+
+curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -
