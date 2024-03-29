@@ -2,25 +2,22 @@
 ##? help  : Print script helper and usage.
 ##? usage : print_scripts [none]
 
-import subprocess, sys, os, re
+import os, re
 
 HELP_TAG = r"^\#\#\?"
 DOTFILES_PATH = f"{os.path.expanduser('~')}/.bin"
 
 
 def list_x(folder=DOTFILES_PATH):
-    try:
-        result = subprocess.run(
-            ["fd", ".", DOTFILES_PATH, "-t", "x"],
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-        out = result.stdout.strip()
-        return out.split("\n")
-    except subprocess.CalledProcessError as e:
-        print(f"Error al ejecutar el comando fd: {e}")
-        return []
+    ejecutables = []
+    for dirpath, _, filenames in os.walk(folder):
+        if '.git' in dirpath.split(os.path.sep):
+            continue
+        for filename in filenames:
+            ruta_absoluta = os.path.join(dirpath, filename)
+            if os.access(ruta_absoluta, os.X_OK):
+                ejecutables.append(ruta_absoluta)
+    return ejecutables
 
 
 def decorate(f, h):

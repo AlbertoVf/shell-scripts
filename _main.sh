@@ -24,7 +24,7 @@ _warning() {
 }
 
 _params_required(){
-	usage=$(sed -n '2p' "$0" | cut -c 5-)
+	usage=$(sed -n '3p' "$0" | cut -c 5-)
 	_error "The script require $1 params\n\t $_WARNING$usage"
 }
 
