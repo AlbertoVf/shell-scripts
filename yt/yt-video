@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 ##? help  : Download video.
-##? usage : yt-video [url]
+##? usage : yt-video [url|file]
 
 source "$HOME/.bin/_main.sh"
 
@@ -9,10 +9,25 @@ if [[ $# -lt 1 ]]; then
 	exit 1
 fi
 
-yt-dlp --no-playlist --embed-metadata \
-	--quiet --progress \
-	-f mp4 \
-	-o "$(xdg-user-dir DOWNLOAD)/%(title)s.%(ext)s" $@
+if [[ $1 =~ $playlist_regex ]]; then
+	yt-dlp -w \
+		--embed-metadata \
+		--quiet --progress \
+		-f mp4 \
+		-o "$(xdg-user-dir DOWNLOAD)/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s" $@
+elif [[ $1 =~ $video_regex ]]; then
+	yt-dlp --no-playlist --embed-metadata \
+		--quiet --progress \
+		-f mp4 \
+		-o "$(xdg-user-dir DOWNLOAD)/%(title)s.%(ext)s" $@
+elif [ -f "$1" ]; then
+	yt-dlp --no-playlist \
+		--embed-metadata \
+		--quiet --progress \
+		-f mp4 \
+		-o "$(xdg-user-dir DOWNLOAD)/%(title)s.%(ext)s" \
+		--batch-file $@
+fi
 
 if [ $? -eq 0 ]; then
 	_success "Video descargado"

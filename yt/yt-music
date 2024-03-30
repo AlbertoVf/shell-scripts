@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 ##? help  : Download song.
-##? usage : yt-music [url]
+##? usage : yt-music [url|file]
 
 source "$HOME/.bin/_main.sh"
 
@@ -9,12 +9,22 @@ if [[ $# -lt 1 ]]; then
 	exit 1
 fi
 
-yt-dlp -i --no-playlist \
-	--embed-metadata --embed-thumbnail \
-	--quiet --progress \
-	--parse-metadata "title:%(artist)s - %(title)s" \
-	--audio-quality 0 -f bestaudio -x --audio-format "mp3" \
-	-o "$(xdg-user-dir DOWNLOAD)/%(title)s - %(artist)s.%(ext)s" $@
+if [[ $1 =~ $video_regex ]]; then
+	yt-dlp -i --no-playlist \
+		--embed-metadata --embed-thumbnail \
+		--quiet --progress \
+		--parse-metadata "title:%(artist)s - %(title)s" \
+		--audio-quality 0 -f bestaudio -x --audio-format "mp3" \
+		-o "$(xdg-user-dir DOWNLOAD)/%(title)s - %(artist)s.%(ext)s" $@
+elif [ -f "$1" ]; then
+	yt-dlp -i --no-playlist \
+		--embed-metadata --embed-thumbnail \
+		--quiet --progress \
+		--parse-metadata "title:%(artist)s - %(title)s" \
+		--audio-quality 0 -f bestaudio -x --audio-format "mp3" \
+		-o "$(xdg-user-dir DOWNLOAD)/%(title)s - %(artist)s.%(ext)s" \
+		--batch-file $@
+fi
 
 if [ $? -eq 0 ]; then
 	_success "Cancion descargada"

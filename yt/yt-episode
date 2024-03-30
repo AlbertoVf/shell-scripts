@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 ##? help  : Download episode from serie.
-##? usage : yt-episode [url]
+##? usage : yt-episode [url|file]
 
 source "$HOME/.bin/_main.sh"
 
@@ -9,12 +9,21 @@ if [[ $# -lt 1 ]]; then
 	exit 1
 fi
 
-yt-dlp -i --no-playlist \
-	--embed-metadata --embed-thumbnail \
-	--quiet --progress \
-	-f mp4 \
-	--parse-metadata "%(series)s S%(season_number)02dx%(episode_number)02d:%(title)s" \
-	-o "$(xdg-user-dir DOWNLOAD)/%(series)s/%(series)s - S%(season_number)02d/%(title)s.%(ext)s" $@
+if [[ $1 =~ $video_regex ]]; then
+	yt-dlp -i --no-playlist \
+		--embed-metadata --embed-thumbnail \
+		--quiet --progress \
+		-f mp4 \
+		--parse-metadata "%(series)s S%(season_number)02dx%(episode_number)02d:%(title)s" \
+		-o "$(xdg-user-dir DOWNLOAD)/%(series)s/%(series)s - S%(season_number)02d/%(title)s.%(ext)s" $@
+elif [ -f "$1" ]; then
+	yt-dlp -i --no-playlist \
+		--embed-metadata --embed-thumbnail \
+		--quiet --progress \
+		--parse-metadata "%(series)s S%(season_number)02dx%(episode_number)02d:%(title)s" \
+		-f mp4 -o "$(xdg-user-dir DOWNLOAD)/%(series)s/%(series)s - S%(season_number)02d/%(title)s.%(ext)s" \
+		--batch-file $@
+fi
 
 if [ $? -eq 0 ]; then
 	_success "Capitulo descargado"
