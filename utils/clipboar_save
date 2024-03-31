@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+##? help  : Save clipboard in file named clipboard_date.
+##? usage : save_clipboard [none]
+
+timestamp=$(date +%s)
+
+echo "$(xclip -selection clipboard -o)" >"clipboard_$timestamp.txt"

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+##? help  : Save clipboard un file to download.
+##? usage : save-download-links [url]
+
+source "$HOME/.bin/_main.sh"
+
+file="$(xdg-user-dir DOWNLOAD)/yt-download.yml"
+echo -e "# $(date +%Y-%m-%d-%H:%M:%S)\n$(xclip -selection clipboard -o)" >>$file
+
+if [ $? -eq 0 ]; then
+	_success "YT download file list is updated"
+else
+	_error "Error clipboard"
+fi
