@@ -2,25 +2,28 @@
 ##? help  : Build a sxhkdrc shortcut file with yaml file.
 ##? usage : create_sxhkdrc [none]
 
-from os import path
+from os import path, getenv
 from yaml import safe_load as load
 from datetime import datetime
 
-DOTFILES_PATH = path.join(path.expanduser("~"), ".dotfiles")
-input_file = path.join(DOTFILES_PATH, "doc", "shortcuts.yaml")
-output_file = path.join(DOTFILES_PATH, "os", "linux", "sxhkd", "sxhkdrc")
-_sxhkd_format = lambda mods, keys: (f"\n{mods}\n\t{keys}")
+def write_keys(mods, keys, file):
+    _sxhkd_format = lambda mods, keys: (f"\n{mods}\n\t{keys}")
+    if isinstance(keys, str):
+        file.writelines(_sxhkd_format(mods, keys))
+    else:
+        for k, v in keys.items():
+            new_mods = f"{mods} + {k}" if mods else k
+            write_keys(new_mods, v, file)
 
-date = datetime.now().strftime("Generated on %Y-%m-%d %H:%M")
-env = "#!/usr/bin/env bash"
-open(output_file, "w").write(f"{env}\n#{date}\n")
 
-data = load(open(input_file, "r"))
-with open(output_file, "a") as a:
-    # ; keys are <str> or <dict>
-    for mods, keys in data.items():
-        try:
-            for k, v in data[mods].items():
-                a.writelines(_sxhkd_format(f"{mods} + {k}", v))
-        except AttributeError:
-            a.writelines(_sxhkd_format(mods, keys))
+if __name__ == "__main__":
+    DOTFILES_PATH = getenv("DOTFILES_PATH")
+    input_file = path.join(DOTFILES_PATH, "doc", "shortcuts.yaml")
+    output_file = path.join(DOTFILES_PATH, "os", "linux", "sxhkd", "sxhkdrc")
+    date = datetime.now().strftime("Generated on %Y-%m-%d %H:%M")
+    env = "#!/usr/bin/env bash"
+    data = load(open(input_file, "r"))["sxhkdrc"]
+    with open(output_file, "w") as a:
+        a.write(f"{env}\n# {date}\n")
+        for mods, keys in data.items():
+            write_keys(mods, keys, a)

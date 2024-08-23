@@ -18,7 +18,7 @@ echo -e "[$(date +'%H:%M:%S')] POMODORO:\ntiempo de trabajo: $work_time m.\ntiem
 while [ $round -le $rounds ]; do
 
 	# Inicio de trabajo
-	notify "POMODORO" "[$(date +'%H:%M:%S')] ¡Pomodoro $round/$rounds start! Tiempo de trabajo: $work_time m"
+	notify-send "POMODORO" "[$(date +'%H:%M:%S')] ¡Pomodoro $round/$rounds start! Tiempo de trabajo: $work_time m"
 	espeak -v spanish "Tiempo de trabajo: $work_time minutos" >/dev/null 2>&1
 	sleep "${work_time}m"
 

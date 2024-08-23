@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 ##? help  : Save clipboard un file to download.
-##? usage : save-download-links [url]
+##? usage : to_yt-dlp
 
 source "$HOME/.bin/_main.sh"
 
