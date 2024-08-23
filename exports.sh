@@ -1,15 +1,5 @@
 #!/usr/bin/env bash
 
-r="$HOME/.bin"
-
-export PATH="$PATH:$r/ascii"
-export PATH="$PATH:$r/convert"
-export PATH="$PATH:$r/filesystem"
-export PATH="$PATH:$r/git"
-export PATH="$PATH:$r/image"
-export PATH="$PATH:$r/network"
-export PATH="$PATH:$r/shortcuts"
-export PATH="$PATH:$r/system"
-export PATH="$PATH:$r/utils"
-export PATH="$PATH:$r/video_audio"
-export PATH="$PATH:$r/yt"
+for dir in "$HOME/.bin"/*/; do
+	export PATH="$PATH:$dir"
+done
