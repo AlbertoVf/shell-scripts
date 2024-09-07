@@ -2,7 +2,7 @@
 ##? help  : Build a sxhkdrc shortcut file with yaml file.
 ##? usage : create_sxhkdrc [none]
 
-from os import path, getenv
+from os import path, getenv,system
 from yaml import safe_load as load
 from datetime import datetime
 
@@ -27,3 +27,4 @@ if __name__ == "__main__":
         a.write(f"{env}\n# {date}\n")
         for mods, keys in data.items():
             write_keys(mods, keys, a)
+    system("pkill -USR1 -x sxhkd")

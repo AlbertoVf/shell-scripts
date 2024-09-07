@@ -23,5 +23,7 @@ case $file in
 *.mp3 | *.mp4 | *.m4a | *.aac | *.flac) xdg-open $file ;;
 *.pdf) xdg-open $file ;;
 *.jpg | *.jpeg | *.png | *.gif | *.bmp | *.tiff | *.svg) feh $file ;;
+*.cs) dotnet run;;
+*.cs-proj) dotnet run --project $file;;
 *) xdg-open $file ;;
 esac
