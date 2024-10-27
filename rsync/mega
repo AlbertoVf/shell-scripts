@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+##? help  : Work with MEGA. Sync folder, upload/download content.
+##? usage : mega [ none | folder | file ]
+
+. "$HOME/.bin/rsync/_rsync.sh"
+if [[ $# -lt 2 ]]; then
+	_params_required 2
+	exit 1
+fi
+
+if [ "$1" = "-write" ]; then
+	if [ "$2" = "-cloud" ]; then
+		overwrite_cloud MEGA mega
+	elif [ "$2" = "-local" ]; then
+		overwrite_local mega MEGA
+	fi
+elif [ "$1" = "-push" ]; then
+	upload_content "mega" $2
+elif [ "$1" = "-pull" ]; then
+	download_content "mega" $2
+else
+	exit 1
+fi

@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+##? help  : Work with Google Drive. Sync folder, upload/download content.
+##? usage : drive [ none | folder | file ]
+
+. "$HOME/.bin/rsync/_rsync.sh"
+
+if [ $# -lt 2 ]; then
+	_params_required 2
+	exit 1
+fi
+
+if [ "$1" = "-write" ]; then
+	if [ "$2" = "-cloud" ]; then
+		overwrite_cloud Drive drive
+	elif [ "$2" = "-local" ]; then
+		overwrite_local drive Drive
+	fi
+elif [ "$1" = "-push" ]; then
+	upload_content "drive" $2
+elif [ "$1" = "-pull" ]; then
+	download_content "drive" $2
+else
+	exit 1
+fi

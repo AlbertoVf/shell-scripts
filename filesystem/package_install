@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+##? help  : Install project dependencies to python, nodejs, php and java.
+##? usage : package_install [none]
+
+# PIP
+if [ -e 'requirements.txt' ]; then
+    pip install -r requirements.txt
+fi
+
+
+# PNPM
+if [ -e "package.json" ] || [ -e "package.yaml" ] || [ -e "package.yml" ]; then
+    pnpm install
+fi
+
+# COMPOSER
+if [ -e 'composer.json' ] || [ -e 'composer.yaml' ] || [ -e 'composer.yml' ]; then
+    composer install
+fi
+
+# MAVEN | GRADLE
+if [ -e 'pom.xml' ]; then
+    mvn install
+elif [ -e 'build.gradle' ]; then
+    gradle build
+fi

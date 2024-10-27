@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+##? help  : Decode URL format to human-readable.
+##? usage : decode_name [file|folder]
+
+. "$HOME/.bin/_main.sh"
+
+if [ $# -lt 1 ]; then
+	_params_required 1
+	exit 1
+fi
+
+urldecode() {
+	decoded_name=$(printf '%b' "${1//%/\\x}")
+	mv "$1" "$decoded_name"
+}
+
+for element in "$@"; do
+	urldecode "$element"
+done
