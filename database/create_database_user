@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+##? help  : Create database and user with equal name.
+##? usage : create_database_user [database]
+
+. "$HOME/.bin/_main.sh"
+
+if [ $# -lt 1 ]; then
+	_params_required 1
+	exit 1
+fi
+
+DB_NAME=$1
+DB_PASSWORD=$(openssl rand -base64 48 | tr -dc "A-Za-z0-9@#$" | head -c "10")
+
+mariadb -u "$USER" -p -e "CREATE DATABASE IF NOT EXISTS $DB_NAME; CREATE USER IF NOT EXISTS '$DB_NAME'@'localhost' IDENTIFIED BY '$DB_PASSWORD'; GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_NAME'@'localhost'; FLUSH PRIVILEGES;"
+
+_success "Create database $DB_NAME with user $DB_NAME. password: $DB_PASSWORD on clipboard"
+
+echo "$DB_PASSWORD" | xclip -selection clipboard

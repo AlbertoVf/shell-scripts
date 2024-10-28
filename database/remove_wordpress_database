@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+##? help  : Remove database and user.
+##? usage : remove_wordpress_database [database]
+
+. "$HOME/.bin/_main.sh"
+
+if [ $# -lt 1 ]; then
+	_params_required 1
+	exit 1
+fi
+
+DB_NAME=$1
+
+mariadb -u "$USER" -p -e "DROP DATABASE IF EXISTS $DB_NAME; DROP USER IF EXISTS '$DB_NAME'@'localhost';"

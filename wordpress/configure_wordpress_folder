@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+##? help  : Configure foldwr to use as wordpress.
+##? usage : configure_wordpress_folder [folder]
+
+. "$HOME/.bin/_main.sh"
+
+if [ $# -lt 1 ]; then
+	_params_required 1
+	exit 1
+fi
+
+sudo chown -cR http:http "$1"
+sudo chmod -cR 755 "$1"
+sudo mv -v "$1" /srv/http
