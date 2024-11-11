@@ -18,4 +18,4 @@ url="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=$texto"
 # Descargar el código QR y guardarlo en un archivo
 curl -o "$archivo_salida" "$url"
 
-_LOG "Código QR generado con éxito en: $archivo_salida"
+_log "Código QR generado con éxito en: $archivo_salida"

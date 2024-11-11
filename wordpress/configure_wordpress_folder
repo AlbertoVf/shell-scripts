@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-##? help  : Configure foldwr to use as wordpress.
+##? help  : Configure folder to use as wordpress.
 ##? usage : configure_wordpress_folder [folder]
 
 . "$HOME/.bin/_main.sh"
