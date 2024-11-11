@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 ##? help  : Convert image to png format.
 ##? usage : to_png [file...]
 
@@ -13,7 +13,7 @@ for f in "$@"; do
 	name=$(basename "$f")
 	folder=$(dirname "$f")
 	name="${name%.*}"
-	convert "$f" -strip -background white "$folder/$name.png" >/dev/null 2>&1
+	magick "$f" -strip -background white "$folder/$name.png" >/dev/null 2>&1
 	if [ $? -eq 0 ]; then
 		_success "Convertido: $f -> $name.png"
 	else

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-##? help  : Enable service on init.
+##? help  : Start service.
 ##? usage : enable_service [service]
 
 source "$HOME/.bin/_main.sh"
@@ -9,5 +9,5 @@ if [[ $# -lt 1 ]]; then
 	exit 1
 fi
 
-sudo systemctl enable $1
-_log "Enabled $1"
+sudo systemctl start $1
+_log "Inicializado $1"

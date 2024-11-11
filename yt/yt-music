@@ -13,17 +13,24 @@ if [[ $1 =~ $video_regex ]]; then
 	yt-dlp -i --no-playlist \
 		--embed-metadata --embed-thumbnail \
 		--quiet --progress \
-		--parse-metadata "title:%(artist)s - %(title)s" \
 		--audio-quality 0 -f bestaudio -x --audio-format "mp3" \
-		-o "$(xdg-user-dir DOWNLOAD)/%(title)s - %(artist)s.%(ext)s" $@
+		-o "$(xdg-user-dir DOWNLOAD)/%(title)s - %(artist)s.%(ext)s" "$@" \
+		--parse-metadata "title:%(artist)s - %(title)s" \
+		--parse-metadata "artist:%(artist)s" \
+		--parse-metadata "album:%(album,NA)s" \
+		--parse-metadata "date:%(year)s"
+
 elif [ -f "$1" ]; then
 	yt-dlp -i --no-playlist \
 		--embed-metadata --embed-thumbnail \
 		--quiet --progress \
-		--parse-metadata "title:%(artist)s - %(title)s" \
 		--audio-quality 0 -f bestaudio -x --audio-format "mp3" \
 		-o "$(xdg-user-dir DOWNLOAD)/%(title)s - %(artist)s.%(ext)s" \
-		--batch-file $@
+		--batch-file "$@" \
+		--parse-metadata "title:%(artist)s - %(title)s" \
+		--parse-metadata "artist:%(artist)s" \
+		--parse-metadata "album:%(album,NA)s" \
+		--parse-metadata "date:%(year)s"
 fi
 
 if [ $? -eq 0 ]; then

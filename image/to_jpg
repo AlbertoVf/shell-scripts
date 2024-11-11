@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 ##? help  : Convert image to jpg format.
 ##? usage : to_jpg [file...]
 
@@ -13,7 +13,7 @@ for f in "$@"; do
 	name=$(basename "$f")
 	folder=$(dirname "$f")
 	name="${name%.*}"
-	convert -quality 100 "$f" "$folder/$name.jpg" >/dev/null 2>&1
+	magick -quality 100 "$f" "$folder/$name.jpg" >/dev/null 2>&1
 	if [ $? -eq 0 ]; then
 		_success "Convertido: $f -> $name.jpg"
 	else
