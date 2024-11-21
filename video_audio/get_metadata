@@ -1,0 +1,62 @@
+#!/usr/bin/env python
+##? help  : Find audio info.
+##? usage : get_metadata [file_song]
+
+def get_metadata(file_path) -> dict:
+    from mutagen.easyid3 import EasyID3
+    from mutagen.mp3 import MP3
+    from mutagen import File
+
+    def find_metadata(song_name, artist):
+        import requests
+
+        url = "https://itunes.apple.com/search"
+        params = {
+            "term": f"{song_name} {artist}",
+            "media": "music",
+            "entity": "musicTrack",
+            "limit": 1,
+        }
+        response = requests.get(url, params=params)
+        if response.status_code == 200:
+            data = response.json()
+            if data["resultCount"] > 0:
+                r = data["results"][0]
+                return {
+                    "title"  : r["trackName"],
+                    "artist" : r["artistName"],
+                    "album"  : r["collectionName"],
+                    "track"  : r["trackNumber"],
+                    "genre"  : r["primaryGenreName"],
+                    "year"   : r["releaseDate"][:10],
+                }
+            else:
+                return {}
+        else:
+            return {}
+
+    try:
+        audio = MP3(file_path, ID3=EasyID3)
+        if audio is not None:
+            metadata = audio.items()
+            datos = {clave: valor[0] for clave, valor in metadata}
+
+            return {
+                "file": file_path,
+                **find_metadata(datos["title"], datos["artist"]),
+            }
+        else:
+            print(f"No se pudieron obtener los metadatos del archivo <{file_path}>")
+            return {}
+    except Exception as e:
+        print(f"Error al leer el archivo: {e}")
+        return {}
+
+
+if __name__ == "__main__":
+    from json import dumps
+    from sys import argv
+
+    song_file = argv[1]
+    m = get_metadata(song_file)
+    print(dumps(m, ensure_ascii=False, indent=4))

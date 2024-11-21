@@ -1,0 +1,35 @@
+#!/usr/bin/env sh
+##? help  : Merge videos in one, named as date.mp4 .
+##? usage : merge_video [videos]
+
+source "$HOME/.bin/_main.sh"
+
+if [[ $# -lt 2 ]]; then
+	_params_required 2
+	exit 1
+fi
+
+# Definir el archivo de salida
+OUTPUT="video_$(date +'%Y-%m-%d_%H.%M.%S').mp4"
+
+INPUTS=""
+FILTERS=""
+INDEX=0
+
+for VIDEO in "$@"; do
+    INPUTS+="-i $VIDEO "
+    FILTERS+="[$INDEX:v]"
+    INDEX=$((INDEX + 1))
+done
+
+
+FILTERS+="concat=n=$#:v=1:a=0[outv]"
+
+
+ffmpeg $INPUTS -filter_complex "$FILTERS" -map "[outv]" "$OUTPUT"
+
+if [ $? -eq 0 ]; then
+    _success "Los videos se han fusionado exitosamente en $OUTPUT"
+else
+    _error "Ocurrió un error al fusionar los videos."
+fi

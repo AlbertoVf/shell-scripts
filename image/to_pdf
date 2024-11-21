@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+##? help  : Merge img into pdf.
+##? usage : to_pdf [img]
+
+source "$HOME/.bin/_main.sh"
+
+if [[ $# -lt 1 ]]; then
+	_params_required 1
+	exit 1
+fi
+
+magick -quality 100 $@ "$(date +%s).pdf"
+if [ $? -eq 0 ]; then
+	_success "Fusionado en pdf"
+else
+	_error "Error al fusionar"
+fi
