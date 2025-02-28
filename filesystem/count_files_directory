@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-##? help  : Count files in the current directory.
-##? usage : count_files_directory [none]
-
-source "$HOME/.bin/_main.sh"
-
-find . -type f -print | wc -l

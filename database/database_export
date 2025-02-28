@@ -9,7 +9,7 @@ if [ $# -lt 1 ]; then
 	exit 1
 fi
 
-if mysqldump -u $USER -p "$1" | gzip > "$1.sql.gz"; then
+if mysqldump -u "$USER" -p "$1" | gzip > "$1.sql.gz"; then
 	_success "Database $1 exported to file"
 else
 	_error "Failed to export database $1"
