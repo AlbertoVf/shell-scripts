@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 ##? help  : Save clipboard in file named clipboard_date.
 ##? usage : save_clipboard [none]
 

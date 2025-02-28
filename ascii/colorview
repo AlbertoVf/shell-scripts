@@ -1,6 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 ##? usage : colorview [none]
 ##? help  : Print table with colors as foreground and backgrounds.
+
 # Original: http://frexx.de/xterm-256-notes/
 #           http://frexx.de/xterm-256-notes/data/colortable16.sh
 # Modified by Aaron Griffin

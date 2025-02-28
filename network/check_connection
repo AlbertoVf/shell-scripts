@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 ##? help  : Check the conection.
 ##? usage : check_connection [none]
 
-source "$HOME/.bin/_main.sh"
+. "$HOME/.bin/_main.sh"
 
 servidor="8.8.8.8"
 

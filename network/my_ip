@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 ##? help  : Get your IP address from the command line.
 ##? usage : my_ip [none]
 
-source "$HOME/.bin/_main.sh"
+. "$HOME/.bin/_main.sh"
 
 publica=$(curl -s ifconfig.me)
 privada="$(ip addr show | grep 'inet.*brd' | awk '{print $2}' | cut -f1 -d'/' | head -n1)"

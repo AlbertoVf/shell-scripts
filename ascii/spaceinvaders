@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 ##? usage : spaceinvaders [none]
 ##? help  : Print space invader with colors.
 # ANSI color scheme script featuring Space Invaders

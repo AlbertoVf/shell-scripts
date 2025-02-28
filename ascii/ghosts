@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env sh
 ##? usage : ghosts [none]
 ##? help  : Print Ghost draw with colors.
+
 # ANSI color scheme script by pfh
 # Source: http://crunchbang.org/forums/viewtopic.php?pid=157979#p157979
 # Initializing mod by lolilolicon from Archlinux

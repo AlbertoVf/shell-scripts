@@ -2,9 +2,9 @@
 ##? help  : Convert image to jpg format.
 ##? usage : to_jpg [file...]
 
-source "$HOME/.bin/_main.sh"
+. "$HOME/.bin/_main.sh"
 
-if [[ $# -lt 1 ]]; then
+if [ $# -lt 1 ]; then
 	_params_required 1
 	exit 1
 fi

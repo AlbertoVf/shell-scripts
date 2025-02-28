@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 ##? help  : Print difference between 2 folders.
 ##? usage : compare_folder [folder] [folder]
 
-source "$HOME/.bin/_main.sh"
+. "$HOME/.bin/_main.sh"
 
-if [[ $# -lt 2 ]]; then
+if [ $# -lt 2 ]; then
 	_params_required 2
 	exit 1
 fi

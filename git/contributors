@@ -1,11 +1,11 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 ##? help  : View Github repository contributtors and their number of committs.
 ##? usage : contributors [folder|empty]
 
-source "$HOME/.bin/_main.sh"
+. "$HOME/.bin/_main.sh"
 
 if [ $# -gt 0 ]; then
-	cd $1
+	cd "$1" || exit
 fi
 
 remote_url=$(git config --get remote.origin.url)

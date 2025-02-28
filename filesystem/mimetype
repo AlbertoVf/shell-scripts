@@ -1,10 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 ##? help  : Print mimetypes.
 ##? usage : mimetype [element]
 
-source "$HOME/.bin/_main.sh"
-
-if [[ $# -lt 1 ]]; then
+if [ $# -lt 1 ]; then
 	_params_required 1
 	exit 1
 fi
