@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+##? help  : Tar without compress file/directory(s).
+##? usage : archive_files [file/directory]
+
+. "$HOME/.bin/_main.sh"
+
+if [ $# -lt 1 ]; then
+	_params_required 1
+	exit 1
+fi
+
+if [ $# -gt 1 ]; then
+	output_name="$(basename "$(pwd)")_$(date +%Y%m%d%H%M).tar.gz"
+else
+	output_name="$1_$(date +%Y%m%d%H%M).tar.gz"
+fi
+
+tar -cf "$output_name" "$@"
+
+if [ $? -eq 0 ]; then
+	_success "Archivo $output_name creado sin compresión."
+else
+	_error "Error al archivar"
+fi

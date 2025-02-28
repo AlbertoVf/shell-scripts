@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+##? help  : Compress directories in separated files.
+##? usage : compress_separated [directory/file]
+
+. "$HOME/.bin/_main.sh"
+
+if [ $# -lt 1 ]; then
+	_params_required 1
+	exit 1
+fi
+
+for item in "$@"; do
+	zip -rq "${item}.zip" "$item"
+	_log $item
+done
+
+
+if [ $? -eq 0 ]; then
+	_success "Archivos creados."
+else
+	_error "Error al comprimir"
+fi
