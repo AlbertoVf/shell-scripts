@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+##? help: This script transcribes audio files using the Whisper model.
+##? usage: python transcribe.py <audio_file>
+
+from whisper import load_model
+from sys import argv
+
+if __name__ == "__main__":
+
+    audio = argv[1]
+    print(f"Transcribing {audio}...")
+    model = load_model("small",device="cpu")
+    result = model.transcribe(audio)
+    with open(f"{audio}.txt",'w') as f:
+        f.write(result["text"])
