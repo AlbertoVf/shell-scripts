@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+##? help  : Convert video to webm format.
+##? usage : to_webm [file...]
+
+source "$HOME/.bin/_main.sh"
+
+if [[ $# -lt 1 ]]; then
+	_params_required 1
+	exit 1
+fi
+
+for f in "$@"; do
+	name=$(basename "$f")
+	folder=$(dirname "$f")
+	name="${name%.*}"
+	ffmpeg -i "$f" -c:v libvpx-vp9 -b:v 1M -c:a libopus -b:a 128k "$folder/$name.webm" >/dev/null 2>&1
+	if [ $? -eq 0 ]; then
+		_success "Convertido: $f -> $name.webm"
+	else
+		_error "Error al convertir $f"
+	fi
+done

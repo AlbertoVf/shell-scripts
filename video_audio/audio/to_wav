@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+##? help  : Convert audio to wav format.
+##? usage : to_wav [file...]
+
+source "$HOME/.bin/_main.sh"
+
+if [[ $# -lt 1 ]]; then
+	_params_required 1
+	exit 1
+fi
+
+for f in "$@"; do
+	name=$(basename "$f")
+	folder=$(dirname "$f")
+	name="${name%.*}"
+    ffmpeg -i "$f" -c:a pcm_s16le "$folder/$name.wav" >/dev/null 2>&1
+	if [ $? -eq 0 ]; then
+		_success "Convertido: $f -> $name.wav"
+	else
+		_error "Error al convertir $f"
+	fi
+done

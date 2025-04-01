@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+##? help  : Convert audio to ogg format.
+##? usage : to_ogg [file...]
+
+source "$HOME/.bin/_main.sh"
+
+if [[ $# -lt 1 ]]; then
+	_params_required 1
+	exit 1
+fi
+
+for f in "$@"; do
+	name=$(basename "$f")
+	folder=$(dirname "$f")
+	name="${name%.*}"
+    ffmpeg -i "$f" -c:a libvorbis -q:a 5 "$folder/$name.ogg" >/dev/null 2>&1
+	if [ $? -eq 0 ]; then
+		_success "Convertido: $f -> $name.ogg"
+	else
+		_error "Error al convertir $f"
+	fi
+done

@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+##? help  : Convert audio to aac format.
+##? usage : to_aac [file...]
+
+source "$HOME/.bin/_main.sh"
+
+if [[ $# -lt 1 ]]; then
+	_params_required 1
+	exit 1
+fi
+
+for f in "$@"; do
+	name=$(basename "$f")
+	folder=$(dirname "$f")
+	name="${name%.*}"
+    ffmpeg -i "$f" -c:a aac -b:a 192k "$folder/$name.aac" >/dev/null 2>&1
+	if [ $? -eq 0 ]; then
+		_success "Convertido: $f -> $name.aac"
+	else
+		_error "Error al convertir $f"
+	fi
+done

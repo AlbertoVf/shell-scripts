@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+##? help  : Convert video to mkv format.
+##? usage : to_mkv [file...]
+
+source "$HOME/.bin/_main.sh"
+
+if [[ $# -lt 1 ]]; then
+	_params_required 1
+	exit 1
+fi
+
+for f in "$@"; do
+	name=$(basename "$f")
+	folder=$(dirname "$f")
+	name="${name%.*}"
+	ffmpeg -i "$f" -c:v libx265 -preset slow -crf 23 -c:a aac -b:a 192k "$folder/$name.mkv" >/dev/null 2>&1
+	if [ $? -eq 0 ]; then
+		_success "Convertido: $f -> $name.mkv"
+	else
+		_error "Error al convertir $f"
+	fi
+done
