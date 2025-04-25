@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+##? help : Convert a file to qcow2 format.
+##? usage: to_qcow2 [filename]
+
+. "$HOME/.bin/_main.sh"
+
+qemu-img convert -O qcow2 "$1" "$1".qcow2
+if [ $? -eq 0 ]; then
+    _success "File converted to qcow2"
+else
+    _error "Error on conversion"
+fi

@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+##? help : Extract ova file.
+##? usage: extract_ova [.ova]
+
+
+tar -xvf "$1"
+
+if [ $? -eq 0 ]; then
+    _success "File extracted"
+else
+    _error "Error on extraction"
+fi

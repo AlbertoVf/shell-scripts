@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+##? help : Create a 50G qcow file in [name].
+##? usage: create_qcow2 [name]
+
+. "$HOME/.bin/_main.sh"
+
+
+vm=$1
+
+mkdir -p "$vm"
+qemu-img create -f qcow2 "$vm/$vm.qcow2" 50G
+
+
+if [ $? -eq 0 ]; then
+	_success "Disc created"
+else
+	_error "Error on create disc"
+fi
