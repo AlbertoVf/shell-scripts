@@ -3,37 +3,35 @@
 ##? usage : refactor_files [folder|empty]
 
 from subprocess import check_output
-from mimetypes import guess_type
 from shutil import move
 from sys import argv, exit
 from os import listdir, path, getcwd
 
+home = path.expanduser("~")
 xdg_user_dir = lambda type: check_output( ["xdg-user-dir", type.upper()], universal_newlines=True ).strip()
 
-# ; include mimetypes, types, extensions. Find with regular expresion
-# ; mimetype: audio/mp4 ; type=audio ; extension=mp4 ; opendocument=regex
+
 mimeTypes = {
     xdg_user_dir("MUSIC"): ["audio"],
     xdg_user_dir("USERFONTS"): ["font"],
-    xdg_user_dir("PICTURES"): ["image"],
+    xdg_user_dir("PICTURES"): ["image", "gbr"],
     xdg_user_dir("VIDEOS"): ["video"],
-    xdg_user_dir("DOCUMENTS"): ["pdf", "opendocument"],
-    xdg_user_dir("TEMPLATES"): ["template"],
+    xdg_user_dir("DOCUMENTS"): ["pdf", "opendocument", "zip", "epub"],
+    xdg_user_dir("TEMPLATES"): ["template", "desktop"],
+    f"{home}/Virtual Machines": [ "octet-stream", "x-qemu-disk", "vdi", "ovf", "ova", "iso", ],
+    f"{home}/.ssh": ["x-pem-file", "x-ssh-public-key"],
 }
 
 
-get_mime_type = lambda file: guess_type(file)[0] or "None"
-
-
 def mv(file):
+    get_mime_type = lambda file: check_output(["file", "--mime-type", "-b", file], text=True).strip()
     try:
         mime = get_mime_type(file)
         extension = path.splitext(file)[1][1:]
         for folder, types in mimeTypes.items():
             if any(t in mime for t in types) or extension in types:
                 move(file, folder)
-                print(f"* mv {file} -> {folder}")
-                # break
+                print(f"[*] {file.split('/')[-1]} -> {folder}")
     except Exception as e:
         print(f"[ERROR] {file} :: {e}")
 

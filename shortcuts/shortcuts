@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+
+from os import getenv
+import subprocess
+
+from yaml import safe_load
+
+
+def main():
+    data = []
+    sxhkdrc = f"{getenv('DOTFILES_PATH')}/doc/shortcuts.yaml"
+    kitty = f"{getenv('DOTFILES_PATH')}/terminal/kitty/kitty.conf"
+    qtile = f""
+
+    def process_sxhkd(data, prefix=" "):
+        result = []
+        if isinstance(data, dict):
+            for key, value in data.items():
+                if isinstance(value, dict):
+                    result.extend(process_sxhkd(value, prefix + key + " + "))
+                else:
+                    result.append(f"SXHKDRC » {prefix}{key}: {value}")
+        return result
+
+    def process_kitty():
+        result = []
+        with open(kitty, "r") as file:
+            for line in file:
+                line = line.strip()
+                if line.startswith("map"):
+                    lines = line.split(" ", 2)[1:]
+                    lines[0] = lines[0].replace("+", " + ")
+                    result.append(": ".join(lines))
+        return ["KITTY » " + r for r in result]
+
+    def process_qtile():
+        result = []
+
+        return ["QTILE » " + r for r in result]
+
+    data.append(process_sxhkd(safe_load(open(sxhkdrc, "r")).get("sxhkdrc", {})))
+    # data.append(process_kitty())
+    return data
+
+
+if __name__ == "__main__":
+    processed_data = main()
+    content = ["\n".join(p) for p in processed_data]
+    content = "\n".join(content)
+    result = subprocess.run(
+        ["rofi", "-dmenu", "-mesg", "Atajos de teclado"],
+        input=content,
+        text=True,
+        capture_output=True,
+    )

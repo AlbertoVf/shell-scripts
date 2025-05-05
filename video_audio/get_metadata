@@ -2,20 +2,46 @@
 ##? help  : Find audio info.
 ##? usage : get_metadata [file_song]
 
-def get_metadata(file_path) -> dict:
+
+def metadatos_fichero(file_path):
     from mutagen.easyid3 import EasyID3
     from mutagen.mp3 import MP3
     from mutagen import File
+    try:
+        audio = MP3(file_path, ID3=EasyID3)
+        metadata = audio.items()
+        datos = {clave: valor[0] for clave, valor in metadata}
 
-    def find_metadata(song_name, artist):
+        return {
+            "file"   : file_path,
+            "title"  : datos.get("title", ""),
+            "artist" : datos.get("artist", ""),
+        }
+    except Exception as e:
+        print(f"Error al leer el archivo: {e}")
+        return {}
+
+
+
+def make_ffmpeg_script(metadatos: dict):
+    import shlex
+    formatted_metadata = []
+    for key, value in metadatos.items():
+        if key != "_file":
+            formatted_metadata.append(f"-metadata {key}={shlex.quote(str(value))}")
+    file = shlex.quote(metadatos.get("_file"))
+    return f"ffmpeg -i {file} {' '.join(formatted_metadata)} -c copy -y temp.mp3 && mv -f temp.mp3 {file}"
+
+def metadatos_cancion(ruta_archivo) -> dict:
+    def obtener_album(cancion, artista):
         import requests
 
         url = "https://itunes.apple.com/search"
         params = {
-            "term": f"{song_name} {artist}",
-            "media": "music",
-            "entity": "musicTrack",
-            "limit": 1,
+            "term"   : f"{cancion} {artista}",
+            "media"  : "music",
+            "entity" : "musicTrack",
+            "limit"  : 1,
         }
         response = requests.get(url, params=params)
         if response.status_code == 200:
@@ -28,35 +54,27 @@ def get_metadata(file_path) -> dict:
                     "album"  : r["collectionName"],
                     "track"  : r["trackNumber"],
                     "genre"  : r["primaryGenreName"],
-                    "year"   : r["releaseDate"][:10],
+                    "year"   : r["releaseDate"][:4],
                 }
-            else:
-                return {}
-        else:
             return {}
-
-    try:
-        audio = MP3(file_path, ID3=EasyID3)
-        if audio is not None:
-            metadata = audio.items()
-            datos = {clave: valor[0] for clave, valor in metadata}
-
-            return {
-                "file": file_path,
-                **find_metadata(datos["title"], datos["artist"]),
-            }
-        else:
-            print(f"No se pudieron obtener los metadatos del archivo <{file_path}>")
-            return {}
-    except Exception as e:
-        print(f"Error al leer el archivo: {e}")
         return {}
 
 
+    metadatos = metadatos_fichero(ruta_archivo)
+    title,artist=metadatos.get("title"),metadatos.get("artist")
+    return {"_file": ruta_archivo,**obtener_album(title, artist)}
+
+
+
 if __name__ == "__main__":
-    from json import dumps
     from sys import argv
+    from json import dumps
+    from subprocess import run
 
     song_file = argv[1]
-    m = get_metadata(song_file)
-    print(dumps(m, ensure_ascii=False, indent=4))
+    m         = metadatos_cancion(song_file)
+    f         = make_ffmpeg_script(m)
+    a         = {**m,"ffmpeg":f}
+
+    run(["xclip", "-selection", "clipboard"], input=f, text=True)
+    print(dumps(m,indent=4,ensure_ascii=False))
