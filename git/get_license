@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+##? help  : Download licence by name.
+##? usage : get_license [license_name]
+
+
+license_name=$1
+api_url="https://api.github.com/licenses/${license_name}"
+response=$(curl -s "$api_url" | jq -r '.body')
+
+if [ -z "$response" ] || [ "$response" == "null" ]; then
+    echo "Error: No se pudo obtener la licencia '$license_name' de GitHub."
+    exit 1
+fi
+
+git_user=$(git config user.name)
+if [ -z "$git_user" ]; then
+    echo "Error: No se pudo obtener el nombre del usuario de Git."
+    exit 1
+fi
+
+year=$(date +%Y)
+response=${response//"[year]"/"$year"}
+response=${response//"[fullname]"/"$git_user"}
+
+echo "$response" > LICENSE.md
+echo "Archivo LICENSE.md creado con éxito."
