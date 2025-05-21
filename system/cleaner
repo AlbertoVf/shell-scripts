@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+##? help  : Open stacer and bleachbit to clean system.
+##? usage : cleaner [none]
+
+doas bleachbit --clean --preset
+
+# Remove orphans
+aura -Oj
+doas pacman -Rns "$(pacman -Qdtq)"
+
+# Clean out old and unused caches and packages
+aura -Scc
+
+# remove cache
+journalctl --vacuum-time=1weeks
+rm -rf ~/.cache/*
