@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+##? help  : Transform file-name to all disk format.
+##? usage : prettier_name [file]
+
+file=$(basename "$1")
+
+name="${file%.*}"
+extension="${file##*.}"
+name="${name,,^}" # Capitalize first letter
+name=$(echo "$name" | sed 's/[<>:"/\\|?*_]/ /g')
+name=$(echo "$name" | tr -s ' ')
+name=$(echo "$name" | sed 's/^ *//;s/ *$//')
+name=$(echo "$name" | sed 's/^_//;s/_$//')
+mv -v $file "$name.$extension"
