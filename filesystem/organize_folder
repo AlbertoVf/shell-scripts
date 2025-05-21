@@ -2,12 +2,10 @@
 ##? help  : Move files to folder by MIME.
 ##? usage : refactor_files [folder|empty]
 
+from pathlib import Path
 from subprocess import check_output
-from shutil import move
-from sys import argv, exit
-from os import listdir, path, getcwd
 
-home = path.expanduser("~")
+home = Path.home()
 xdg_user_dir = lambda type: check_output( ["xdg-user-dir", type.upper()], universal_newlines=True ).strip()
 
 
@@ -22,39 +20,27 @@ mimeTypes = {
     f"{home}/.ssh": ["x-pem-file", "x-ssh-public-key"],
 }
 
+get_mime_type = lambda file: check_output( ["file", "--mime-type", "-b", file], text=True ).strip()
 
-def mv(file):
-    get_mime_type = lambda file: check_output(["file", "--mime-type", "-b", file], text=True).strip()
-    try:
+
+def organize_folder(folder):
+    for file in folder:
+        file = Path(file)
+        extension = "".join(file.suffixes)[1:]
         mime = get_mime_type(file)
-        extension = path.splitext(file)[1][1:]
-        for folder, types in mimeTypes.items():
+        for dir, types in mimeTypes.items():
             if any(t in mime for t in types) or extension in types:
-                move(file, folder)
-                print(f"[*] {file.split('/')[-1]} -> {folder}")
-    except Exception as e:
-        print(f"[ERROR] {file} :: {e}")
+                if not Path(f"{dir}/{file.name}").exists():
+                    file.rename(f"{dir}/{file.name}")
+                    print(f"[*] {file} -> {dir}")
+                else:
+                    print(f"[!] {file} already exists in {dir}")
 
 
-def refactor_files(ruta):
-    try:
-        for archivo in listdir(ruta):
-            ruta_completa = path.join(ruta, f"{archivo}")
-            if path.isfile(ruta_completa):
-                mv(ruta_completa)
-    except OSError as e:
-        print(f"Error al acceder al directorio {ruta}: {e}")
+if __name__ == "__main__":
+    from sys import argv
 
+    folder = Path(argv[1]) if len(argv) > 1 else Path.cwd()
 
-def main():
-    directorio = getcwd()
-
-    if len(argv) > 2: exit(1)
-    if len(argv) == 2 and argv[1] != ".": folder = argv[1]
-    else: folder = path.abspath(directorio)
-
-    directorio = path.join(directorio, folder)
-    refactor_files(directorio)
-
-
-main()
+    folder = [file for file in folder.iterdir() if file.is_file()]
+    organize_folder(folder)

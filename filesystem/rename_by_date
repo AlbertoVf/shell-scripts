@@ -1,36 +1,26 @@
-#!/usr/bin/env bash
-##? help  : Rename all files in folder with the name "folder_id".ext, the `id` is a number ordered by date creation
-##? usage : rename_by_date [folder]
+#!/usr/bin/env python
+##? help  : Rename file by date creation. Rename file to "name_YYYY-MM-DD.extension".
+##? usage : rename_by_date [folder|empty]
 
-source "$HOME/.bin/_main.sh"
+from pathlib import Path
+from datetime import datetime
 
-if [[ $# -lt 1 ]]; then
-	_params_required 1
-	exit 1
-fi
+def rename_by_date(file):
+    file = Path(file)
+    name, extension = file.stem, file.suffix
+    timestamp = file.stat().st_ctime
 
-folder="$1"
+    date = datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d")
+    new_name = f"{name}_{date}{extension}"
+    file.rename(new_name)
+    print(f"[*] mv {file} to {new_name}")
 
-if [ $folder == "." ]; then
-	folder=$(realpath .)
-elif [ ! -d "$folder" ]; then
-	_error "$folder not exist."
-	exit 1
-else
-	cd "$folder"
-fi
+if __name__ == "__main__":
+    from sys import argv
 
-files=($(ls -t -1))
-cont=1
+    folder = Path(argv[1]) if len(argv) > 1 else Path.cwd()
+    folder_name = folder.name
 
-for file in "${files[@]}"; do
-	extension="${file##*.}"
-	nuevo_nombre="${folder}_${cont}"
-	if [ -n "$extension" ]; then
-		nuevo_nombre="$nuevo_nombre.$extension"
-	fi
-
-	mv "$file" "$nuevo_nombre"
-	_success "Renombrado: $file -> $nuevo_nombre"
-	cont=$((cont + 1))
-done
+    files = [f for f in folder.iterdir() if f.is_file()]
+    for file in files:
+        rename_by_date(file)
