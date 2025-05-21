@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+##? help  : List all jpg in subfolders and rename by counter: (001,002...).
+##? usage : merge_in_folder [none]
+
+counter=0
+
+find . -type f -name "*.jpg" | sort -V | while read -r file; do
+    ext="${file##*.}"
+    mv -v "$file" "$(printf "%03d" $counter).$ext"
+    ((counter++))
+done
