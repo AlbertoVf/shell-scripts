@@ -2,8 +2,12 @@
 ##? help : Extract ova file.
 ##? usage: extract_ova [.ova]
 
+. "$HOME/.bin/_main.sh"
 
-tar -xvf "$1"
+archivo=$1
+carpeta="${archivo%.*}"
+mkdir -p $carpeta
+tar -xvf "$archivo" -C $carpeta
 
 if [ $? -eq 0 ]; then
     _success "File extracted"
