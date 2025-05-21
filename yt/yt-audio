@@ -12,7 +12,7 @@ fi
 if [[ $1 =~ $playlist_regex ]]; then
 	yt-dlp -w -i \
 		--embed-metadata --embed-thumbnail \
-		--quiet --progress \
+		--progress \
 		--audio-quality 0 -f bestaudio -x --audio-format mp3 \
 		-o "$(xdg-user-dir DOWNLOAD)/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s" $@
 elif [[ $1 =~ $video_regex ]]; then
@@ -24,7 +24,7 @@ elif [[ $1 =~ $video_regex ]]; then
 elif [ -f "$1" ]; then
 	yt-dlp -i --no-playlist \
 		--embed-metadata --embed-thumbnail \
-		--quiet --progress \
+		--progress \
 		--audio-quality 0 -f bestaudio -x --audio-format mp3 \
 		-o "$(xdg-user-dir DOWNLOAD)/%(title)s.%(ext)s" \
 		--batch-file $@
