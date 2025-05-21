@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-##? help  : Generate uuid code and save in clipboard.
-##? usage : uuid [none]
-
-source "$HOME/.bin/_main.sh"
-
-uuid=$(uuidgen | tr '[:upper:]' '[:lower:]')
-echo -n $uuid | xclip -selection clipboard
-_log $uuid
