@@ -8,15 +8,13 @@ if [[ $# -lt 2 ]]; then
 	exit 1
 fi
 
-if [ "$1" = "-write" ]; then
-	if [ "$2" = "-cloud" ]; then
-		overwrite_cloud MEGA mega
-	elif [ "$2" = "-local" ]; then
-		overwrite_local mega MEGA
-	fi
-elif [ "$1" = "-push" ]; then
-	upload_content "mega" $2
+if [ "$1" = "-push" ]; then
+	overwrite_cloud MEGA mega
 elif [ "$1" = "-pull" ]; then
+	overwrite_local mega MEGA
+elif [ "$1" = "-add" ]; then
+	add_new_content "mega" $2
+elif [ "$1" = "-clone" ]; then
 	download_content "mega" $2
 else
 	exit 1

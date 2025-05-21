@@ -23,7 +23,7 @@ overwrite_local(){
 
 }
 
-upload_content(){
+add_new_content(){
 	cloud=$1
 	folder=$2
 	_log "Upload content"
@@ -37,5 +37,4 @@ download_content(){
 	_log "Download content"
 	rclone copy $cloud:/$folder $folder --progress
 	echo "$(date +'%Y-%m-%d %H.%M.%S'): Download content from $cloud to $folder" >> $logfile
-
 }
