@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+##? help  : Autoclick any kay.
+##? usage : autokey [xev-key]
+
+k=$1
+t=${2:-0.4}
+
+printf "PULSANDO TECLA $k CADA $t SEGUNDOS\n\n"
+
+while true; do xdotool key $k; sleep $t; done
