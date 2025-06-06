@@ -1,0 +1,83 @@
+#!/usr/bin/env python
+# ? help  : qtile updater settings and docs.
+# ? usage : qtile_manager [-h] [-f FONT] [-m MAIL] [-c CONSOLE] [-t THEME] [-d] [-l] [-r] [-s]
+
+from subprocess import run, Popen
+from os.path import join, expanduser
+from toml import dump, load, loads
+
+qtile_path    = join(expanduser("~"), ".config", "qtile")
+env_file      = join(qtile_path, "qtile.conf")
+qtile_themes  = join(qtile_path, "themes")
+qtile_theme   = join(qtile_themes, "themes.toml")
+restart       = lambda: run("qtile cmd-obj -f restart", shell=True, check=True)
+__themes_list = lambda: dict( sorted(loads(open(qtile_theme, "r").read()).items()) ).keys()
+
+
+def changeValue(key: str, value: str):
+    data = load(open(env_file))
+    data["USER"][key] = value
+    dump(data, open(env_file, "w"))
+    return restart().returncode
+
+
+def takeScreenshot():
+    from time import sleep
+    from os import makedirs,listdir
+    from PIL import ImageGrab,Image
+
+    SLEEP_START = 5
+    SLEEP_LOAD  = 4
+    n_themes    = len(__themes_list())
+    previews    = join(qtile_themes,'Previews')
+
+    def configure_process():
+        print(f"Tiempo de captura de pantalla [{n_themes}]: {(SLEEP_LOAD + SLEEP_START + SLEEP_LOAD* n_themes)/60} min")
+        sleep(SLEEP_LOAD)
+        Popen(f"code --new-window --disable-extensions {env_file}".split(" "))
+        Popen(["thunar", qtile_path])
+        makedirs(previews,exist_ok=True)
+
+    def screenshot(t):
+        changeValue("theme", t)
+        sleep(SLEEP_LOAD)
+        ImageGrab.grab().save(f"{previews}/{t}.jpg")
+
+    def gif():
+        imgs = sorted([f for f in listdir(previews)])
+        frames = [Image.open(join(previews, img)) for img in imgs]
+        frames[0].save( f"{qtile_themes}/previews.gif", save_all=True, append_images=frames[1:], duration=500, loop=0, optimize=True, quality=95 )
+
+    configure_process()
+    th = load(open(env_file))["USER"]["theme"]
+    sleep(SLEEP_START)
+    [screenshot(t) for t in __themes_list()]
+
+    changeValue("theme", th)
+    gif()
+
+
+def docs():
+    with open(f"{qtile_themes}/Previews.md", "w", encoding="utf-8") as f:
+        f.write("# Previews\n\n")
+        for i, (theme) in enumerate(__themes_list(), start=1):
+            f.write(f"{i}. {theme} ![{theme}](./Previews/{theme}.jpg)\n")
+
+
+def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="Modify settings from qtile")
+    parser.add_argument("-s", "--screenshot", action="store_true", help="Take screenshots with all themes", )
+    parser.add_argument("-l", "--logs", action="store_true", help="Print Qtile log file" )
+    parser.add_argument("-r", "--restart", action="store_true", help="Restart qtile")
+    parser.add_argument("-p", "--property", choices=["console", "font", "mail", "theme"], help="Change qtile properties from qtile.conf", )
+    parser.add_argument("-v", help="New value to property from -c")
+    args = parser.parse_args()
+
+    if args.screenshot: takeScreenshot()
+    if args.logs: run( "tail -n 20 ~/.local/share/qtile/qtile.log | bat -l log", shell=True, check=False, )
+    if args.restart: restart()
+    if args.property and args.v: changeValue(args.property, args.v)
+
+
+main()
