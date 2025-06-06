@@ -1,80 +1,75 @@
 #!/usr/bin/env python
-##? help  : Find audio info.
+##? help  : Find audio info. Find audio metadata with api and generate ffmpeg to update metadata, copy to clipboard
 ##? usage : get_metadata [file_song]
 
 
-def metadatos_fichero(file_path):
+def get_metadata(file_path) -> dict:
+    import requests
     from mutagen.easyid3 import EasyID3
     from mutagen.mp3 import MP3
-    from mutagen import File
+
+    def song_api(song, artist):
+        q = f"{song}+{artist}".replace(" ", "+")
+        data = requests.get(f"https://api.deezer.com/search?q={q}").json()["data"][0]
+        m = {
+            "title": data.get("title"),
+            "artist": data.get("artist")["name"],
+        }
+
+        a_id = data.get("album")["id"]
+        data2 = requests.get(f"https://api.deezer.com/album/{a_id}").json()
+        m["album"] = data2["title"]
+        m["date"] = int(data2["release_date"].split("-")[0])
+        m["track"] = next(
+            (
+                i + 1
+                for i, obj in enumerate(data2["tracks"]["data"])
+                if obj.get("title") == m["title"]
+            ),
+            1,
+        )
+        m["genre"] = ", ".join([item["name"] for item in data2["genres"]["data"]])
+        return m
+
     try:
         audio = MP3(file_path, ID3=EasyID3)
         metadata = audio.items()
-        datos = {clave: valor[0] for clave, valor in metadata}
-
-        return {
-            "file"   : file_path,
-            "title"  : datos.get("title", ""),
-            "artist" : datos.get("artist", ""),
+        datos = {k: v[0] for k, v in metadata}
+        m = {
+            "_file": str(file_path),
+            "title": datos["title"],
+            "artist": datos["artist"],
+            "album": datos["album"],
+            "date": int(datos["date"]),
+            "track": int(datos["tracknumber"]),
+            "genre": "",
         }
+        m.update(song_api(datos["title"], datos["artist"]))
     except Exception as e:
-        print(f"Error al leer el archivo: {e}")
-        return {}
-
+        pass
+    finally:
+        return m
 
 
 def make_ffmpeg_script(metadatos: dict):
-    import shlex
+    from shlex import quote
+
     formatted_metadata = []
     for key, value in metadatos.items():
         if key != "_file":
-            formatted_metadata.append(f"-metadata {key}={shlex.quote(str(value))}")
-    file = shlex.quote(metadatos.get("_file"))
-    return f"ffmpeg -i {file} {' '.join(formatted_metadata)} -c copy -y temp.mp3 && mv -f temp.mp3 {file}"
-
-def metadatos_cancion(ruta_archivo) -> dict:
-    def obtener_album(cancion, artista):
-        import requests
-
-        url = "https://itunes.apple.com/search"
-        params = {
-            "term"   : f"{cancion} {artista}",
-            "media"  : "music",
-            "entity" : "musicTrack",
-            "limit"  : 1,
-        }
-        response = requests.get(url, params=params)
-        if response.status_code == 200:
-            data = response.json()
-            if data["resultCount"] > 0:
-                r = data["results"][0]
-                return {
-                    "title"  : r["trackName"],
-                    "artist" : r["artistName"],
-                    "album"  : r["collectionName"],
-                    "track"  : r["trackNumber"],
-                    "genre"  : r["primaryGenreName"],
-                    "year"   : r["releaseDate"][:4],
-                }
-            return {}
-        return {}
-
-
-    metadatos = metadatos_fichero(ruta_archivo)
-    title,artist=metadatos.get("title"),metadatos.get("artist")
-    return {"_file": ruta_archivo,**obtener_album(title, artist)}
-
+            formatted_metadata.append(f"-metadata {key}={quote(str(value))}")
+    file = quote(metadatos.get("_file"))
+    return f"ffmpeg -loglevel quiet -i {file} {' '.join(formatted_metadata)} -c copy temp.mp3 && mv -f temp.mp3 {file}"
 
 
 if __name__ == "__main__":
     from sys import argv
-    from json import dumps
     from subprocess import run
+    from json import dumps
 
     song_file = argv[1]
-    m         = metadatos_cancion(song_file)
-    f         = make_ffmpeg_script(m)
-    a         = {**m,"ffmpeg":f}
+    m = get_metadata(song_file)
+    f = make_ffmpeg_script(m)
 
     run(["xclip", "-selection", "clipboard"], input=f, text=True)
-    print(dumps(m,indent=4,ensure_ascii=False))
+    print(dumps(m, indent=4, ensure_ascii=False))

@@ -14,10 +14,10 @@ if [[ $1 =~ $playlist_regex ]]; then
 		--embed-metadata --embed-thumbnail \
 		--progress \
 		--audio-quality 0 -f bestaudio -x --audio-format mp3 \
-		-o "$(xdg-user-dir DOWNLOAD)/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s" "$@" \
+		-o "$(xdg-user-dir DOWNLOAD)/%(playlist)s/%(title)s.%(ext)s" "$@" \
 		--parse-metadata "title:%(artist)s - %(title)s" \
 		--parse-metadata "artist:%(artist)s" \
-		--parse-metadata "album:%(album,NA)s" \
+		--parse-metadata "album:%(album)s" \
 		--parse-metadata "date:%(year)s"
 elif [[ $1 =~ $video_regex ]]; then
 	yt-dlp -i --no-playlist \
@@ -27,7 +27,7 @@ elif [[ $1 =~ $video_regex ]]; then
 		-o "$(xdg-user-dir DOWNLOAD)/%(title)s - %(artist)s.%(ext)s" "$@" \
 		--parse-metadata "title:%(artist)s - %(title)s" \
 		--parse-metadata "artist:%(artist)s" \
-		--parse-metadata "album:%(album,NA)s" \
+		--parse-metadata "album:%(album)s" \
 		--parse-metadata "date:%(year)s"
 elif [[ -f "$1" ]]; then
 	yt-dlp -i --no-playlist \
@@ -38,7 +38,7 @@ elif [[ -f "$1" ]]; then
 		--batch-file "$@" \
 		--parse-metadata "title:%(artist)s - %(title)s" \
 		--parse-metadata "artist:%(artist)s" \
-		--parse-metadata "album:%(album,NA)s" \
+		--parse-metadata "album:%(album)s" \
 		--parse-metadata "date:%(year)s"
 fi
 
