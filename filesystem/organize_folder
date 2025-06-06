@@ -6,18 +6,18 @@ from pathlib import Path
 from subprocess import check_output
 
 home = Path.home()
-xdg_user_dir = lambda type: check_output( ["xdg-user-dir", type.upper()], universal_newlines=True ).strip()
+xdg_user_dir = lambda type: check_output(["xdg-user-dir", type.upper()], universal_newlines=True).strip()
 
 
 mimeTypes = {
+    f"{home}/Virtual Machines": [ "octet-stream", "x-qemu-disk", "vdi", "ovf", "ova", "iso" ],
+    f"{home}/.ssh": ["x-pem-file", "x-ssh-public-key"],
+    xdg_user_dir("TEMPLATES"): ["template", "desktop"],
     xdg_user_dir("MUSIC"): ["audio"],
     xdg_user_dir("USERFONTS"): ["font"],
-    xdg_user_dir("PICTURES"): ["image", "gbr"],
-    xdg_user_dir("VIDEOS"): ["video"],
     xdg_user_dir("DOCUMENTS"): ["pdf", "opendocument", "zip", "epub"],
-    xdg_user_dir("TEMPLATES"): ["template", "desktop"],
-    f"{home}/Virtual Machines": [ "octet-stream", "x-qemu-disk", "vdi", "ovf", "ova", "iso", ],
-    f"{home}/.ssh": ["x-pem-file", "x-ssh-public-key"],
+    xdg_user_dir("PICTURES"): ["image","gbr"],
+    xdg_user_dir("VIDEOS"): ["video"],
 }
 
 get_mime_type = lambda file: check_output( ["file", "--mime-type", "-b", file], text=True ).strip()
@@ -31,8 +31,13 @@ def organize_folder(folder):
         for dir, types in mimeTypes.items():
             if any(t in mime for t in types) or extension in types:
                 if not Path(f"{dir}/{file.name}").exists():
-                    file.rename(f"{dir}/{file.name}")
-                    print(f"[*] {file} -> {dir}")
+                    try:
+                        file.rename(f"{dir}/{file.name}")
+                        print(f"[*] {file} -> {dir}")
+                    except Exception as e:
+                        print(f"[-] {e}")
+                    finally:
+                        break
                 else:
                     print(f"[!] {file} already exists in {dir}")
 
