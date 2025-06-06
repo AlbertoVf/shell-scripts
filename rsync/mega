@@ -3,18 +3,18 @@
 ##? usage : mega [ none | folder | file ]
 
 . "$HOME/.bin/rsync/_rsync.sh"
-if [[ $# -lt 2 ]]; then
-	_params_required 2
+if [[ $# -lt 1 ]]; then
+	_params_required 1
 	exit 1
 fi
 
-if [ "$1" = "-push" ]; then
+if [ "$1" = "push" ]; then
 	overwrite_cloud MEGA mega
-elif [ "$1" = "-pull" ]; then
+elif [ "$1" = "pull" ]; then
 	overwrite_local mega MEGA
-elif [ "$1" = "-add" ]; then
+elif [ "$1" = "add" ]; then
 	add_new_content "mega" $2
-elif [ "$1" = "-clone" ]; then
+elif [ "$1" = "clone" ]; then
 	download_content "mega" $2
 else
 	exit 1
