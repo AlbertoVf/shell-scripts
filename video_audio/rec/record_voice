@@ -1,8 +1,0 @@
-#!/usr/bin/env sh
-##? help  : Record audio.
-##? usage : record_voice [none]
-
-d=$(date +'%Y%m%d_%H%M%S')
-printf "\033[38;5;226m $d: Grabando sonido \033[0m\n"
-
-arecord -q -f cd -t wav "$(xdg-user-dir AUDIORECORDS)/record_$d.wav"

@@ -1,9 +1,0 @@
-#!/usr/bin/env sh
-##? help  : Record screen.
-##? usage : record_screen [none]
-
-d=$(date +'%Y%m%d_%H%M%S')
-
-printf "\033[38;5;226m $d: Grabando de Pantalla \033[0m\n"
-
-ffmpeg -loglevel quiet -f x11grab -s 1920x1080 -i :0.0 -an "$(xdg-user-dir VIDEORECORDS)/record_$d.mp4"

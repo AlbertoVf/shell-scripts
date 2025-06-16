@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-##? help  : List all jpg in subfolders and rename by counter: (001,002...).
-##? usage : merge_in_folder [none]
+#? help : List all jpg in subfolders and rename by counter: (001,002...).
+#? usage: image_sequential [none]
 
 counter=0
 

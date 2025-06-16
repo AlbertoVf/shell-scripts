@@ -1,9 +1,0 @@
-#!/usr/bin/env sh
-##? help  : Record screen and audio.
-##? usage : record [none]
-
-d=$(date +'%Y%m%d_%H%M%S')
-printf "\033[38;5;226m $d: Grabando pantalla y audio \033[0m\n"
-
-ffmpeg -loglevel quiet -f x11grab -s 1920x1080 -i :0.0 -f pulse -i default "$(xdg-user-dir VIDEORECORDS)/record_$d.mp4"
-n

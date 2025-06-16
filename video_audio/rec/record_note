@@ -1,9 +1,0 @@
-#!/usr/bin/env sh
-##? help  : Save voice note.
-##? usage : record_note [none]
-
-
-d=$(date +'%d-%m_%H-%M-%S')
-printf "\033[38;5;226m $d: Grabando Nota de voz \033[0m\n"
-
-arecord -q -f cd -t wav "$HOME/nota_voz_$d.wav"
