@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-##? help  : Transform to json format.
-##? usage : to_json [.yaml|csv]
+#?help : Transform to json format.
+#?usage: to_json [.yaml|csv]
 
 . "$HOME/.bin/_main.sh"
 

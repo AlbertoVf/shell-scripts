@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
-##? help  : Convert audio to ogg format.
-##? usage : to_ogg [file...]
+#!/usr/bin/env sh
+#?help : Convert audio to ogg format.
+#?usage: to_ogg [file...]
 
-source "$HOME/.bin/_main.sh"
+. "$HOME/.bin/_main.sh"
 
 if [[ $# -lt 1 ]]; then
 	_params_required 1

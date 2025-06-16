@@ -1,6 +1,6 @@
-#!/usr/bin/env sh
-##? help  : Convert image to png format.
-##? usage : to_png [file...]
+#!/usr/bin/env bash
+#?help : Convert image to webp format.
+#?usage: to_webp [file...]
 
 . "$HOME/.bin/_main.sh"
 
@@ -13,9 +13,9 @@ for f in "$@"; do
 	name=$(basename "$f")
 	folder=$(dirname "$f")
 	name="${name%.*}"
-	magick "$f" -strip -background white "$folder/$name.png" >/dev/null 2>&1
+	cwebp -q 100 -m 6 -pass 10 "$f" -o "$folder/$name.webp" >/dev/null 2>&1
 	if [ $? -eq 0 ]; then
-		_success "Convertido: $f -> $name.png"
+		_success "Convertido: $f -> $name.webp"
 	else
 		_error "Error al convertir: $f"
 	fi

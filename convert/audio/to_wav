@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
-##? help  : Convert audio to wav format.
-##? usage : to_wav [file...]
+#!/usr/bin/env sh
+#?help  : Convert audio to wav format.
+#?usage : to_wav [file...]
 
-source "$HOME/.bin/_main.sh"
+. "$HOME/.bin/_main.sh"
 
 if [[ $# -lt 1 ]]; then
 	_params_required 1

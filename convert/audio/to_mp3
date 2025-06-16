@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
-##? help  : Convert audio to mp3 format.
-##? usage : to_mp3 [file...]
+#!/usr/bin/env sh
+#?help : Convert audio to mp3 format.
+#?usage: to_mp3 [file...]
 
-source "$HOME/.bin/_main.sh"
+. "$HOME/.bin/_main.sh"
 
 if [[ $# -lt 1 ]]; then
 	_params_required 1
