@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+#? help : Rename file with folder_name + num.
+#? usage: rename_by_folder [none]
+#? ex   : folder/name.txt => folder/folder_1.txt ...
+
+folder=$(basename "$PWD")
+fd . -tf | sort -V | while read -r file; do
+    echo $folder
+    ((counter++))
+    ext="${file##*.}"
+    mv -v "$file" "${folder}_$(printf "%03d" $counter).$ext"
+done
