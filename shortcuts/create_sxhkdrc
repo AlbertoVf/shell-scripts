@@ -1,10 +1,11 @@
 #!/usr/bin/env python
-##? help  : Build a sxhkdrc shortcut file with yaml file.
-##? usage : create_sxhkdrc [none]
+# ? help  : Build a sxhkdrc shortcut file with yaml file.
+# ? usage : create_sxhkdrc [none]
 
-from os import path, getenv,system
+from os import path, getenv, system
 from yaml import safe_load as load
 from datetime import datetime
+
 
 def write_keys(mods, keys, file):
     _sxhkd_format = lambda mods, keys: (f"\n{mods}\n\t{keys}")
@@ -21,7 +22,7 @@ if __name__ == "__main__":
     input_file = path.join(DOTFILES_PATH, "doc", "shortcuts.yaml")
     output_file = path.join(DOTFILES_PATH, "os", "linux", "sxhkd", "sxhkdrc")
     date = datetime.now().strftime("Generated on %Y-%m-%d %H:%M")
-    env = "#!/usr/bin/env bash"
+    env = "#!/usr/bin/env sh"
     data = load(open(input_file, "r"))["sxhkdrc"]
     with open(output_file, "w") as a:
         a.write(f"{env}\n# {date}\n")
