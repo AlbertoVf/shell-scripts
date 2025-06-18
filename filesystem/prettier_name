@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-##? help  : Transform file-name to all disk format.
-##? usage : prettier_name [file]
+#?help : Transform file-name to all disk format.
+#?usage: prettier_name [file]
 
 file=$(basename "$1")
 

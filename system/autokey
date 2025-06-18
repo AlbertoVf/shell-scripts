@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-##? help  : Autoclick any kay.
-##? usage : autokey [xev-key]
+#?help : Autoclick any kay.
+#?usage: autokey [xev-key]
 
 k=$1
 t=${2:-0.4}

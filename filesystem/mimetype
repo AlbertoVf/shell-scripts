@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
-##? help  : Print mimetypes.
-##? usage : mimetype [element]
+#?help : Print mimetypes.
+#?usage: mimetype [element]
+
+. "$HOME/.bin/_main.sh"
 
 if [ $# -lt 1 ]; then
 	_params_required 1

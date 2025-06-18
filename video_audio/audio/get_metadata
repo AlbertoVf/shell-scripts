@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-##? help  : Find audio info. Find audio metadata with api and generate ffmpeg to update metadata, copy to clipboard
-##? usage : get_metadata [file_song]
+# ?help  : Find audio info. Find audio metadata with api and generate ffmpeg to update metadata, copy to clipboard
+# ?usage : get_metadata [file_song]
 
 
 def get_metadata(file_path) -> dict:
