@@ -2,5 +2,6 @@
 #?help : Update system and AUR packages.
 #?usage: update_packages [none]
 
+sudo freshclam
 sudo reflector --verbose -f 20 -l 15 -n 10 --save /etc/pacman.d/mirrorlist
 aura -Syyu

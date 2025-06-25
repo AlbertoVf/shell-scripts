@@ -1,9 +1,5 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-for dir in "$HOME/.bin"/*/; do
-	export PATH="$PATH:$dir"
-done
-
-for dir in "$HOME/.bin"/*/*/; do
-	export PATH="$PATH:$dir"
+for dir in $HOME/.bin/*/ $HOME/.bin/*/*/; do
+  [ -d "$dir" ] && export PATH="$PATH:$dir"
 done

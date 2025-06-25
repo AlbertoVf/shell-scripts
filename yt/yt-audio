@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-##? help : Download audio.
-##? usage: yt-audio [url|file]
+#?help : Download audio.
+#?usage: yt-audio [url|file]
 
-source "$HOME/.bin/_main.sh"
+source "_yt-dlp"
 
 if [[ $# -lt 1 ]]; then
 	_params_required 1

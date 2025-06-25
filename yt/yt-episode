@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-##? help  : Download episode from serie.
-##? usage : yt-episode [url|file]
+#?help : Download episode from serie.
+#?usage: yt-episode [url|file]
 
-source "$HOME/.bin/_main.sh"
+source "_yt-dlp"
 
 if [[ $# -lt 1 ]]; then
 	_params_required 1

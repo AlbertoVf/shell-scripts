@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-##? help  : Download video.
-##? usage : yt-video [url|file]
+#?help : Download video.
+#?usage: yt-video [url|file]
 
-source "$HOME/.bin/_main.sh"
+source "_yt-dlp"
 
 if [[ $# -lt 1 ]]; then
 	_params_required 1
@@ -25,8 +25,7 @@ elif [[ -f "$1" ]]; then
 		--embed-metadata \
 		--progress \
 		-f "bv*+ba/b" -S "res:1080,ext:mp4:m4a" \
-		-o "$(xdg-user-dir DOWNLOAD)/%(title)s.%(ext)s" \
-		--batch-file $@
+		-o "$(xdg-user-dir DOWNLOAD)/%(title)s.%(ext)s" --batch-file $@
 fi
 
 if [ $? -eq 0 ]; then

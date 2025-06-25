@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-##? help  : Download song.
-##? usage : yt-music [url|file]
+#?help : Download song.
+#?usage: yt-music [url|file]
 
-source "$HOME/.bin/_main.sh"
+source "_yt-dlp"
+
 
 if [[ $# -lt 1 ]]; then
 	_params_required 1
@@ -12,34 +13,33 @@ fi
 if [[ $1 =~ $playlist_regex ]]; then
 	yt-dlp -w -i \
 		--embed-metadata --embed-thumbnail \
-		--progress \
-		--audio-quality 0 -f bestaudio -x --audio-format mp3 \
-		-o "$(xdg-user-dir DOWNLOAD)/%(playlist)s/%(title)s.%(ext)s" "$@" \
+		--quiet --progress \
+		--audio-quality 0 -f bestaudio -x --audio-format mp3\
 		--parse-metadata "title:%(artist)s - %(title)s" \
 		--parse-metadata "artist:%(artist)s" \
 		--parse-metadata "album:%(album)s" \
-		--parse-metadata "date:%(year)s"
+		--parse-metadata "date:%(year)s" \
+		-o "$(xdg-user-dir DOWNLOAD)/%(playlist)s/%(title)s.%(ext)s" "$@"
 elif [[ $1 =~ $video_regex ]]; then
 	yt-dlp -i --no-playlist \
 		--embed-metadata --embed-thumbnail \
 		--quiet --progress \
-		--audio-quality 0 -f bestaudio -x --audio-format "mp3" \
-		-o "$(xdg-user-dir DOWNLOAD)/%(title)s - %(artist)s.%(ext)s" "$@" \
+		--audio-quality 0 -f bestaudio -x --audio-format mp3\
 		--parse-metadata "title:%(artist)s - %(title)s" \
 		--parse-metadata "artist:%(artist)s" \
 		--parse-metadata "album:%(album)s" \
-		--parse-metadata "date:%(year)s"
+		--parse-metadata "date:%(year)s" \
+		-o "$(xdg-user-dir DOWNLOAD)/%(title)s - %(artist)s.%(ext)s" "$@"
 elif [[ -f "$1" ]]; then
 	yt-dlp -i --no-playlist \
 		--embed-metadata --embed-thumbnail \
-		--progress \
-		--audio-quality 0 -f bestaudio -x --audio-format "mp3" \
-		-o "$(xdg-user-dir DOWNLOAD)/%(playlist)s/%(title)s - %(artist)s.%(ext)s" \
-		--batch-file "$@" \
+		--quiet --progress \
+		--audio-quality 0 -f bestaudio -x --audio-format mp3\
 		--parse-metadata "title:%(artist)s - %(title)s" \
 		--parse-metadata "artist:%(artist)s" \
 		--parse-metadata "album:%(album)s" \
-		--parse-metadata "date:%(year)s"
+		--parse-metadata "date:%(year)s" \
+		-o "$(xdg-user-dir DOWNLOAD)/%(title)s - %(artist)s.%(ext)s" --batch-file "$@"
 fi
 
 if [ $? -eq 0 ]; then

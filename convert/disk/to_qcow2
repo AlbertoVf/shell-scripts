@@ -4,7 +4,11 @@
 
 . "$HOME/.bin/_main.sh"
 
-qemu-img convert -O qcow2 -c "$1" "$1".qcow2
+filename=$(basename -- "$1")
+name="${filename%.*}"
+
+qemu-img convert -O qcow2 -c "$1" "$name".qcow2
+
 if [ $? -eq 0 ]; then
     _success "File converted to qcow2"
 else

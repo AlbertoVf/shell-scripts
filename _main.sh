@@ -1,27 +1,25 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-# style text-color
 _RESET="\033[0m"
-_ERROR="\033[1m \033[31m"
-_SUCCESS="\033[1m \033[32m"
 _WARNING="\033[1m \033[33m"
-_LOG="\033[1m \033[36m"
-
-video_regex='^https?:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(\/\S*)?$'
-playlist_regex='^(https?:\/\/)?(www\.)?(youtube\.com\/|youtu\.be\/)(playlist\?|list=)([^#\&\?\n]+)'
 
 _log() {
+	_LOG="\033[1m \033[36m"
 	echo -e "$_LOG[LOG] $1 $_RESET"
 }
 
 _success() {
+	_SUCCESS="\033[1m \033[32m"
 	echo -e "$_SUCCESS[SUCCESS] $1 $_RESET"
 	paplay '/usr/share/sounds/freedesktop/stereo/complete.oga'
+	notify "Success" "$1"
 }
 
 _error() {
+	_ERROR="\033[1m \033[31m"
 	echo -e "$_ERROR[ERROR] $1 $_RESET"
 	paplay '/usr/share/sounds/freedesktop/stereo/dialog-error.oga'
+	notify "Error" "$1"
 }
 
 _warning() {
@@ -30,8 +28,8 @@ _warning() {
 }
 
 _params_required() {
-	usage=$(sed -n '3p' "$0" | cut -c 5-)
-	_error "The script require $1 params\n\t $_WARNING$usage"
+	usage=$(sed -n '3p' "$0" | cut -c 3-)
+	_error "The script require $1 params\n$_WARNING$usage"
 }
 
 notify() {

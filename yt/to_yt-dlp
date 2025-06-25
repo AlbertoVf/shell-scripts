@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
-##? help : Save clipboard un file to download.
-##? usage: to_yt-dlp
+#!/usr/bin/env sh
+#?help : Save clipboard un file to download.
+#?usage: to_yt-dlp
 
-source "$HOME/.bin/_main.sh"
+source "_yt-dlp.sh"
 
 file="$(xdg-user-dir DOWNLOAD)/yt-download.yml"
 echo -e "# $(date +%Y-%m-%d-%H:%M:%S)\n$(xclip -selection clipboard -o)" >>$file
