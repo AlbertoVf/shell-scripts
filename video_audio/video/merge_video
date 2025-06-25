@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
-##? help  : Merge videos in one, named as date.mp4 .
-##? usage : merge_video [videos]
+#?help  : Merge videos in one, named as date.mp4 .
+#?usage : merge_video [videos]
 
-source "$HOME/.bin/_main.sh"
+. "$HOME/.bin/_main.sh"
 
 if [[ $# -lt 2 ]]; then
 	_params_required 2

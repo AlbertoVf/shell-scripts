@@ -1,7 +1,8 @@
-#!/usr/bin/env bash
-##? help  : Print the duration of all vide/audio files in folder.
-##? usage : duration [foder|.]
-source "$HOME/.bin/_main.sh"
+#!/usr/bin/env sh
+#?help : Print the duration of all vide/audio files in folder.
+#?usage: duration [foder|.]
+
+. "$HOME/.bin/_main.sh"
 
 if [[ $# -lt 1 ]]; then
 	_params_required 1

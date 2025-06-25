@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-##? help  : Remove database and user.
-##? usage : remove_database [database]
+#?help : Remove database and user.
+#?usage: remove_database [database]
 
 . "$HOME/.bin/_main.sh"
 

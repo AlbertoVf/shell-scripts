@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-
+#? help : Print shortcuts with rofi.
+#? usage: shortcuts [none]
 from os import getenv
 import subprocess
 

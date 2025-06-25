@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
-##? help  : create a playlist with mp3 and mp4 files in folder.
-##? usage : create_playlist [folder]
+#!/usr/bin/env sh
+#?help : create a playlist with mp3 and mp4 files in folder.
+#?usage: create_playlist [folder]
 
 if [ $# -eq 0 ]; then
 	folder="$(pwd | awk -F '/' '{print $NF}')"

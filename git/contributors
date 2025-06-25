@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-##? help  : View Github repository contributtors and their number of committs.
-##? usage : contributors [folder|empty]
+#?help : View Github repository contributtors and their number of committs.
+#?usage: contributors [folder|empty]
 
 . "$HOME/.bin/_main.sh"
 
