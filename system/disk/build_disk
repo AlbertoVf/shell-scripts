@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+#? description : Build disk img with size.
+#? synopsis    : build_disk [size] [name]
+
+. "$HOME/.bin/_main.sh"
+
+if [ $# -lt 2 ]; then
+	_params_required 2
+	exit 1
+fi
+
+name="$1.img"
+size="$2"
+
+fallocate -l $size $name
+mkfs.ext4 -L $1 $name
+FILE=$name
+DEV=$(udisksctl loop-setup -f "$FILE" | awk '/Created/ {print $5}')
+udisksctl mount -b "$DEV"
+notify-send "Montado: $DEV"

@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+#? description : Encrypt img disk with luks.
+#? synopsis    : encrypt_disk [.img]
+. "$HOME/.bin/_main.sh"
+
+if [ $# -lt 1 ]; then
+	_params_required 1
+	exit 1
+fi
+
+DEVICE="$1"
+
+_warning "Se va a formatear con LUKS: $DEVICE"
+read -rp "¿Estás seguro? (yes para continuar): " confirm
+
+if [ "$confirm" = "yes" ]; then
+    sudo cryptsetup luksFormat "$DEVICE"
+    _success "Dispositivo $DEVICE formateado con LUKS."
+else
+    _error "Operación cancelada."
+fi
