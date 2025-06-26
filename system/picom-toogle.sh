@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
-if pgrep -x "picom" >/dev/null; then
-	killall picom
-else
-	picom -b --config ~/.config/picom/picom.conf
-fi
+# ? description: Toggle picom compositor.
+# ? usage      : picom_toggle [none]
+
+pkill picom || picom -b --config ~/.config/picom/picom.conf

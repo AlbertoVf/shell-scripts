@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-#? description: Open with file manager root.
-#? synopsis   : open-as_root [folder]
+# ? description: Open with file manager root.
+# ? usage      : open-as_root [directory]
 
-pkexec thunar $1
+pkexec $FILE_MANAGER "$1"

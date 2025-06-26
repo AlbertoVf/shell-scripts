@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
-#? description : Encrypt img disk with luks.
-#? synopsis    : encrypt_disk [.img]
+# ? description: Encrypt img disk with luks.
+# ? usage      : encrypt_disk [.img]
+
 . "$HOME/.bin/_main.sh"
 
 if [ $# -lt 1 ]; then

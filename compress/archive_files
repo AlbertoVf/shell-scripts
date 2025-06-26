@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-#?help : Tar without compress file/directory(s).
-#?usage: archive_files [file/directory]
+# ? description: Tar without compress.
+# ? usage      : archive_files [file(s)|directory(s)]
 
 . "$HOME/.bin/_main.sh"
 

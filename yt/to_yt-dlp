@@ -1,10 +1,10 @@
 #!/usr/bin/env sh
-#?help : Save clipboard un file to download.
-#?usage: to_yt-dlp
+# ? description: Save clipboard un file to download.
+# ? usage      : to_yt-dlp [none]
 
 source "_yt-dlp.sh"
 
-file="$(xdg-user-dir DOWNLOAD)/yt-download.yml"
+file="$(xdg-user-dir DOWNLOAD)/yt.yt-dlp"
 echo -e "# $(date +%Y-%m-%d-%H:%M:%S)\n$(xclip -selection clipboard -o)" >>$file
 
 if [ $? -eq 0 ]; then

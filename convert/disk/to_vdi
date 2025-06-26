@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-#?help : Convert a file to vdi format.
-#?usage: to_vdi [filename]
+# ? description: Convert a file to vdi format.
+# ? usage      : to_vdi [disk(s)]
 
 . "$HOME/.bin/_main.sh"
 
@@ -9,13 +9,14 @@ if [ $# -lt 1 ]; then
 	exit 1
 fi
 
-filename=$(basename -- "$1")
-name="${filename%.*}"
+for f in "$@"; do
+    filename=$(basename -- "$f")
+    name="${filename%.*}"
 
-qemu-img convert -O vdi $filename $name.vdi
-
-if [ $? -eq 0 ]; then
-    _success "File converted to vdi"
-else
-    _error "Error on conversion"
-fi
+    qemu-img convert -O vdi $filename $name.vdi
+    if [ $? -eq 0 ]; then
+        _success "File converted to vdi"
+    else
+        _error "Error on conversion"
+    fi
+done

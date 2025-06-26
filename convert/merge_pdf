@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-#? description: Merge pdf.
-#? synopsis   : merge_pdf [output_file] [pdf_files...]
+# ? description: Merge pdf.
+# ? usage      : merge_pdf [output_file] [pdf(s)]
 
 . "$HOME/.bin/_main.sh"
 

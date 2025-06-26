@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-# ? help : Move files to folder by MIME.
-# ? usage: organize_by_type [folder|empty]
+# ? description : Move files to folder by MIME.
+# ? usage       : organize_by_type [directory|none]
 
 from pathlib import Path
 from subprocess import check_output

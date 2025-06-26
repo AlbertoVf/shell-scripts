@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-#?help : Convert video to mkv format.
-#?usage: to_mkv [file...]
+# ? description: Convert video to mkv format.
+# ? usage      : to_mkv [video(s)]
 
 . "$HOME/.bin/_main.sh"
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-#?help : Find git repository folders.
-#?usage: find_repos [folder]
+# ? description: Find git repository folders.
+# ? usage      : find_repos [directory]
 
 . "$HOME/.bin/_main.sh"
 

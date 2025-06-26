@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-# description: pastes the content of the clipboard into a specified file or creates a new file in a specified directory.
-# usage      : paste_clipboard [file|directory]
+# ? description: pastes the content of the clipboard into a specified file or creates a new file in a specified directory.
+# ? usage      : paste_clipboard [file|directory]
 
 . "$HOME/.bin/_main.sh"
 
@@ -9,15 +9,18 @@ if [ $# -lt 1 ]; then
 	exit 1
 fi
 
-dest="$1"
+f="$1"
+filename=$(basename -- "$f")
+name="${filename%.*}"
 
-if [ -f "$dest" ]; then
-    echo -e "\n" >> "$dest"
-    xclip -selection clipboard -o >> "$dest"
-elif [ -d "$dest" ]; then
-    xclip -selection clipboard -o >> "$1.txt"
-    echo -e "\n" >> "$1.txt"
+if [ -f "$f" ]; then
+    echo -e "\n" >> "$f"
+    xclip -selection clipboard -o >> "$f"
+elif [ -d "$f" ]; then
+    file="$f/$name.txt"
+    xclip -selection clipboard -o >> "$file"
+    echo -e "\n" >> "$file"
 else
-    _error "No existe o no es ni archivo ni carpeta: $dest"
+    _error "No existe o no es ni archivo ni carpeta: $f"
     exit 1
 fi

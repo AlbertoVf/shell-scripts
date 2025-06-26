@@ -1,17 +1,14 @@
 #!/usr/bin/env sh
-#?help : create a playlist with mp3 and mp4 files in folder.
-#?usage: create_playlist [folder]
+# ? description: create a playlist with mp3 and mp4 files in folder.
+# ? usage      : create_playlist [directory]
 
 if [ $# -eq 0 ]; then
-	folder="$(pwd | awk -F '/' '{print $NF}')"
-	path="$(pwd)"
+    path="$PWD"
 else
-	folder="$1"
-	path="$(realpath "$folder")"
-	if [ $folder == "." ]; then
-		folder=$(basename "$path")
-	fi
+    path="$(realpath "$1")"
 fi
+
+folder="${2:-$(basename "$path")}"
 
 name="playlist_$folder.m3u"
 echo -e "#!/usr/bin/vlc\n# $(date)\n# $path\n" >"$name"

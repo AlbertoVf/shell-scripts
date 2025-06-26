@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-#?help : Download song.
-#?usage: yt-music [url|file]
+# ? description: Download song.
+# ? usage      : yt-music [url|file]
 
 source "_yt-dlp"
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-#?help : Short url and copy in clipboard.
-#?usage: tiny_url [url]
+# ? description: Short url and copy in clipboard.
+# ? usage      : tiny_url [url]
 
 source "$HOME/.bin/_main.sh"
 

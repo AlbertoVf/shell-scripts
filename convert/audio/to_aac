@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-#?help : Convert audio to aac format.
-#?usage: to_aac [file...]
+# ? description: Convert audio to aac format.
+# ? usage      : to_aac [audio(s)]
 
 . "$HOME/.bin/_main.sh"
 

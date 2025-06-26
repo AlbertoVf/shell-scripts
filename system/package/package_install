@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-#?help : Install project dependencies to python, nodejs, php and java.
-#?usage: package_install [none]
+# ? description: Install project dependencies to python, nodejs, php and java.
+# ? usage      : package_install [none]
 
 # PIP
 if [ -e 'requirements.txt' ]; then

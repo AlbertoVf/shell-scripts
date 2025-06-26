@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-#?help : Compress directories in separated files.
-#?usage: compress_separated [directory/file]
+# ? description: Compress directories in separated files.
+# ? usage      : compress_separated [file(s)|directory(s)]
 
 . "$HOME/.bin/_main.sh"
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-#?help : Open/Exec a file in the default editor.
-#?usage: run [file]
+# ? description: Open/Exec a file in the default editor.
+# ? usage      : run [file]
 
 . "$HOME/.bin/_main.sh"
 
@@ -10,14 +10,14 @@ if [ $# -lt 1 ]; then
 fi
 
 file=$1
-extension=$(basename "$file" | awk -F . '{print $NF}')
+extension="${file##*.}"
 case $file in
 *.sh | *.zsh | *.bash) $extension $file ;;
 *.py) python $file ;;
 *.java) javac $file ;;
 *.c | *.h) gcc $file ;;
 *.cpp | *.hpp) g++ $file ;;
-*.js | *.ts) deno run $file ;;
+*.js | *.ts) node $file ;;
 *.html | *.htm | *.xhtm) xdg-open $file ;;
 *.php) php -f $file ;;
 *.mp3 | *.mp4 | *.m4a | *.aac | *.flac) xdg-open $file ;;
