@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-#? description: This script copies the absolute paths of files in the current directory to the clipboard.
-#? synopsis   : copy-filepath [files...]
-
-find "$PWD" -maxdepth 1 -type f -printf '"%p"\n' | xclip -selection clipboard

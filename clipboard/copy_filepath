@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+# description: Copy the absolute paths of files in the current directory to the clipboard.
+# usage      : copy_filepath [files|directories]
+
+. "$HOME/.bin/_main.sh"
+
+find "$PWD" -maxdepth 1 -type f -printf '"%p"\n' | xclip -selection clipboard
+
+if [ $? -eq 0 ]; then
+    _success "File names copied to clipboard."
+else
+    _error "Failed to copy file names to clipboard."
+fi
