@@ -1,10 +1,10 @@
 #!/usr/bin/env sh
-# description: This script copies the names of the specified files to the clipboard.
-# usage      : copy_filename [files|directories]
+# ? description: This script copies the names of the specified files to the clipboard.
+# ? usage      : copy_filename [file(s)|directory(s)]
 
 . "$HOME/.bin/_main.sh"
 
-printf '"%s"\n' * | xclip -selection clipboard
+printf '"%s"\n' "$@" | xclip -selection clipboard
 
 if [ $? -eq 0 ]; then
     _success "File names copied to clipboard."

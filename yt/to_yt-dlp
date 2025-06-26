@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-#?help : Save clipboard un file to download.
-#?usage: to_yt-dlp
+# ? description: Save clipboard un file to download.
+# ? usage      : to_yt-dlp [none]
 
 source "_yt-dlp.sh"
 

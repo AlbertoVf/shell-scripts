@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-#?help : Download episode from serie.
-#?usage: yt-episode [url|file]
+# ? description: Download episode from serie.
+# ? usage      : yt-episode [url|file]
 
 source "_yt-dlp"
 

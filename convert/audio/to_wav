@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-#?help  : Convert audio to wav format.
-#?usage : to_wav [file...]
+# ? description: Convert audio to wav format.
+# ? usage      : to_wav [audio(s)]
 
 . "$HOME/.bin/_main.sh"
 

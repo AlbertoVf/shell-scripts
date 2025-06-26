@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-#?help : Work with Google Drive. Sync folder, upload/download content.
-#?usage: drive [ none | folder | file ]
+# ? description: Work with Google Drive. Sync folder, upload/download content.
+# ? usage      : drive [push|pull|add|clone] [folder]
 
 . "$HOME/.bin/rsync/_rsync.sh"
 

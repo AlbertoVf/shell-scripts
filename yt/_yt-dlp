@@ -3,8 +3,3 @@ source "$HOME/.bin/_main.sh"
 
 video_regex='^https?:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(\/\S*)?$'
 playlist_regex='^(https?:\/\/)?(www\.)?(youtube\.com\/|youtu\.be\/)(playlist\?|list=)([^#\&\?\n]+)'
-
-
-# + $mp3 = "--audio-quality 0 -f bestaudio -x --audio-format mp3"
-# + $metadata = "--embed-metadata --embed-thumbnail"
-# + video = 

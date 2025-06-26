@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-#?help : Download audio.
-#?usage: yt-audio [url|file]
+# ? description: Download audio.
+# ? usage      : yt-audio [url|file]
 
 source "_yt-dlp"
 

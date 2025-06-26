@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-#?help : Convert image to webp format.
-#?usage: to_webp [file...]
+# ? description: Convert image to webp format.
+# ? usage      : to_webp [image(s)]
 
 . "$HOME/.bin/_main.sh"
 

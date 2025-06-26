@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-#?help : export mysql/mariadb database to sql file.
-#?usage: export_database [database]
+# ? description: export mysql/mariadb database to sql file.
+# ? usage      : database_export [database]
 
 . "$HOME/.bin/_main.sh"
 

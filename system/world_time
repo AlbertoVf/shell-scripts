@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# ? description: Show world time in a menu.
+# ? usage      : world_time [none]
+
+mapfile -t ZONES < <(timedatectl list-timezones)
+MENU=""
+for ZONE in "${ZONES[@]}"; do
+  TIME=$(TZ=$ZONE date '+%d/%m/%Y %H:%M [UTC%:z]')
+  MENU+="$TIME » $ZONE\n"
+done
+
+# Mostramos en rofi (modo sólo vista)
+echo -e "$MENU" | rofi -dmenu -i -p "World Clock" -matching fuzzy

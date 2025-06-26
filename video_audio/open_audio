@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# ? description: Open into audio aplication.
+# ? usage      : open_audio [directory|audio]
+
+deadbeef "$@"

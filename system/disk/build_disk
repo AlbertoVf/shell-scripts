@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-#? description : Build disk img with size.
-#? synopsis    : build_disk [size] [name]
+# ? description: Build disk img with size.
+# ? usage      : build_disk [size] [name]
 
 . "$HOME/.bin/_main.sh"
 

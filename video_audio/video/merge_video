@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-#?help  : Merge videos in one, named as date.mp4 .
-#?usage : merge_video [videos]
+# ? description: Merge videos in one, named as date.mp4 .
+# ? usage      : merge_video [video(s)]
 
 . "$HOME/.bin/_main.sh"
 

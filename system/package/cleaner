@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-#? help : Open stacer and bleachbit to clean system.
-#? usage: cleaner [none]
+# ? description: Open stacer and bleachbit to clean system.
+# ? usage      : cleaner [none]
 
 bleachbit --clean --preset
 

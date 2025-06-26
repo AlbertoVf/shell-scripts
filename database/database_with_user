@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-#?help : Create database and user with equal name.
-#?usage: create_database_user [database]
+# ? description: Create database and user with equal name.
+# ? usage      : database_with_user [database]
 
 . "$HOME/.bin/_main.sh"
 

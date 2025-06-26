@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-##? help : Extract ova file.
-##? usage: extract_ova [.ova]
+# ? description: Extract ova file.
+# ? usage      : extract_ova [ova]
 
 . "$HOME/.bin/_main.sh"
 

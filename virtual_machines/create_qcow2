@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-##? help : Create a 50G qcow file in [name].
-##? usage: create_qcow2 [name]
+# ? description: Create a 50G qcow file in [name].
+# ? usage      : create_qcow2 [name]
 
 . "$HOME/.bin/_main.sh"
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
-#? help : Make folder by file_name and move files.
-#? usage: organize_by_name [none]
-#? ex   : 'name - 1', 'name - 2' moved to folder 'name'
+# ? description: Make folder by file_name and move files.
+# ? usage      : organize_by_name [none]
+# ? example    : 'name - 1', 'name - 2' moved to folder 'name'
 
 
 fd ' - ' -tf | while IFS= read -r file; do

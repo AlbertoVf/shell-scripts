@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# description: Open terminal emulator.
-# usage      : open_terminal [folder]
+# ? description: Open terminal emulator.
+# ? usage      : open_terminal [directory]
 
 $TERMINAL "$1"

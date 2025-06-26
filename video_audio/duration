@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-#?help : Print the duration of all vide/audio files in folder.
-#?usage: duration [foder|.]
+# ? description: Print the duration of all vide/audio files in folder.
+# ? usage      : duration [directory|.]
 
 . "$HOME/.bin/_main.sh"
 

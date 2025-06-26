@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-#?help : Transform to yaml format.
-#?usage: to_yaml [json|xml|csv]
+# ? description: Transform to yaml format.
+# ? usage      : to_yaml [json(s)|xml(s)|csv(s)]
 
 . "$HOME/.bin/_main.sh"
 
@@ -9,18 +9,20 @@ if [ $# -lt 1 ]; then
     exit 1
 fi
 
-archivo="$1"
-base="${archivo%.*}"
-ext="${archivo##*.}"
+for f in "$@"; do
+    archivo="$f"
+    base="${archivo%.*}"
+    ext="${archivo##*.}"
 
 
-if [ "$ext" = "json" ] || [ "$ext" = "xml" ] || [ "$ext" = "csv" ]; then
-    yq -P -o=yaml "$archivo" > "$base.yaml"
-else
-    _error "Error al convertir"
-    exit 0
-fi
+    if [ "$ext" = "json" ] || [ "$ext" = "xml" ] || [ "$ext" = "csv" ]; then
+        yq -P -o=yaml "$archivo" > "$base.yaml"
+    else
+        _error "Error al convertir"
+        exit 0
+    fi
 
-if [ $? -eq 0 ]; then
-    _success "Convertido a yaml"
-fi
+    if [ $? -eq 0 ]; then
+        _success "Convertido a yaml"
+    fi
+done

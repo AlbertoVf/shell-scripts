@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-#?help : Decode URL format to human-readable.
-#?usage: decode_name [file|folder]
+# ? description: Decode URL format to human-readable.
+# ? usage      : decode_name [file|directory(s)]
 
 . "$HOME/.bin/_main.sh"
 
