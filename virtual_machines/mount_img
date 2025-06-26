@@ -1,0 +1,25 @@
+#!/bin/sh
+#? description: Mount img file.
+#? synopsis   : mount_img [file.img]
+
+. "$HOME/.bin/_main.sh"
+if [ $# -lt 1 ]; then
+    _params_required 1
+    exit 1
+fi
+
+FILE="$1"
+
+# Crear el loop device
+dev=$(udisksctl loop-setup -f "$FILE" | awk '/Created/ {print $5}')
+
+# Verificar que se creó correctamente
+if [ -n "$dev" ]; then
+    # Montar el dispositivo
+    udisksctl mount -b "$dev"
+    # Notificar que se montó
+    notify-send "Montado: $dev"
+else
+    _error "Error al crear dispositivo loop"
+    exit 1
+fi

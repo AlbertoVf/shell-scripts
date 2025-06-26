@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+#? description : Build hardlink.
+#? synopsis    : build-hardlink [file|folder]
+ln $1 $1.1

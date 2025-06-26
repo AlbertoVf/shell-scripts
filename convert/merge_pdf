@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+#? description: Merge pdf.
+#? synopsis   : merge_pdf [output_file] [pdf_files...]
+
+. "$HOME/.bin/_main.sh"
+
+if [ -t 1 ]; then
+    output_file="$1"
+    shift
+else
+    if [ $# -lt 1 ]; then
+        zenity --error --text="No se han seleccionado archivos PDF."
+        exit 1
+    fi
+    output_file=$(zenity --entry --title="Merge pdf" --text="Nombre de nuevo archivo" --entry-text="output")
+fi
+
+[ -z "$output_file" ] && exit 1
+
+pdftk "$@" cat output "${output_file}.pdf"
+
+if [ $? -eq 0 ]; then
+    _success "PDF files merged into ${output_file}.pdf"
+else
+    _error "Error merging PDF files"
+fi

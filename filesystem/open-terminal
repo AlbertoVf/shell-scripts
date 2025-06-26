@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+#? description : Open terminal emulator.
+#? synopsis    : open-terminal [folder]
+
+$TERMINAL $1

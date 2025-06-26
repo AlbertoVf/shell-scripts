@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+#? description: make file executable.
+#? synopsis   : make-executable [file...]
+
+chmod +x "$@"

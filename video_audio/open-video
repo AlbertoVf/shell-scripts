@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+#? description: Open into video aplication.
+#? synopsis   : open-video [folder|video]
+
+celluloid "$@"

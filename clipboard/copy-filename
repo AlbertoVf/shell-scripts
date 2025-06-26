@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+#? description: This script copies the names of the specified files to the clipboard.
+#? synopsis   : copy-filename [files...]
+
+printf '"%s"\n' * | xclip -selection clipboard

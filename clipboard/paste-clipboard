@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+#? description: pastes the content of the clipboard into a specified file or creates a new file in a specified directory.
+#? synopsis: paste-clipboard [file|directory]
+
+. "$HOME/.bin/_main.sh"
+
+if [ $# -lt 1 ]; then
+	_params_required 1
+	exit 1
+fi
+
+dest="$1"
+
+if [ -f "$dest" ]; then
+    echo -e "\n" >> "$dest"
+    xclip -selection clipboard -o >> "$dest"
+elif [ -d "$dest" ]; then
+    xclip -selection clipboard -o >> "$1.txt"
+    echo -e "\n" >> "$1.txt"
+else
+    _error "No existe o no es ni archivo ni carpeta: $dest"
+    exit 1
+fi
