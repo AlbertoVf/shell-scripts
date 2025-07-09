@@ -1,0 +1,30 @@
+#!/usr/bin/env sh
+# ? description: Tar without compress.
+# ? usage      : archive [file(s)|directory(s)]
+
+. "$HOME/.bin/_main.sh"
+
+if [ $# -lt 1 ]; then
+	_params_required 1
+	exit 1
+fi
+
+if [ $# -gt 1 ]; then
+	parent_folder=$(basename "$PWD")
+	compress_folder="${parent_folder}_$(date +%Y%m%d%H%M)"
+else
+	input="$1"
+	name=$(basename "$input")
+	if [ -f "$input" ]; then
+		name="${name%.*}"
+	fi
+	compress_folder=$name
+fi
+
+apack "$compress_folder.tar" "$@"
+
+if [ $? -eq 0 ]; then
+    _success "Archivo $compress_folder creado correctamente."
+else
+    _error "Error al crear el archivo."
+fi

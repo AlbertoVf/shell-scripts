@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+# ? description: Make backup of files or directories to a compressed file.
+# ? usage      : backup [file(s)|directory(s)]
+
+. "$HOME/.bin/_main.sh"
+
+if [ $# -lt 1 ]; then
+	_params_required 1
+	exit 1
+fi
+
+
+if [ $# -gt 1 ]; then
+    parent_folder=$(basename "$PWD")
+	compress_folder="${parent_folder}_$(date +%Y%m%d%H%M)"
+else
+	input="$1"
+	name=$(basename "$input")
+	if [ -f "$input" ]; then
+		name="${name%.*}"
+	fi
+	compress_folder=$name
+fi
+
+apack "$compress_folder.tar.xz" "$@"
+
+if [ $? -eq 0 ]; then
+    _success "Backup $compress_folder creado correctamente."
+else
+    _error "Error al crear el backup."
+fi

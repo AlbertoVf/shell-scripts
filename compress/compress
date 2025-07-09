@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+# ? description: Compress files or directories into a file.
+# ? usage      : compress [file(s)|directory(s)]
+
+. "$HOME/.bin/_main.sh"
+
+if [ $# -lt 1 ]; then
+	_params_required 1
+	exit 1
+fi
+
+
+if [ $# -gt 1 ]; then
+    parent_folder=$(basename "$PWD")
+	compress_folder="${parent_folder}_$(date +%Y%m%d%H%M)"
+else
+	input="$1"
+	name=$(basename "$input")
+	if [ -f "$input" ]; then
+		name="${name%.*}"
+	fi
+	compress_folder=$name
+fi
+
+apack "$compress_folder.tar.gz" "$@"
+
+if [ $? -eq 0 ]; then
+	_success "$compress_folder comprimido correctamente."
+else
+	_error "Error al comprimir."
+fi

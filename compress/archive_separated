@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-# ? description: Compress files or directories into a separated files.
-# ? usage      : compress_separated [file(s)|directory(s)]
+# ? description: Tar without compress.
+# ? usage      : archive_separated [file(s)|directory(s)]
 
 . "$HOME/.bin/_main.sh"
 
@@ -17,11 +17,11 @@ for i in "$@"; do
 	fi
 	compress_folder=$name
 
-	apack "$compress_folder.tar.gz" "$@"
+	apack "$compress_folder.tar" "$input"
 
 	if [ $? -eq 0 ]; then
-		_success "$compress_folder comprimido correctamente."
+		_success "Archivo $compress_folder creado correctamente."
 	else
-		_error "Error al comprimir."
+		_error "Error al crear el archivo."
 	fi
 done

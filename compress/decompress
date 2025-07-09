@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+# ? description: Decompress files or directories from a compressed file.
+# ? usage      : decompress [file(s)|directory(s)]
+
+. "$HOME/.bin/_main.sh"
+
+for i in "$@"; do
+    file="$1"
+    base="${file%%.*}"
+    echo $base
+
+    if [ -d "$base" ]; then
+        aunpack -X "$base" "$file"
+    else
+        aunpack "$file"
+    fi
+
+	if [ $? -eq 0 ]; then
+		_success "Archivo $compress_folder descomprimido"
+	else
+		_error "Error al descomprimir el archivo."
+	fi
+
+done
