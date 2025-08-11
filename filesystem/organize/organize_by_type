@@ -8,14 +8,13 @@ from subprocess import check_output
 home = Path.home()
 xdg_user_dir = lambda type: check_output(["xdg-user-dir", type.upper()], universal_newlines=True).strip()
 
-
 mimeTypes = {
-    f"{home}/Virtual Machines": ["octet-stream", "x-qemu-disk", "vdi", "ovf", "ova", "iso"],
+    # f"{home}/Virtual Machines": ["octet-stream", "x-qemu-disk", "vdi", "ovf", "ova", "iso"],
     f"{home}/.ssh": ["x-pem-file", "x-ssh-public-key"],
     xdg_user_dir("TEMPLATES"): ["template", "desktop"],
     xdg_user_dir("MUSIC"): ["audio"],
     xdg_user_dir("USERFONTS"): ["font"],
-    xdg_user_dir("DOCUMENTS"): ["pdf", "opendocument", "zip", "epub"],
+    xdg_user_dir("DOCUMENTS"): ["pdf", "opendocument", "zip", "epub","md"],
     xdg_user_dir("PICTURES"): ["image", "gbr"],
     xdg_user_dir("VIDEOS"): ["video"],
 }

@@ -3,41 +3,48 @@
 # ? usage       : rename_sequential [directory|none]
 
 from pathlib import Path
-from datetime import datetime
 
 
-def rename_by_date(file):
-    file = Path(file)
-    name, extension = file.stem, file.suffix
-    timestamp = file.stat().st_ctime
+def rename_with_date(files: list[Path]) -> None:
+    from datetime import datetime
 
-    date = datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d")
-    new_name = f"{name}_{date}{extension}"
-    file.rename(new_name)
-    print(f"[*] mv {file} to {new_name}")
+    for file in files:
+        file = Path(file)
+        name, extension = file.stem, file.suffix
+        timestamp = file.stat().st_ctime
+
+        date = datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d")
+        new_name = f"{name}_{date}{extension}"
+        file.rename(new_name)
+        print(f"mv {file} -> {new_name}")
 
 
-def rename_by_num(file):
-    extension = file.suffix
-    new_name = f"{folder_name}_{i}{extension}"
-    new_path = folder / new_name
-    if new_path != file:
-        file.rename(new_path)
-        print(f"[*] mv {file.name} -> {new_name}")
-    else:
-        print(f"[!] {new_path} exists")
+def rename_with_num(files: list[Path]) -> None:
+    for i, file in enumerate(files, start=1):
+        folder_name = file.parent.name
+        extension = file.suffix
+        new_name = f"{folder_name}_{i}{extension}"
+        new_path = folder / new_name
+        if new_path != file:
+            file.rename(new_path)
+            print(f"mv {file.name} -> {new_name}")
 
 
 if __name__ == "__main__":
     from sys import argv
+    from os import chdir
 
-    folder = Path(argv[1]) if len(argv) > 1 else Path.cwd()
-    folder_name = folder.name
+    folders = argv[2:] or [Path.cwd()]
 
-    files = sorted(
-        [f for f in folder.iterdir() if f.is_file()], key=lambda f: f.stat().st_mtime
-    )
-
-    for i, file in enumerate(files, start=1):
-        rename_by_date(file)
-        # rename_by_num(file)
+    for folder in folders:
+        chdir(folder)
+        files = sorted(
+            [f for f in Path.cwd().iterdir() if f.is_file()],
+            key=lambda f: f.stat().st_mtime,
+        )
+        if argv[1] == "-d":
+            rename_with_date(files)
+        elif argv[1] == "-n":
+            rename_with_num(files)
+        elif argv[1] == "-s":
+            rename_with_num(files)

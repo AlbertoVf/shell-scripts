@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-# ? description: Build hardlink.
-# ? usage      : build-hardlink [file|directory]
-
-ln $1 $1.1

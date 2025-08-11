@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+# ? description: Build hardlink.
+# ? usage      : build_hardlink [file|directory]
+
+. "$HOME/.bin/_main.sh"
+
+
+if [ $# -eq 1 ]; then
+    destino=$(zenity --entry --title='Nombre del hardlink' --text='Introduce el nombre del nuevo hardlink:')
+else
+    destino="$2"
+    zenity --error --text="Uso: $0 archivo_origen [archivo_destino]"
+fi
+
+if ln "$1" "$destino"; then
+    _success "Hardlink creado:\n$1 → $destino"
+else
+    _error "Error al crear el hardlink."
+fi
