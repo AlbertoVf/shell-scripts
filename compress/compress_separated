@@ -17,7 +17,7 @@ for i in "$@"; do
 	fi
 	compress_folder=$name
 
-	apack "$compress_folder.tar.gz" "$@"
+	apack "$compress_folder.tar.gz" "$input"
 
 	if [ $? -eq 0 ]; then
 		_success "$compress_folder comprimido correctamente."

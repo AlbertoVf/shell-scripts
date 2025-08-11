@@ -4,7 +4,7 @@
 
 counter=0
 
-find . -type f -name "*.jpg" | sort -V | while read -r file; do
+fd -tf . -e jpg -e jpeg -e png -e gif | sort -fV | while read -r file; do
     ext="${file##*.}"
     mv -v "$file" "$(printf "%03d" $counter).$ext"
     ((counter++))

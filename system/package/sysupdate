@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+# ? description: Update system packages: mirrorlist,repos,aur and virus.
+# ? usage      : sysupdate [none]
+
+
+sudo reflector --verbose --latest 10 --sort rate --save /etc/pacman.d/mirrorlist
+
+sudo freshclam
+aura -Syyu
+paru -Sua
