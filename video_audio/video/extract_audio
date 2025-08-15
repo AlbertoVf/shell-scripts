@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+# ? description: Extract audio from video files.
+# ? usage      : extract_audio [video(s)]
+
+. "$HOME/.bin/_main.sh"
+
+[ $# -lt 1 ] && _params_required 1 && exit 1
+
+INPUT="$1"
+for f in $@; then
+    codec=$(ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of default=noprint_wrappers=1:nokey=1 "$INPUT")
+    case "$codec" in
+        aac) ext="m4a" ;;
+        mp3) ext="mp3" ;;
+        vorbis) ext="ogg" ;;
+        opus) ext="opus" ;;
+        flac) ext="flac" ;;
+        *) ext="$codec" ;;
+    esac
+
+    output="${INPUT%.*}.$ext"
+    ffmpeg -i "$INPUT" -vn -acodec copy "$output"
+
+    [ $? -eq 0 ] && _success "El audio se ha extraído exitosamente a $output" || _error "Ocurrió un error al extraer el audio."
+done
