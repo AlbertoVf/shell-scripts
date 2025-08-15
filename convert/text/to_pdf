@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+# ? description: Transform file into pdf.
+# ? usage      : to_pdf [file(s)]
+
+. "$HOME/.bin/_main.sh"
+
+[ $# -lt 1 ] && _params_required 1 && exit 1
+
+for archivo in "$@"; do
+    nombre="${archivo%.*}"
+    mimetype=$(file --mime-type -b "$archivo")
+    ext="${archivo##*.}"
+
+    if [[ $ext == "tex" ]]; then
+        latexmk -quiet -pdf -interaction=nonstopmode "$archivo"
+        latexmk -c
+    elif [[ "$ext" == "odt" || "$ext" == "docx" ||"$mimetype" == text/* ]]; then
+        libreoffice --headless --convert-to pdf $archivo > /dev/null
+    elif [[ $mimetype == image/* ]]; then
+        mogrify -strip $archivo
+        img2pdf -o "$nombre.pdf" $archivo
+    else
+        _error "Formato de archivo no soportado: $ext"
+    fi
+
+    [ $? -eq 0 ] && _success "Compilación completa" || _error "Error durante la compilación."
+
+done

@@ -24,7 +24,17 @@ def rename_with_num(files: list[Path]) -> None:
         folder_name = file.parent.name
         extension = file.suffix
         new_name = f"{folder_name}_{i}{extension}"
-        new_path = folder / new_name
+        new_path = f"{folder}/{new_name}"
+        if new_path != file:
+            file.rename(new_path)
+            print(f"mv {file.name} -> {new_name}")
+
+def rename_with_sequence(files: list[Path]) -> None:
+    for i, file in enumerate(files, start=0):
+        extension = file.suffix
+        i = str(i).zfill(3)
+        new_name = f"{i}{extension}"
+        new_path = f"{folder}/{new_name}"
         if new_path != file:
             file.rename(new_path)
             print(f"mv {file.name} -> {new_name}")
@@ -47,4 +57,4 @@ if __name__ == "__main__":
         elif argv[1] == "-n":
             rename_with_num(files)
         elif argv[1] == "-s":
-            rename_with_num(files)
+            rename_with_sequence(files)

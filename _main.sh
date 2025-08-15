@@ -17,7 +17,7 @@ _success() {
 _error() {
 	paplay '/usr/share/sounds/freedesktop/stereo/dialog-error.oga'
 	_ERROR="\033[1m \033[31m"
-	[ -t 1 ] && -e "$_ERROR[ERROR] $1 $_RESET" || notify "Error" "$1"
+	[ -t 1 ] && echo -e "$_ERROR[ERROR] $1 $_RESET" || notify "Error" "$1"
 }
 
 _warning() {

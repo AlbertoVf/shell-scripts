@@ -11,5 +11,5 @@ for f in "$@"; do
     name="${filename%.*}"
 
     qemu-img convert -O qcow2 -c "$1" "$name".qcow2
-    [ $? -eq 0 ] && _success "File converted to qcow2" || _error "Error on conversion"
+    [ $? -eq 0 ] && _success "$filename => qcow2" || _error "Error on conversion"
 done
