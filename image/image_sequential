@@ -2,10 +2,15 @@
 # ? description: List all jpg in subfolders and rename by counter: (001,002...).
 # ? usage      : image_sequential [none]
 
-counter=0
+. "$HOME/.bin/_main.sh"
 
-fd -tf . -e jpg -e jpeg -e png -e gif | sort -fV | while read -r file; do
-    ext="${file##*.}"
-    mv -v "$file" "$(printf "%03d" $counter).$ext"
-    ((counter++))
+[ $# -lt 1 ] && _params_required 1 && exit 1
+
+for folder in "$@"; do
+    counter=0
+    fd -tf .  -e jpg -e jpeg -e png -e gif "$folder" | sort -fV | while read -r file; do
+        ext="${file##*.}"
+        mv -nv "$file" "$folder/$(printf "%03d" "$counter").$ext"
+        ((counter++))
+    done
 done
