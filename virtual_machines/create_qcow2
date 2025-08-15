@@ -4,15 +4,11 @@
 
 . "$HOME/.bin/_main.sh"
 
+[ $# -lt 1 ] && _params_required 1 && exit 1
 
 vm=$1
 
 mkdir -p "$vm"
 qemu-img create -f qcow2 "$vm/$vm.qcow2" 50G
 
-
-if [ $? -eq 0 ]; then
-	_success "Disc created"
-else
-	_error "Error on create disc"
-fi
+[ $? -eq 0 ] && _success "Disc created" || _error "Error on create disc"

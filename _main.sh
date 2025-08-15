@@ -10,29 +10,19 @@ _log() {
 
 _success() {
 	paplay '/usr/share/sounds/freedesktop/stereo/complete.oga'
-	if [ -t 1 ]; then
-		_SUCCESS="\033[1m \033[32m"
-		echo -e "$_SUCCESS[SUCCESS] $1 $_RESET"
-	else
-		notify "Success" "$1"
-	fi
+	_SUCCESS="\033[1m \033[32m"
+	[ -t 1 ] && echo -e "$_SUCCESS[SUCCESS] $1 $_RESET" || notify "Success" "$1"
 }
 
 _error() {
 	paplay '/usr/share/sounds/freedesktop/stereo/dialog-error.oga'
-	if [ -t 1 ]; then
-		_ERROR="\033[1m \033[31m"
-		echo -e "$_ERROR[ERROR] $1 $_RESET"
-	else
-		notify "Error" "$1"
-	fi
+	_ERROR="\033[1m \033[31m"
+	[ -t 1 ] && -e "$_ERROR[ERROR] $1 $_RESET" || notify "Error" "$1"
 }
 
 _warning() {
-	if [ -t 1 ]; then
-		echo -e "$_WARNING[WARNING] $1 $_RESET"
-	fi
 	paplay '/usr/share/sounds/freedesktop/stereo/dialog-warning.oga'
+	[ -t 1 ] && echo -e "$_WARNING[WARNING] $1 $_RESET"
 }
 
 _params_required() {

@@ -4,10 +4,7 @@
 
 . "$HOME/.bin/_main.sh"
 
-if [ $# -lt 1 ]; then
-	_params_required 1
-	exit 1
-fi
+[ $# -lt 1 ] && _params_required 1 && exit 1
 
 DB_NAME=$1
 DB_PASSWORD=$(openssl rand -base64 48 | tr -dc "A-Za-z0-9@#$" | head -c "10")

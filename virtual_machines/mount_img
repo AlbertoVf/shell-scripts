@@ -1,11 +1,9 @@
-#!/bin/sh
+#!/usr/bin/env sh
 # ? description: Mount img file.
 # ? usage      : mount_img [.img]
 
 . "$HOME/.bin/_main.sh"
-if [ $# -lt 1 ]; then
-    _params_required 1
-    exit 1
-fi
+
+[ $# -lt 1 ] && _params_required 1 && exit 1
 
 udisksctl loop-setup -f "$1"

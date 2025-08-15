@@ -4,10 +4,7 @@
 
 source "_yt-dlp"
 
-if [[ $# -lt 1 ]]; then
-	_params_required 1
-	exit 1
-fi
+[ $# -lt 1 ] && _params_required 1 && exit 1
 
 if [[ $1 =~ $video_regex ]]; then
 	yt-dlp -i --no-playlist \
@@ -26,8 +23,4 @@ elif [[ -f "$1" ]]; then
 		--batch-file $@
 fi
 
-if [ $? -eq 0 ]; then
-	_success "Capitulo descargado"
-else
-	_error "Error al descargar"
-fi
+[ $? -eq 0 ] && _success "Capitulo descargado" || _error "Error al descargar"

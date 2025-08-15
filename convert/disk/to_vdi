@@ -4,19 +4,12 @@
 
 . "$HOME/.bin/_main.sh"
 
-if [ $# -lt 1 ]; then
-	_params_required 1
-	exit 1
-fi
+[ $# -lt 1 ] && _params_required 1 && exit 1
 
 for f in "$@"; do
     filename=$(basename -- "$f")
     name="${filename%.*}"
 
     qemu-img convert -O vdi $filename $name.vdi
-    if [ $? -eq 0 ]; then
-        _success "File converted to vdi"
-    else
-        _error "Error on conversion"
-    fi
+    [ $? -eq 0 ] && _success "File converted to vdi" || _error "Error on conversion"
 done

@@ -6,8 +6,4 @@
 
 printf '"%s"\n' "$@" | xclip -selection clipboard
 
-if [ $? -eq 0 ]; then
-    _success "File names copied to clipboard."
-else
-    _error "Failed to copy file names to clipboard."
-fi
+[ $? -eq 0 ] && _success "File names copied to clipboard." || _error "Failed to copy file names to clipboard."

@@ -4,10 +4,7 @@
 
 . "$HOME/.bin/_main.sh"
 
-if [ $# -lt 1 ]; then
-	_params_required 1
-	exit 1
-fi
+[ $# -lt 1 ] && _params_required 1 && exit 1
 
 
 if [ $# -gt 1 ]; then
@@ -24,8 +21,4 @@ fi
 
 apack "$compress_folder.tar.gz" "$@"
 
-if [ $? -eq 0 ]; then
-	_success "$compress_folder comprimido correctamente."
-else
-	_error "Error al comprimir."
-fi
+[ $? -eq 0 ] && _success "$compress_folder comprimido correctamente." || _error "Error al comprimir."

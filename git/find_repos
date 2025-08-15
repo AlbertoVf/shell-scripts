@@ -4,9 +4,6 @@
 
 . "$HOME/.bin/_main.sh"
 
-if [ $# -lt 1 ]; then
-	_params_required 1
-	exit 1
-fi
+[ $# -lt 1 ] && _params_required 1 && exit 1
 
 fd -sHapL -d 2 --regex '\.git$' "$1/" -x echo {//}

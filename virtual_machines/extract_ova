@@ -4,13 +4,11 @@
 
 . "$HOME/.bin/_main.sh"
 
+[ $# -lt 1 ] && _params_required 1 && exit 1
+
 archivo=$1
 carpeta="${archivo%.*}"
 mkdir -p $carpeta
 tar -xvf "$archivo" -C $carpeta
 
-if [ $? -eq 0 ]; then
-    _success "File extracted"
-else
-    _error "Error on extraction"
-fi
+[ $? -eq 0 ] && _success "File extracted" || _error "Error on extraction"

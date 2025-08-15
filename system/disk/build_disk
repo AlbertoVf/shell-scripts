@@ -4,10 +4,7 @@
 
 . "$HOME/.bin/_main.sh"
 
-if [ $# -lt 2 ]; then
-	_params_required 2
-	exit 1
-fi
+[ $# -lt 2 ] && _params_required 2 && exit 1
 
 name="$1.img"
 size="$2"

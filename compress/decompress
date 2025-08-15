@@ -15,10 +15,5 @@ for i in "$@"; do
         aunpack "$file"
     fi
 
-	if [ $? -eq 0 ]; then
-		_success "Archivo $compress_folder descomprimido"
-	else
-		_error "Error al descomprimir el archivo."
-	fi
-
+	[ $? -eq 0 ] && _success "Archivo $compress_folder descomprimido" || _error "Error al descomprimir el archivo."
 done

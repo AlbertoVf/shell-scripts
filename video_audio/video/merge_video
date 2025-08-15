@@ -4,10 +4,7 @@
 
 . "$HOME/.bin/_main.sh"
 
-if [[ $# -lt 2 ]]; then
-	_params_required 2
-	exit 1
-fi
+[ $# -lt 2 ] && _params_required 2 && exit 1
 
 # Definir el archivo de salida
 OUTPUT="video_$(date +'%Y-%m-%d_%H.%M.%S').mp4"
@@ -22,14 +19,7 @@ for VIDEO in "$@"; do
     INDEX=$((INDEX + 1))
 done
 
-
 FILTERS+="concat=n=$#:v=1:a=0[outv]"
-
-
 ffmpeg $INPUTS -filter_complex "$FILTERS" -map "[outv]" "$OUTPUT"
 
-if [ $? -eq 0 ]; then
-    _success "Los videos se han fusionado exitosamente en $OUTPUT"
-else
-    _error "Ocurrió un error al fusionar los videos."
-fi
+[ $? -eq 0 ] && _success "Los videos se han fusionado exitosamente en $OUTPUT" || _error "Ocurrió un error al fusionar los videos."

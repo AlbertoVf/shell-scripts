@@ -5,10 +5,7 @@
 source "_yt-dlp"
 
 
-if [[ $# -lt 1 ]]; then
-	_params_required 1
-	exit 1
-fi
+[ $# -lt 1 ] && _params_required 1 && exit 1
 
 if [[ $1 =~ $playlist_regex ]]; then
 	yt-dlp -w -i \
@@ -42,8 +39,4 @@ elif [[ -f "$1" ]]; then
 		-o "$(xdg-user-dir DOWNLOAD)/%(title)s - %(artist)s.%(ext)s" --batch-file "$@"
 fi
 
-if [ $? -eq 0 ]; then
-	_success "Cancion descargada"
-else
-	_error "Error al descargar"
-fi
+[ $? -eq 0 ] && _success "Cancion descargada" || _error "Error al descargar"

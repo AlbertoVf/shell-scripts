@@ -4,11 +4,7 @@
 
 . "$HOME/.bin/_main.sh"
 
-if [ $# -lt 1 ]; then
-	_params_required 1
-	exit 1
-fi
-
+[ $# -lt 1 ] && _params_required 1 && exit 1
 
 if [ $# -gt 1 ]; then
     parent_folder=$(basename "$PWD")
@@ -24,8 +20,4 @@ fi
 
 apack "$compress_folder.tar.xz" "$@"
 
-if [ $? -eq 0 ]; then
-    _success "Backup $compress_folder creado correctamente."
-else
-    _error "Error al crear el backup."
-fi
+[ $? -eq 0 ] && _success "Backup $compress_folder creado correctamente." || _error "Error al crear el backup."

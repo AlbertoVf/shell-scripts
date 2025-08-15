@@ -4,13 +4,8 @@
 
 . "$HOME/.bin/_main.sh"
 
-if [ $# -lt 1 ]; then
-	_params_required 1
-	exit 1
-fi
+[ $# -lt 1 ] && _params_required 1 && exit 1
 
 if mysqldump -u "$USER" -p "$1" | gzip > "$1.sql.gz"; then
-	_success "Database $1 exported to file"
-else
-	_error "Failed to export database $1"
+	_success "Database $1 exported to file" || _error "Failed to export database $1"
 fi

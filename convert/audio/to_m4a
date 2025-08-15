@@ -4,10 +4,7 @@
 
 . "$HOME/.bin/_main.sh"
 
-if [[ $# -lt 1 ]]; then
-	_params_required 1
-	exit 1
-fi
+[ $# -lt 1 ] && _params_required 1 && exit 1
 
 for f in "$@"; do
 	name=$(basename "$f")
@@ -15,9 +12,5 @@ for f in "$@"; do
 	name="${name%.*}"
 	ffmpeg -i "$f" -c:v copy -c:a aac -strict experimental -b:a 192k "$folder/$name.m4a" >/dev/null 2>&1
 
-	if [ $? -eq 0 ]; then
-		_success "Convertido: $f -> $name.m4a"
-	else
-		_log "Error al convertir $f"
-	fi
+	[ $? -eq 0 ] && _success "Convertido: $f -> $name.m4a" || _error "Error al convertir $f"
 done

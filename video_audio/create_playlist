@@ -2,11 +2,11 @@
 # ? description: create a playlist with mp3 and mp4 files in folder.
 # ? usage      : create_playlist [directory]
 
-if [ $# -eq 0 ]; then
-    path="$PWD"
-else
-    path="$(realpath "$1")"
-fi
+. "$HOME/.bin/_main.sh"
+
+
+path="${1:-$PWD}"
+path="$(realpath "$path")"
 
 folder="${2:-$(basename "$path")}"
 

@@ -4,16 +4,12 @@
 
 . "$HOME/.bin/_main.sh"
 
-if [ $# -lt 1 ]; then
-    _params_required 1
-    exit 1
-fi
+[ $# -lt 1 ] && _params_required 1 && exit 1
 
 for f in "$@"; do
     archivo="$f"
     base="${archivo%.*}"
     ext="${archivo##*.}"
-
 
     if [ "$ext" = "json" ] || [ "$ext" = "xml" ] || [ "$ext" = "csv" ]; then
         yq -P -o=yaml "$archivo" > "$base.yaml"
@@ -22,7 +18,5 @@ for f in "$@"; do
         exit 0
     fi
 
-    if [ $? -eq 0 ]; then
-        _success "Convertido a yaml"
-    fi
+    [ $? -eq 0 ] && _success "Convertido a yaml"
 done

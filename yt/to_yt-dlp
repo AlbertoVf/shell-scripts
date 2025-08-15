@@ -7,8 +7,4 @@ source "_yt-dlp.sh"
 file="$(xdg-user-dir DOWNLOAD)/yt.yt-dlp"
 echo -e "# $(date +%Y-%m-%d-%H:%M:%S)\n$(xclip -selection clipboard -o)" >>$file
 
-if [ $? -eq 0 ]; then
-	_success "YT download file list is updated"
-else
-	_error "Error clipboard"
-fi
+[ $? -eq 0 ] && _success "YT download file list is updated" || _error "Error clipboard"
