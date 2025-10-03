@@ -6,9 +6,10 @@
 
 [ $# -lt 1 ] && _params_required 1 && exit 1
 
-archivo=$1
-carpeta="${archivo%.*}"
-mkdir -p $carpeta
-tar -xvf "$archivo" -C $carpeta
+for archivo in "$@"; do
+    carpeta="${archivo%.*}"
+    mkdir -p $carpeta
+    tar -xvf "$archivo" -C $carpeta
 
-[ $? -eq 0 ] && _success "File extracted" || _error "Error on extraction"
+    [ $? -eq 0 ] && _success "File extracted" || _error "Error on extraction"
+done

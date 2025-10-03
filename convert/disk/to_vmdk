@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+# ? description: Convert a file to vdi format.
+# ? usage      : to_vdi [disk(s)]
+
+. "$HOME/.bin/_main.sh"
+
+[ $# -lt 1 ] && _params_required 1 && exit 1
+
+for f in "$@"; do
+    filename=$(basename -- "$f")
+    name="${filename%.*}"
+
+	qemu-img convert -O vmdk "$filename" "$name".vmdk; done
+
+    [ $? -eq 0 ] && _success "$filename => vdi" || _error "Error on conversion"
+done
