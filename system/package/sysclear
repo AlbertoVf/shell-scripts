@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+# ? description: Clean the system.
+# ? usage      : sysclear [none]
+
+bleachbit --clean --preset
+
+# Remove orphans
+aura -Ac
+# Clean out old and unused caches and packages
+aura -Scc
+# remove cache
+journalctl --vacuum-time=1weeks
+rm -rf ~/.cache/* ~/.local/share/recently-used.xbel

@@ -3,7 +3,7 @@
 # ? usage      : sysupdate [none]
 
 
-sudo reflector --verbose --latest 10 --sort rate --save /etc/pacman.d/mirrorlist
+sudo reflector --verbose --score 100 --fastest 10 --number 10 --save /etc/pacman.d/mirrorlist
 
 sudo freshclam
 aura -Syyu
