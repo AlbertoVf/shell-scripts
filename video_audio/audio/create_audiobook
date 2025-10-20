@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+# ? description: Create aufiobook from folder.
+# ? usage      : create_audiobook [folder(s)]
+
+. "$HOME/.bin/_main.sh"
+
+[ $# -lt 1 ] && _params_required 1 && exit 1
+
+
+for f in "$@"; do
+    folder_name="$(basename "$f")"
+    dest="$folder_name"
+    audiobook="$dest/$folder_name.m4b"
+
+    IFS='-' read -r album titulo autor <<< "$folder_name"
+    t="temp.m4b"
+
+    _log $f
+    m4b-tool merge "$f" --output-file="$t"
+    ffmpeg -loglevel quiet -i "$t" \
+        -metadata title="$titulo" \
+        -metadata album="$album" \
+        -c copy "$audiobook"
+
+    [ $? -eq 0 ] && _success " Audiolibro '$folder_name' creado correctamente." || _error "Error al crear."
+
+    rm -rf "temp-tmpfiles" $t
+done

@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+# ? description: Move file to own folder with same name.
+# ? usage      : move_to_folder [file(s)]
+
+. "$HOME/.bin/_main.sh"
+
+for f in "$@"; do
+    if [ -f "$f" ]; then
+        dir="${f%.*}"
+        mkdir -p "$dir"
+        mv "$f" "$dir/"
+        _success "Movido: $dir"
+    else
+        _error "Aviso: '$f' no es un archivo válido"
+    fi
+done
