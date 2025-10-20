@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+# ? description: Compress a git repository by removing large files and pushing changes.
+# ? usage      : compress_repo [directory]
+
+. "$HOME/.bin/_main.sh"
+
+[ $# -lt 1 ] && _params_required 1 && exit 1
+
+repo_path="$1"
+zip_name="${2:-$(basename "$repo_path")}.zip"
+
+cd "$repo_path" || exit 1
+git push
+
+files=$(git ls-files; echo ".git")
+
+apack "../$zip_name" $files

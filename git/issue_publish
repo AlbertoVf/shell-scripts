@@ -1,0 +1,39 @@
+#!/usr/bin/env sh
+# ? description: publish issue from file to git repo.
+# ? usage      : issue_publish [file]
+# ? note: run on git reporitory folder
+
+repo=$(gh repo view --json nameWithOwner -q .nameWithOwner)
+
+function read_issue(){
+	mdfile="$1"
+	url=$(grep '^url[[:space:]]*:' "$mdfile" | sed 's/^url[[:space:]]*:[[:space:]]*//')
+
+	if ! gh issue view "$url" >/dev/null 2>&1; then
+
+		# Leer el frontmatter YAML
+		title=$(grep '^title[[:space:]]*:' "$mdfile" | sed 's/^title[[:space:]]*:[[:space:]]*//')
+		author=$(grep '^author[[:space:]]*:' "$mdfile" | sed 's/^author[[:space:]]*:[[:space:]]*//')
+		labels=$(grep '^labels[[:space:]]*:' "$mdfile" | sed 's/^labels[[:space:]]*:[[:space:]]*//')
+		milestone=$(grep '^milestone[[:space:]]*:' "$mdfile" | sed 's/^milestone[[:space:]]*:[[:space:]]*//')
+		assignees=$(grep '^assignees[[:space:]]*:' "$mdfile" | sed 's/^assignees[[:space:]]*:[[:space:]]*//')
+
+		# Extraer el body (todo después de --- final)
+		body=$(awk '/---/{count++} count>=2 && $0!="---"' "$mdfile")
+
+		# Construir el comando gh
+		cmd=(gh issue create --repo "$repo" --title "$title" --body "$body")
+		[ -n "$labels" ] && cmd+=(--label "$labels")
+		[ -n "$milestone" ] && cmd+=(--milestone "$milestone")
+		[ -n "$assignees" ] && cmd+=(--assignee "$assignees")
+
+		# Ejecutar
+		${cmd[@]}
+    fi
+}
+
+
+for issue in "$@"; do
+	read_issue "$issue"
+	echo "[!] La issue ya existe"
+done

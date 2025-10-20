@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+# ? description: Download license an save in LICENSE.md.
+# ? usage      : generate_license [licenseName]
+# ? url : https://api.github.com/licenses
+
+$name=$1
+
+response=$(curl -s https://api.github.com/licenses/$name | jq -r '.body')
+echo "$response" > LICENSE.md

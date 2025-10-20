@@ -1,0 +1,39 @@
+#!/usr/bin/env sh
+# ? description: Get all issues into markdown files.
+# ? usage      : issues_list [none|owner/repo]
+
+repo=${1:-$(gh repo view --json nameWithOwner -q .nameWithOwner)}
+
+
+outdir=".issues"
+mkdir -p $outdir
+
+issues_json=$(gh issue list --repo "$repo" --state all --json author,body,title,labels,number,milestone,url,createdAt,assignees)
+
+# Generar un .md por cada issue
+echo "$issues_json" | jq -c '.[]' | while read -r issue; do
+	number=$(echo "$issue" | jq -r '.number')
+	title=$(echo "$issue" | jq -r '.title')
+	author=$(echo "$issue" | jq -r '.author.login')
+	created=$(echo "$issue" | jq -r '.createdAt')
+	url=$(echo "$issue" | jq -r '.url')
+	body=$(echo "$issue" | jq -r '.body // ""')
+	labels=$(echo "$issue" | jq -r '[.labels[].name] | join(",")')
+	assignees=$(echo "$issue" | jq -r '[.assignees[].login] | join(",")')
+	milestone=$(echo "$issue" | jq -r '.milestone.title // ""')
+
+  	cat > "$outdir/[$number] $title.md" <<EOF
+---
+title    : $title
+author   : $author
+created  : $created
+labels   : ${labels}
+milestone: ${milestone}
+assignees: ${assignees:-$author}
+url      : ${url}
+---
+
+$body
+EOF
+
+done
