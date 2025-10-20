@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # ? description: Move file to own folder with same name.
-# ? usage      : move_to_folder [file(s)]
+# ? usage      : own_folder [file(s)]
 
 . "$HOME/.bin/_main.sh"
 
