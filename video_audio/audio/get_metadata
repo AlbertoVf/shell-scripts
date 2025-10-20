@@ -11,23 +11,13 @@ def get_metadata(file_path) -> dict:
     def song_api(song, artist):
         q = f"{song}+{artist}".replace(" ", "+")
         data = requests.get(f"https://api.deezer.com/search?q={q}").json()["data"][0]
-        m = {
-            "title": data.get("title"),
-            "artist": data.get("artist")["name"],
-        }
+        m = { "title": data.get("title"), "artist": data.get("artist")["name"], }
 
         a_id = data.get("album")["id"]
         data2 = requests.get(f"https://api.deezer.com/album/{a_id}").json()
-        m["album"] = data2["title"] if data2["title"] != 'NA' else f"{data.get("title")} Single"
+        m["album"] = ( data2["title"] if data2["title"] != "NA" else f"{data.get("title")} Single" )
         m["date"] = int(data2["release_date"].split("-")[0])
-        m["track"] = next(
-            (
-                i + 1
-                for i, obj in enumerate(data2["tracks"]["data"])
-                if obj.get("title") == m["title"]
-            ),
-            1,
-        )
+        m["track"] = next( ( i + 1 for i, obj in enumerate(data2["tracks"]["data"]) if obj.get("title") == m["title"] ), 1, )
         m["genre"] = ", ".join([item["name"] for item in data2["genres"]["data"]])
         return m
 
@@ -59,7 +49,8 @@ def make_ffmpeg_script(metadatos: dict):
         if key != "_file":
             formatted_metadata.append(f"-metadata {key}={quote(str(value))}")
     file = quote(metadatos.get("_file"))
-    return f"ffmpeg -loglevel quiet -c copy -map_metadata 0 -i {file} {' '.join(formatted_metadata)} temp.mp3 && mv -f temp.mp3 {file}"
+    tfile = "temp.mp3"
+    return f"ffmpeg -loglevel quiet -y -i {file} {' '.join(formatted_metadata)} -codec copy {tfile} && mv -f {tfile} {file}"
 
 
 if __name__ == "__main__":
@@ -70,6 +61,7 @@ if __name__ == "__main__":
     song_file = argv[1]
     m = get_metadata(song_file)
     f = make_ffmpeg_script(m)
-
-    run(["xclip", "-selection", "clipboard"], input=f, text=True)
+    # Ejecuta el comando ffmpeg generado
+    run(f, shell=True)
+    # run(["xclip", "-selection", "clipboard"], input=f, text=True)
     print(dumps(m, indent=4, ensure_ascii=False))

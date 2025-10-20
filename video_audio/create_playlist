@@ -7,9 +7,28 @@
 
 path="${1:-$PWD}"
 path="$(realpath "$path")"
+folder="$(basename "$path")"
 
-folder="${2:-$(basename "$path")}"
+create_m3u8(){
+    playlist="$folder.m3u8"
+    echo "#EXTM3"| iconv -t UTF-8 > $playlist
+    fd . -tf -e mp3 -e mp4 -d1 "$path" | while read -r f; do
+        dur=$(ffprobe -v fatal -show_entries format=duration -of csv=p=0 "$f")
+        dur_int=${dur%%.*}
+        dur_up=$((dur_int + 1))
+        base=$(basename "$f")
+        base="${base%.*}"
+        printf "#EXTINF:%s,%s\n%s\n" "$dur_up" "$base" "$f" >> $playlist
+    done
+}
 
-name="playlist_$folder.m3u"
-echo -e "#!/usr/bin/vlc\n# $(date)\n# $path\n" >"$name"
-fd -t f --regex "mp\d$" -d1 "$path" >>"$name"
+create_playlist(){
+    playlist="$folder.m3u"
+    echo "#!/usr/bin/env mpv" > $playlist
+    fd . -tf -e mp3 -e mp4 -d1 "$path" | while read -r f; do
+        base=$(basename "$f")
+        echo "$f\n" >> $playlist
+    done
+}
+
+create_m3u8 $path

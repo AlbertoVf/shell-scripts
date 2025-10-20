@@ -14,7 +14,7 @@ for i in "$@"; do
 	fi
 	compress_folder=$name
 
-	apack "$compress_folder.tar.gz" "$input"
+    APACK_CMD="7z a -t7z -mx=9" apack "$compress_folder.7z" "$input"
 
-	[ $? -eq 0 ] && _success "$compress_folder comprimido correctamente." || _error "Error al comprimir."
+	[ $? -eq 0 ] && _success "'$compress_folder' comprimido correctamente." || _error "Error al comprimir."
 done

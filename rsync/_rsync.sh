@@ -10,7 +10,6 @@ overwrite_cloud(){
 	cloud=$2
 	_log "Copy local content to Cloud"
 	rclone sync $local_folder/$local $cloud:/ --progress
-
 	echo "$(date +'%Y-%m-%d %H.%M.%S'): Overwrite cloud $cloud" >> "$logfile"
 }
 
@@ -20,7 +19,6 @@ overwrite_local(){
 	_log "Copy Cloud content to local"
 	rclone sync $cloud:/ $local_folder/$local --progress
 	echo "$(date +'%Y-%m-%d %H.%M.%S'): Overwrite $local local" >> $logfile
-
 }
 
 add_new_content(){

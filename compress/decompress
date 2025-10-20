@@ -9,11 +9,6 @@ for i in "$@"; do
     base="${file%%.*}"
     echo $base
 
-    if [ -d "$base" ]; then
-        aunpack -X "$base" "$file"
-    else
-        aunpack "$file"
-    fi
-
-	[ $? -eq 0 ] && _success "Archivo $compress_folder descomprimido" || _error "Error al descomprimir el archivo."
+    [ -d "$base" ] && aunpack -X "$base" "$file" || aunpack "$file"
+	[ $? -eq 0 ] && _success "Archivo '$compress_folder' descomprimido" || _error "Error al descomprimir el archivo."
 done

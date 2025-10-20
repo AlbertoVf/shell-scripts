@@ -10,7 +10,7 @@ base_dir="$1"
 
 # Procesar imágenes en el directorio base
 if ls "$base_dir"/*.jpg 1> /dev/null 2>&1; then
-    echo "Procesando imágenes en '$(basename "$base_dir")'..."
+    _log "Procesando imágenes en '$(basename "$base_dir")'..."
     mogrify -strip "$base_dir"/*.jpg
     img2pdf -o "$(basename "$base_dir").pdf" "$base_dir"/*.jpg
 fi
@@ -20,10 +20,10 @@ for folder in "$base_dir"/*/; do
     [[ -d "$folder" ]] || continue
 
     if ls "$folder"/*.jpg 1> /dev/null 2>&1; then
-        echo "Procesando imágenes en '$(basename "$folder")'..."
+        _log "Procesando imágenes en '$(basename "$folder")'..."
         mogrify -strip "$folder"/*.jpg
         img2pdf -o "$(basename "$folder").pdf" "$folder"/*.jpg
     else
-        echo "No se encontraron imágenes JPG en '$(basename "$folder")'."
+        _error "No se encontraron imágenes JPG en '$(basename "$folder")'."
     fi
 done

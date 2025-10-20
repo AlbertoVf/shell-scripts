@@ -13,9 +13,6 @@ name="${filename%.*}"
 if [ -f "$f" ]; then
     xclip -selection clipboard -o >> "$f"
 elif [ -d "$f" ]; then
-    file="$f/$name.txt"
-    xclip -selection clipboard -o >> "$file"
-else
-    _error "No existe o no es ni archivo ni carpeta: $f"
-    exit 1
+    file=$(zenity --entry --title="Save clipboard" --text="Nombre de nuevo archivo" --entry-text="$name.txt")
+    xclip -selection clipboard -o >> "$f/$file"
 fi

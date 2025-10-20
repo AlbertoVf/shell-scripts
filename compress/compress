@@ -19,6 +19,6 @@ else
 	compress_folder=$name
 fi
 
-apack "$compress_folder.tar.gz" "$@"
+apack "$compress_folder.7z" "$@"
 
-[ $? -eq 0 ] && _success "$compress_folder comprimido correctamente." || _error "Error al comprimir."
+[ $? -eq 0 ] && _success "'$compress_folder' comprimido correctamente." || _error "Error al comprimir."

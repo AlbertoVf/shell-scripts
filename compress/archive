@@ -20,4 +20,4 @@ fi
 
 apack "$compress_folder.tar" "$@"
 
-[ $? -eq 0 ] && _success "Archivo $compress_folder creado correctamente." || _error "Error al crear el archivo."
+[ $? -eq 0 ] && _success "'$compress_folder' archivado correctamente." || _error "Error al crear el archivo."
