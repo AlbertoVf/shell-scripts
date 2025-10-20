@@ -2,4 +2,4 @@
 # ? description: Open into audio aplication.
 # ? usage      : open_audio [directory|audio]
 
-deadbeef "$@"
+$AUDIO "$@"

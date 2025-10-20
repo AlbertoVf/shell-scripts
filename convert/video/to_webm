@@ -10,6 +10,7 @@ for f in "$@"; do
 	name=$(basename "$f")
 	folder=$(dirname "$f")
 	name="${name%.*}"
-	ffmpeg -i "$f" -c:v libvpx-vp9 -b:v 1M -c:a libopus -b:a 128k "$folder/$name.webm" >/dev/null 2>&1
-	[ $? -eq 0 ] && _success "Convertido: $f -> $name.webm" || _error "Error al convertir $f"
+    _log "$f"
+	ffmpeg -y -i "$f" -c:v libvpx-vp9 -b:v 1M -c:a libopus -b:a 128k "$folder/$name.webm" >/dev/null 2>&1 \
+    && _success "Convertido $f" || _error "Error al convertir $f"
 done

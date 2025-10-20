@@ -9,6 +9,5 @@
 vm=$1
 
 mkdir -p "$vm"
-qemu-img create -f qcow2 "$vm/$vm.qcow2" 50G
-
-[ $? -eq 0 ] && _success "Disc created" || _error "Error on create disc"
+qemu-img create -f qcow2 "$vm/$vm.qcow2" 50G \
+&& _success "Disco qcow2 creado" || _error "Error al crear un disco"

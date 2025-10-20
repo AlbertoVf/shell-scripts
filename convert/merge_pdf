@@ -17,6 +17,5 @@ fi
 
 [ -z "$output_file" ] && exit 1
 
-pdftk "$@" cat output "${output_file}.pdf"
-
-[ $? -eq 0 ] && _success "PDF files merged into ${output_file}.pdf" || _error "Error merging PDF files"
+pdftk "$@" cat output "${output_file}.pdf" \
+&& _success "PDF files merged into ${output_file}.pdf" || _error "Error merging PDF files"

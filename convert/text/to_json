@@ -11,13 +11,7 @@ for f in "$@"; do
     base="${archivo%.*}"
     ext="${archivo##*.}"
 
-    if [ "$ext" = "yaml" ] || [ "$ext" = "csv" ]; then
-        yq -P -o=json "$archivo" > "$base.json"
-    else
-        _error "Error al convertir"
-        exit 0
-    fi
-
-    [ $? -eq 0 ] && _success "Convertido a json"
-
+    _log "$f"
+    yq -P -o=json "$archivo" > "$base.json" \
+    && _success "Convertido a json" || _error "Error al convertir"
 done

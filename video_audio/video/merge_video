@@ -20,6 +20,6 @@ for VIDEO in "$@"; do
 done
 
 FILTERS+="concat=n=$#:v=1:a=0[outv]"
-ffmpeg $INPUTS -filter_complex "$FILTERS" -map "[outv]" "$OUTPUT"
-
-[ $? -eq 0 ] && _success "Los videos se han fusionado exitosamente en $OUTPUT" || _error "Ocurrió un error al fusionar los videos."
+_log "Fusionando videos"
+ffmpeg $INPUTS -filter_complex "$FILTERS" -map "[outv]" "$OUTPUT" \
+&& _success "Los videos se han fusionado exitosamente en $OUTPUT" || _error "Ocurrió un error al fusionar los videos."

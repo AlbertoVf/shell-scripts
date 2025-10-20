@@ -19,7 +19,7 @@ for f in $@; then
     esac
 
     output="${INPUT%.*}.$ext"
-    ffmpeg -i "$INPUT" -vn -acodec copy "$output"
-
-    [ $? -eq 0 ] && _success "El audio se ha extraído exitosamente a $output" || _error "Ocurrió un error al extraer el audio."
+    _log "Extraer audio $f"
+    ffmpeg -i "$INPUT" -vn -acodec copy "$output" \
+    && _success "El audio se ha extraído exitosamente en $output" || _error "Ocurrió un error al extraer el audio."
 done

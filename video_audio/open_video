@@ -2,4 +2,4 @@
 # ? description: Open into video aplication.
 # ? usage      : open_video [directory|video]
 
-celluloid "$@"
+$VIDEO "$@"

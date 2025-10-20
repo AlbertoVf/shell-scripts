@@ -6,10 +6,10 @@
 
 [ $# -lt 1 ] && _params_required 1 && exit 1
 
-for archivo in "$@"; do
-    carpeta="${archivo%.*}"
+for f in "$@"; do
+    _log "Extraer ova $f"
+    carpeta="${f%.*}"
     mkdir -p $carpeta
-    tar -xvf "$archivo" -C $carpeta
-
-    [ $? -eq 0 ] && _success "File extracted" || _error "Error on extraction"
+    tar -xvf "$f" -C $carpeta \
+    && _success "OVA extraida en $carpeta" || _error "Error al extraer la ova"
 done

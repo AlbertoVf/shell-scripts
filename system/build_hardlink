@@ -12,8 +12,5 @@ else
     zenity --error --text="Uso: $0 archivo_origen [archivo_destino]"
 fi
 
-if ln "$1" "$destino"; then
-    _success "Hardlink creado:\n$1 → $destino"
-else
-    _error "Error al crear el hardlink."
-fi
+ln "$1" "$destino" \
+&& _success "Enlace creado: $1 → $destino" || _error "Error al crear el hardlink."

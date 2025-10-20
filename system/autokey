@@ -2,8 +2,9 @@
 # ? description: Autoclick any key.
 # ? usage      : autokey [xev-key]
 
+. "$HOME/.bin/_main.sh"
+
 k=$1
 t=${2:-0.4}
-
-printf "PULSANDO TECLA $k CADA $t SEGUNDOS\n\n"
+_log "PULSANDO TECLA $k CADA $t SEGUNDOS\n\n"
 while true; do xdotool key $k; sleep $t; done

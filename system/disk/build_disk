@@ -14,4 +14,4 @@ mkfs.ext4 -L $1 $name
 FILE=$name
 DEV=$(udisksctl loop-setup -f "$FILE" | awk '/Created/ {print $5}')
 udisksctl mount -b "$DEV"
-notify-send "Montado: $DEV"
+_success "Montado: $DEV"

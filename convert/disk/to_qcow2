@@ -10,6 +10,7 @@ for f in "$@"; do
     filename=$(basename -- "$f")
     name="${filename%.*}"
 
-    qemu-img convert -O qcow2 -c "$1" "$name".qcow2
-    [ $? -eq 0 ] && _success "$filename => qcow2" || _error "Error on conversion"
+    _log "$f"
+    qemu-img convert -O qcow2 -c "$1" "$name".qcow2 \
+    && _success "$filename => qcow2" || _error "Error on conversion"
 done
