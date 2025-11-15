@@ -29,9 +29,10 @@ def rename_with_num(files: list[Path]) -> None:
 
 
 def rename_with_sequence(files: list[Path]) -> None:
-    for i, file in enumerate(files, start=0):
+    l = len(str(len(files)))
+    for i, file in enumerate(files, start=1):
         extension = file.suffix
-        i = str(i).zfill(3)
+        i = str(i).zfill(l)
         _rn(file, f"{folder}/{i}{extension}")
 
 

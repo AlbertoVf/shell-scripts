@@ -13,6 +13,7 @@ yt_dlp_opts=(
 	-i
 	--embed-metadata --embed-thumbnail
 	--progress
+    --windows-filenames
 	--audio-quality 0 -f bestaudio -x --audio-format mp3
 )
 if [[ $1 =~ $playlist_regex ]]; then
@@ -22,9 +23,10 @@ elif [[ $1 =~ $video_regex ]]; then
 	yt-dlp --no-playlist "${yt_dlp_opts[@]}" --quiet \
 		-o "$(xdg-user-dir DOWNLOAD)/%(title)s.%(ext)s" $@
 elif [ -f "$1" ]; then
-	yt-dlp --no-playlist "${yt_dlp_opts[@]}" \
-		-o "$(xdg-user-dir DOWNLOAD)/%(title)s.%(ext)s" \
-		--batch-file $@
+    while IFS= read -r line; do
+		[ -z "$line" ] && continue
+		yt-audio "$line"
+	done < "$1"
 fi
 
 [ $? -eq 0 ] && _success "Audio descargado" || _error "Error al descargar"
