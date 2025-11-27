@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+# ? description: Make folder with the clipboard content.
+# ? usage      : clipboard_to_folder [none]
+
+. "$HOME/.bin/_main.sh"
+
+clip=$(xclip -o -selection clipboard)
+
+if [ -z "$clip" ]; then
+    _error "El portapapeles no contiene texto."
+    exit 1
+fi
+
+mkdir -p "$clip"
+_success "Carpeta  "$clip" creada"

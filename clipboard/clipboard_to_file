@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # ? description: pastes the content of the clipboard into a specified file or creates a new file in a specified directory.
-# ? usage      : paste_clipboard [file|directory]
+# ? usage      : clipboard_to_file [file|directory]
 
 . "$HOME/.bin/_main.sh"
 
@@ -10,9 +10,18 @@ f="$1"
 filename=$(basename -- "$f")
 name="${filename%.*}"
 
+clip=$(xclip -o -selection clipboard)
+
+if [ -z "$clip" ]; then
+    _error "El portapapeles no contiene texto."
+    exit 1
+fi
+
 if [ -f "$f" ]; then
-    xclip -selection clipboard -o >> "$f"
+    $clip >> "$f"
 elif [ -d "$f" ]; then
     file=$(zenity --entry --title="Save clipboard" --text="Nombre de nuevo archivo" --entry-text="$name.txt")
-    xclip -selection clipboard -o >> "$f/$file"
+    $clip >> "$f/$file"
 fi
+
+_success "Portapapeles pegado"

@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+# ? description: Create .desktop file with an url.
+# ? usage      : clipboard_to_link [none]
+
+. "$HOME/.bin/_main.sh"
+
+clip=$(xclip -o -selection clipboard)
+
+if [ -z "$clip" ]; then
+    _error "El portapapeles no contiene texto."
+    exit 1
+fi
+
+dominio=$(echo "$clip" | sed -E 's~https?://([^/]+).*~\1~')
+
+echo "[Desktop Entry]
+Version=1.0
+Name=Abrir URL $dominio
+Exec=xdg-open $clip
+Icon=emblem-web
+Terminal=false
+Type=Application
+StartupNotify=false
+GenericName=Abrir url en el navegador
+" > $dominio.desktop
+chmod +x $dominio.desktop
+
+_success "Archivo $dominio creado correctamente"
