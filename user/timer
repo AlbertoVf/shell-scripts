@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+sleep "$1"
+notify-send "⏰ Tiempo terminado: $1 s."
+paplay "/usr/share/sounds/freedesktop/stereo/service-login.oga"

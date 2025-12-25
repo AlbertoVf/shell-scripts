@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+for f in "$@"; do
+    mogrify -strip "$f"
+done

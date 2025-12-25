@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+. "$HOME/.bin/_main.sh"
+
+[ $# -lt 1 ] && _params_required 1 && exit 1
+
+for f in "$@"; do
+    filename=$(basename -- "$f")
+    name="${filename%.*}"
+
+    _log "$f"
+    qemu-img convert -O qcow2 -p -c "$1" "${name}_compressed".qcow2 \
+    && _success "$filename => qcow2" || _error "Error on conversion"
+done
