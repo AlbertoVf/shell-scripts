@@ -2,7 +2,8 @@
 
 save_log(){
 	local level="$1"; shift
-	echo "[$(date '+%Y-%m-%d %H:%M:%S')] [$level] $*" >> "$HOME/.logs/$(basename "$0").log"
+	script="$(basename "$0")"
+	echo "[$(date '+%Y-%m-%d %H:%M:%S')] [$level] $*" >> "$HOME/.local/state/shellscripts/$script.log"
 }
 
 emit_message() {

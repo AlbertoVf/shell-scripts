@@ -12,7 +12,7 @@ for archivo in "$@"; do
     case "$archivo" in
         *.tex) latexmk -quiet -pdf -interaction=nonstopmode "$archivo" && latexmk -c ;;
         *.typ) typst compile "$archivo" ;;
-        *.odt | *.docx) libreoffice --headless --convert-to pdf "$archivo" > /dev/null ;;
+        *.odt | *.docx | *.md) libreoffice --headless --convert-to pdf "$archivo" > /dev/null ;;
         *.png | .jpeg | *.jpg | *.svg) mogrify -strip "$archivo" && img2pdf -o "$nombre.pdf" "$archivo" ;;
         *) pandoc "$archivo" -o $nombre.pdf
     esac

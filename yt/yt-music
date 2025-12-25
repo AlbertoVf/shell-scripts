@@ -13,7 +13,7 @@ yt_dlp_opts=(
 	-i
 	--embed-metadata --embed-thumbnail
 	--quiet --progress
-    --windows-filenames
+	--windows-filenames
 	--audio-quality 0 -f bestaudio -x --audio-format mp3
 	--parse-metadata "title:%(artist)s - %(title)s"
 	--parse-metadata "artist:%(artist)s"
@@ -27,7 +27,7 @@ elif [[ $1 =~ $video_regex ]]; then
 	yt-dlp --no-playlist "${yt_dlp_opts[@]}" \
 		-o "$(xdg-user-dir DOWNLOAD)/%(title)s - %(artist)s.%(ext)s" "$@"
 elif [[ -f "$1" ]]; then
-    while IFS= read -r line; do
+	while IFS= read -r line; do
 		[ -z "$line" ] && continue
 		yt-music "$line"
 	done < "$1"

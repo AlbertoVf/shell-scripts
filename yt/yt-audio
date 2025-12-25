@@ -12,18 +12,19 @@ _log "Descargando audio $1"
 yt_dlp_opts=(
 	-i
 	--embed-metadata --embed-thumbnail
-	--progress
-    --windows-filenames
+	--quiet --progress
+	--windows-filenames
 	--audio-quality 0 -f bestaudio -x --audio-format mp3
 )
+
 if [[ $1 =~ $playlist_regex ]]; then
 	yt-dlp -w "${yt_dlp_opts[@]}" \
-		-o "$(xdg-user-dir DOWNLOAD)/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s" $@
+		-o "$(xdg-user-dir DOWNLOAD)/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s" "$@"
 elif [[ $1 =~ $video_regex ]]; then
 	yt-dlp --no-playlist "${yt_dlp_opts[@]}" --quiet \
-		-o "$(xdg-user-dir DOWNLOAD)/%(title)s.%(ext)s" $@
+		-o "$(xdg-user-dir DOWNLOAD)/%(title)s.%(ext)s" "$@"
 elif [ -f "$1" ]; then
-    while IFS= read -r line; do
+	while IFS= read -r line; do
 		[ -z "$line" ] && continue
 		yt-audio "$line"
 	done < "$1"

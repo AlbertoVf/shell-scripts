@@ -1,16 +1,20 @@
 #!/usr/bin/env sh
 # ? description: Print message with colors.
 # ? usage      : ascii [none]
+
 f=3 b=4
+
 for j in f b; do
-  for i in {0..7}; do
-    printf -v $j$i %b "\e[${!j}${i}m"
-  done
+	for i in {0..7}; do
+		printf -v $j$i %b "\e[${!j}${i}m"
+	done
 done
+
 bld=$'\e[1m'
 rst="Lorem ipsum dolor sit amet, consectetur adipisicing elit."
+
 for i in 0 1 2 3 4 5 6 7; do
-  v=f$i
-  code=3$i
-  printf "%s\n" "${bld}${!v}" "\\e[1m\\e[${code}  $rst"
+	v=f$i
+	code=3$i
+	printf "%s\n" "${bld}${!v}" "\\e[1m\\e[${code}  $rst"
 done

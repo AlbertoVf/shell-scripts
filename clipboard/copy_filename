@@ -6,4 +6,4 @@
 
 printf '"%s"\n' "$@" | xclip -selection clipboard
 
-[ $? -eq 0 ] && _success "File names copied to clipboard." || _error "Failed to copy file names to clipboard."
+# [ $? -eq 0 ] && _success "File names  copied to clipboard." || _error "Failed to copy file names to clipboard."

@@ -12,4 +12,4 @@ if [ -z "$clip" ]; then
 fi
 
 mkdir -p "$clip"
-_success "Carpeta  "$clip" creada"
+_success "Carpeta '$clip' creada"

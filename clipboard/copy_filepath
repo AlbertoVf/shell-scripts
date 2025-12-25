@@ -9,4 +9,4 @@ for f in "$@"; do
 done | sed 's/.*/"&"/' | xclip -selection clipboard
 
 
-[ $? -eq 0 ] && _success "Paths copied to clipboard." || _error "Failed to copy paths to clipboard."
+# [ $? -eq 0 ] && _success "Paths copied to clipboard." || _error "Failed to copy paths to clipboard."

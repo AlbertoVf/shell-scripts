@@ -4,8 +4,12 @@
 # ? example    : 'name - 1', 'name - 2' moved to folder 'name'
 
 
-fd ' - ' -tf | while IFS= read -r file; do
-    name="${file%% - *}"
-    mkdir -p "$name"
-    mv -i "$file" "$name/"
+separator=(" - " " _ ")
+
+for sep in "${separator[@]}"; do
+    fd "$sep" -tf | while IFS= read -r file; do
+        name="${file%%$sep*}"
+        mkdir -p "$name"
+        mv -i "$file" "$name/"
+    done
 done
