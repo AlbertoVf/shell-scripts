@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# ? description: Export json to ics.
+# ? usage      : json2ics [file]
+# ? file       : { "dd-mm-yyyy": "title",...}
+
+INPUT="$1"
+OUTPUT="${INPUT %.json}.ics"
+
+echo "BEGIN:VCALENDAR
+VERSION:2.0" > "$OUTPUT"
+jq -r 'to_entries[] | "\(.key)|\(.value)"' "$INPUT" | while IFS="|" read -r fecha titulo; do
+    # Convertir dd-mm-yyyy → yyyymmdd
+    dt=$(date -d "${fecha:6:4}-${fecha:3:2}-${fecha:0:2}" +"%Y%m%d")
+
+    uid="$(uuidgen)"
+
+    cat >> "$OUTPUT" <<EOF
+BEGIN:VEVENT
+UID:$uid
+DTSTAMP:${dt}T000000Z
+DTSTART;VALUE=DATE:$dt
+DTEND;VALUE=DATE:$(date -d "$dt +1 day" +"%Y%m%d")
+SUMMARY:$titulo
+END:VEVENT
+EOF
+done
+
+echo "END:VCALENDAR" >> "$OUTPUT"

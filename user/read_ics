@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+# ? description: print ics events.
+# ? usage      : read_ics [ics]
+awk -F: '
+/^DTSTART/ {
+  fecha = $2
+
+  gsub(/T/, " ", fecha)
+  gsub(/Z/, "", fecha)
+  fecha = substr(fecha,1,4) "-" substr(fecha,5,2) "-" substr(fecha,7,2) " " substr(fecha,10,5)
+}
+/^SUMMARY/ {
+  titulo = $2
+  print fecha ": " titulo
+}' "$1" | sort
