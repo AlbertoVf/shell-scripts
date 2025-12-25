@@ -8,16 +8,30 @@ def get_metadata(file_path) -> dict:
     from mutagen.easyid3 import EasyID3
     from mutagen.mp3 import MP3
 
+    m = {}
+
     def song_api(song, artist):
         q = f"{song}+{artist}".replace(" ", "+")
         data = requests.get(f"https://api.deezer.com/search?q={q}").json()["data"][0]
-        m = { "title": data.get("title"), "artist": data.get("artist")["name"], }
+        m = {
+            "title": data.get("title"),
+            "artist": data.get("artist")["name"],
+        }
 
         a_id = data.get("album")["id"]
         data2 = requests.get(f"https://api.deezer.com/album/{a_id}").json()
-        m["album"] = ( data2["title"] if data2["title"] != "NA" else f"{data.get("title")} Single" )
+        m["album"] = (
+            data2["title"] if data2["title"] != "NA" else f"{data.get('title')} Single"
+        )
         m["date"] = int(data2["release_date"].split("-")[0])
-        m["track"] = next( ( i + 1 for i, obj in enumerate(data2["tracks"]["data"]) if obj.get("title") == m["title"] ), 1, )
+        m["track"] = next(
+            (
+                i + 1
+                for i, obj in enumerate(data2["tracks"]["data"])
+                if obj.get("title") == m["title"]
+            ),
+            1,
+        )
         m["genre"] = ", ".join([item["name"] for item in data2["genres"]["data"]])
         return m
 
@@ -35,10 +49,9 @@ def get_metadata(file_path) -> dict:
             "genre": "",
         }
         m.update(song_api(datos["title"], datos["artist"]))
-    except Exception as e:
+    except Exception:
         pass
-    finally:
-        return m
+    return m
 
 
 def make_ffmpeg_script(metadatos: dict):
@@ -54,14 +67,13 @@ def make_ffmpeg_script(metadatos: dict):
 
 
 if __name__ == "__main__":
-    from sys import argv
-    from subprocess import run
     from json import dumps
+    from subprocess import run
+    from sys import argv
 
-    song_file = argv[1]
-    m = get_metadata(song_file)
-    f = make_ffmpeg_script(m)
-    # Ejecuta el comando ffmpeg generado
-    run(f, shell=True)
-    # run(["xclip", "-selection", "clipboard"], input=f, text=True)
-    print(dumps(m, indent=4, ensure_ascii=False))
+    songs = argv[1:]
+    for song_file in songs:
+        m = get_metadata(song_file)
+        f = make_ffmpeg_script(m)
+        run(f, shell=True)
+        print(dumps(m, indent=4, ensure_ascii=False))

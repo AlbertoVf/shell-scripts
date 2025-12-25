@@ -9,10 +9,13 @@ def _rn(old_name, new_name):
     if new_name != old_name:
         old_name.rename(new_name)
         print(f"mv {old_name.name} -> {new_name}")
+        return  True
+    return False
 
 
-def rename_with_date(files: list[Path]) -> None:
+def name_with_date(files: list[Path]) -> None:
     from datetime import datetime
+
     for file in files:
         file = Path(file)
         name, extension = file.stem, file.suffix
@@ -21,18 +24,13 @@ def rename_with_date(files: list[Path]) -> None:
         _rn(file, f"{name}_{date}{extension}")
 
 
-def rename_with_num(files: list[Path]) -> None:
-    for i, file in enumerate(files, start=1):
-        folder_name = file.parent.name
-        extension = file.suffix
-        _rn(file, f"{folder}/{folder_name}_{i}{extension}")
-
-
-def rename_with_sequence(files: list[Path]) -> None:
+def with_numeric_sequence(files: list[Path], with_folder: bool = False) -> None:
     l = len(str(len(files)))
     for i, file in enumerate(files, start=1):
         extension = file.suffix
         i = str(i).zfill(l)
+        if with_folder:
+            i = f"{file.parent.name} - {i}"
         _rn(file, f"{folder}/{i}{extension}")
 
 
@@ -46,8 +44,9 @@ if __name__ == "__main__":
         chdir(folder)
         files = sorted(
             [f for f in Path.cwd().iterdir() if f.is_file()],
-            key=lambda f: f.stat().st_mtime,
+            # key=lambda f: f.stat().st_mtime,
+            key=lambda f: f.name,
         )
-        if argv[1] == "-d": rename_with_date(files)
-        elif argv[1] == "-n": rename_with_num(files)
-        elif argv[1] == "-s": rename_with_sequence(files)
+        if   argv[1] == "-d": name_with_date(files)
+        elif argv[1] == "-n": with_numeric_sequence(files,True)
+        elif argv[1] == "-s": with_numeric_sequence(files,False)
