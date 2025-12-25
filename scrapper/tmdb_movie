@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+# ? description: Find movie in the movie database.
+# ? usage      : tmdb_movie [name]
+
+search() {
+    query=$(printf "%s" "$*" | sed 's/ /+/g')
+    brave "https://www.themoviedb.org/search/movie?query=$query" &
+}
+
+
+for element in "$@"; do
+    search "$element"
+done

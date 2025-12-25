@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+# ? description: find tv show in the movie database.
+# ? usage      : tmdb_show [name]
+
+search() {
+    query=$(printf "%s" "$*" | sed 's/ /+/g')
+    brave "https://www.themoviedb.org/search/tv?query=$query" &
+}
+
+for element in "$@"; do
+    search "$element"
+done
