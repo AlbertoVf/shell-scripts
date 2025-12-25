@@ -30,4 +30,4 @@ elif [ -f "$1" ]; then
 	done < "$1"
 fi
 
-[ $? -eq 0 ] && _success "Audio descargado" || _error "Error al descargar"
+if [ $? -eq 0 ]; then _success "Audio descargado"; else _error "Error al descargar"; fi

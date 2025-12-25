@@ -21,4 +21,4 @@ fi
 
 apack "$compress_folder.7z" "$@"
 
-[ $? -eq 0 ] && _success "'$compress_folder' comprimido correctamente." || _error "Error al comprimir."
+if [ $? -eq 0 ]; then _success "'$compress_folder' comprimido correctamente."; else _error "Error al comprimir."; fi

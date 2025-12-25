@@ -4,12 +4,6 @@
 
 . "$HOME/.bin/_main.sh"
 
-[ $# -lt 1 ] && _params_required 1 && exit 1
-
-f="$1"
-filename=$(basename -- "$f")
-name="${filename%.*}"
-
 clip=$(xclip -o -selection clipboard)
 
 if [ -z "$clip" ]; then
@@ -17,11 +11,29 @@ if [ -z "$clip" ]; then
     exit 1
 fi
 
-if [ -f "$f" ]; then
-    $clip >> "$f"
-elif [ -d "$f" ]; then
-    file=$(zenity --entry --title="Save clipboard" --text="Nombre de nuevo archivo" --entry-text="$name.txt")
-    $clip >> "$f/$file"
+if [ $# -lt 1 ]; then
+    # Si no recibe parámetros, pedir el nombre del archivo con zenity
+    filename=$(zenity --entry --title="Guardar portapapeles" --text="Nombre del archivo:")
+    if [ -z "$filename" ]; then
+        _error "No se proporcionó un nombre de archivo."
+        exit 1
+    fi
+    echo "$clip" >> "$filename"
+    _success "Portapapeles pegado en $filename"
+else
+    f="$1"
+    if [ -f "$f" ]; then
+        # Si es un archivo, añadir el contenido del portapapeles
+        echo "$clip" >> "$f"
+        _success "Portapapeles añadido a $f"
+    elif [ -d "$f" ]; then
+        # Si es una carpeta, crear un archivo con el nombre de la carpeta
+        dirname=$(basename -- "$f")
+        filename="$f/$dirname"
+        echo "$clip" >> "$filename"
+        _success "Portapapeles pegado en $filename"
+    else
+        _error "$f no es un archivo ni una carpeta válida."
+        exit 1
+    fi
 fi
-
-_success "Portapapeles pegado"

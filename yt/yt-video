@@ -28,4 +28,4 @@ elif [ -f "$1" ]; then
 	done < "$1"
 fi
 
-[ $? -eq 0 ] && _success "Video descargado" || _error "Error al descargar"
+if [ $? -eq 0 ]; then _success "Video descargado"; else _error "Error al descargar"; fi

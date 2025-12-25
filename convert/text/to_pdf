@@ -16,5 +16,5 @@ for archivo in "$@"; do
         *.png | .jpeg | *.jpg | *.svg) mogrify -strip "$archivo" && img2pdf -o "$nombre.pdf" "$archivo" ;;
         *) pandoc "$archivo" -o $nombre.pdf
     esac
-    [ $? -eq 0 ] && _success "Compilación completa" || _error "Error durante la compilación."
+    if [ $? -eq 0 ]; then _success "Compilación completa"; else _error "Error durante la compilación."; fi
 done

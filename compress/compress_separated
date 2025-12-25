@@ -16,5 +16,5 @@ for i in "$@"; do
 
     APACK_CMD="7z a -t7z -mx=9" apack "$compress_folder.7z" "$input"
 
-	[ $? -eq 0 ] && _success "'$compress_folder' comprimido correctamente." || _error "Error al comprimir."
+	if [ $? -eq 0 ]; then _success "'$compress_folder' comprimido correctamente."; else _error "Error al comprimir."; fi
 done

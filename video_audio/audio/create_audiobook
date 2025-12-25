@@ -22,7 +22,7 @@ for f in "$@"; do
         -metadata album="$album" \
         -c copy "$audiobook"
 
-    [ $? -eq 0 ] && _success " Audiolibro '$folder_name' creado correctamente." || _error "Error al crear."
+    if [ $? -eq 0 ]; then _success " Audiolibro '$folder_name' creado correctamente."; else _error "Error al crear."; fi
 
     rm -rf "temp-tmpfiles" $t
 done

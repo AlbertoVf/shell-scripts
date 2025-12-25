@@ -5,10 +5,10 @@
 . "$HOME/.bin/_main.sh"
 
 for i in "$@"; do
-    file="$1"
+    file="$i"
     base="${file%%.*}"
-    echo $base
+    echo "$base"
 
     [ -d "$base" ] && aunpack -X "$base" "$file" || aunpack "$file"
-	[ $? -eq 0 ] && _success "Archivo '$compress_folder' descomprimido" || _error "Error al descomprimir el archivo."
+	if [ $? -eq 0 ]; then _success "Archivo '$compress_folder' descomprimido"; else _error "Error al descomprimir el archivo."; fi
 done
