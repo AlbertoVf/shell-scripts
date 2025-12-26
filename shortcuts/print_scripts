@@ -2,39 +2,52 @@
 # ? description : Print script helper and usage.
 # ? usage       : print_scripts [none]
 
-import os, re
+import sys
+import re
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from _main import _log
 
 HELP_TAG = r"^\#\s\?"
-DOTFILES_PATH = f"{os.path.expanduser('~')}/.bin"
+DOTFILES_PATH = Path.home() / ".bin"
 
-
-def list_x(folder=DOTFILES_PATH):
+def list_executables(folder: Path = DOTFILES_PATH):
     ejecutables = []
-    for dirpath, _, filenames in os.walk(folder):
-        if ".git" in dirpath.split(os.path.sep):
+    for file in folder.rglob("*"):
+        if ".git" in file.parts:
             continue
-        for filename in filenames:
-            ruta_absoluta = os.path.join(dirpath, filename)
-            if os.access(ruta_absoluta, os.X_OK):
-                ejecutables.append(ruta_absoluta)
+
+        if file.is_file() and file.stat().st_mode & 0o111:
+            ejecutables.append(file)
+
     return ejecutables
 
 
-def decorate(f, h):
-    print(f"\n\033[33mFile:\033[1m {f}\033[0m")
-    print("\033[36m" + "\n".join(h) + "\033[0m")
+def decorate(file_path: Path, help_lines: list):
+    print(f"\n\033[33mFile:\033[1m {file_path}\033[0m")
+    print("\033[36m" + "\n".join(help_lines) + "\033[0m")
 
 
-def readHelp(file):
-    help = []
-    bang = ""
-    with open(file, "r") as f:
-        bang = f.readline().strip()
-        help.append(bang)
-        help.extend([h.strip() for h in f.readlines() if re.match(HELP_TAG, h)])
-    decorate(file, help)
+def read_help(file_path: Path):
+    help_lines = []
+
+    try:
+        with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+            first_line = f.readline().strip()
+            if first_line:
+                help_lines.append(first_line)
+
+            for line in f:
+                if re.match(HELP_TAG, line):
+                    help_lines.append(line.strip())
+    except Exception as e:
+        _log(f"Error al leer {file_path}: {e}")
+
+    if help_lines:
+        decorate(file_path, help_lines)
 
 
 if __name__ == "__main__":
-    for e in list_x():
-        readHelp(e)
+    for executable in list_executables():
+        read_help(executable)

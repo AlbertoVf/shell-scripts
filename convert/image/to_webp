@@ -1,16 +1,62 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python
 # ? description: Convert image to webp format.
 # ? usage      : to_webp [image(s)]
 
-. "$HOME/.bin/_main.sh"
+import sys
+from pathlib import Path
+from concurrent.futures import ProcessPoolExecutor, as_completed
+from PIL import Image
 
-[ $# -lt 1 ] && _params_required 1 && exit 1
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from _main import _log, _success, _error, _params_required
 
-for f in "$@"; do
-	name=$(basename "$f")
-	folder=$(dirname "$f")
-	name="${name%.*}"
-    _log "$f"
-	cwebp -q 100 -m 6 -pass 10 "$f" -o "$folder/$name.webp" >/dev/null 2>&1 \
-    && _success "Convertido: $f -> $name.webp" || _error "Error al convertir: $f"
-done
+
+def convert_image(input_path: Path) -> tuple[bool, str]:
+    """Convert a single image file to WebP format."""
+    output_path = input_path.parent / f"{input_path.stem}.webp"
+
+    try:
+        with Image.open(input_path) as img:
+            # Preserve transparency if present
+            if img.mode == "P" and "transparency" in img.info:
+                img = img.convert("RGBA")
+            elif img.mode not in ("RGB", "RGBA"):
+                if img.mode in ("LA",):
+                    img = img.convert("RGBA")
+                else:
+                    img = img.convert("RGB")
+
+            # Save with high quality settings
+            save_kwargs = {"format": "WEBP", "quality": 100, "method": 6}
+            if img.mode == "RGBA":
+                save_kwargs["lossless"] = False
+
+            img.save(output_path, **save_kwargs)
+        return True, f"Convertido: {input_path.name} -> {output_path.name}"
+    except Exception as e:
+        return False, f"Error al convertir {input_path.name}: {e}"
+
+
+if __name__ == "__main__":
+    _params_required(1)
+
+    files = [Path(f) for f in sys.argv[1:] if Path(f).exists() and Path(f).is_file()]
+
+    if not files:
+        _error("No se encontraron archivos válidos")
+        sys.exit(1)
+
+    with ProcessPoolExecutor() as executor:
+        futures = {executor.submit(convert_image, f): f for f in files}
+
+        for future in as_completed(futures):
+            file = futures[future]
+            _log(f"Procesando: {file.name}")
+            try:
+                success, message = future.result()
+                if success:
+                    _success(message)
+                else:
+                    _error(message)
+            except Exception as e:
+                _error(f"Error inesperado con {file.name}: {e}")

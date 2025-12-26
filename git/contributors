@@ -1,19 +1,69 @@
-#!/usr/bin/env sh
-# ? description: View Github repository contributtors and their number of committs.
+#!/usr/bin/env python
+# ? description: View Github repository contributors and their number of commits.
 # ? usage      : contributors [directory|none]
 
-. "$HOME/.bin/_main.sh"
+import sys
+from pathlib import Path
+from subprocess import run, check_output, DEVNULL
 
-if [ $# -gt 0 ]; then
-	cd "$1" || exit
-fi
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from _main import _log, _success
 
-remote_url=$(git config --get remote.origin.url)
-current_branch=$(git rev-parse --abbrev-ref HEAD)
 
-_log "Contributors: [$current_branch] <$remote_url>"
+def get_contributors(directory: Path = None):
+    """Get repository contributors using git shortlog for better performance."""
+    if directory:
+        original_dir = Path.cwd()
+        try:
+            import os
+            os.chdir(directory)
+        except Exception:
+            _error(f"No se pudo cambiar al directorio: {directory}")
+            return
+    else:
+        directory = Path.cwd()
 
-git log --format='%an' | sort -u | while read author; do
-	commit_count=$(git log --author="$author" --oneline | wc -l)
-	echo "- $author: ($commit_count)"
-done
+    try:
+        # Get remote URL and current branch
+        remote_url = check_output(
+            ["git", "config", "--get", "remote.origin.url"],
+            text=True, stderr=DEVNULL
+        ).strip()
+
+        current_branch = check_output(
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+            text=True, stderr=DEVNULL
+        ).strip()
+
+        _log(f"Contributors: [{current_branch}] <{remote_url}>")
+
+        # Use git shortlog for much better performance (single query)
+        result = check_output(
+            ["git", "shortlog", "-sn", "--all"],
+            text=True, stderr=DEVNULL
+        )
+
+        for line in result.strip().split("\n"):
+            if line:
+                parts = line.strip().split("\t", 1)
+                if len(parts) == 2:
+                    count = parts[0].strip()
+                    author = parts[1].strip()
+                    print(f"- {author}: ({count})")
+
+        if directory != Path.cwd():
+            import os
+            os.chdir(original_dir)
+
+    except Exception as e:
+        _error(f"Error al obtener contribuidores: {e}")
+        if directory != Path.cwd():
+            import os
+            os.chdir(original_dir)
+
+
+if __name__ == "__main__":
+    from _main import _error
+
+    directory = Path(sys.argv[1]) if len(sys.argv) > 1 else None
+    get_contributors(directory)

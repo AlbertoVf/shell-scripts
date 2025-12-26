@@ -2,8 +2,12 @@
 # ? description : Move files to folder by MIME.
 # ? usage       : organize_by_type [directory|none]
 
+import sys
 from pathlib import Path
 from subprocess import check_output
+
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from _main import _log, _success, _error
 
 home = Path.home()
 xdg_user_dir = lambda type: check_output(["xdg-user-dir", type.upper()], universal_newlines=True).strip()
@@ -14,7 +18,7 @@ mimeTypes = {
     xdg_user_dir("TEMPLATES"): ["template", "desktop"],
     xdg_user_dir("MUSIC"): ["audio"],
     xdg_user_dir("USERFONTS"): ["font"],
-    xdg_user_dir("DOCUMENTS"): ["pdf", "opendocument", "zip", "epub","md"],
+    xdg_user_dir("DOCUMENTS"): ["pdf", "opendocument", "zip", "epub", "md"],
     xdg_user_dir("PICTURES"): ["image", "gbr"],
     xdg_user_dir("VIDEOS"): ["video"],
 }
@@ -22,29 +26,35 @@ mimeTypes = {
 get_mime_type = lambda file: check_output( ["file", "--mime-type", "-b", file], text=True ).strip()
 
 
-def organize_folder(folder):
+def organize_folder(folder: list[Path]):
     for file in folder:
         file = Path(file)
         extension = "".join(file.suffixes)[1:]
         mime = get_mime_type(file)
         for dir, types in mimeTypes.items():
             if any(t in mime for t in types) or extension in types:
-                if not Path(f"{dir}/{file.name}").exists():
-                    try:
-                        file.rename(f"{dir}/{file.name}")
-                        print(f"[*] {file} -> {dir}")
-                    except Exception as e:
-                        print(f"[-] {e}")
-                    finally:
-                        break
-                else:
-                    print(f"[!] {file} already exists in {dir}")
+                target_path = Path(f"{dir}/{file.name}")
+
+                if target_path.exists():
+                    _error(f"{file.name} ya existe en {dir}")
+                    break
+
+                try:
+                    file.rename(target_path)
+                    _success(f"{file.name} -> {dir}")
+                except Exception as e:
+                    _error(f"Error al mover {file.name}: {e}")
+                finally:
+                    break
 
 
 if __name__ == "__main__":
     from sys import argv
 
     folder = Path(argv[1]) if len(argv) > 1 else Path.cwd()
+    files = [file for file in folder.iterdir() if file.is_file()]
 
-    folder = [file for file in folder.iterdir() if file.is_file()]
-    organize_folder(folder)
+    if not files:
+        _log("No se encontraron archivos para organizar")
+        sys.exit(0)
+    organize_folder(files)

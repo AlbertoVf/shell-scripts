@@ -1,12 +1,45 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python
 # ? description: Short url and copy in clipboard.
 # ? usage      : tiny_url [url]
 
-source "$HOME/.bin/_main.sh"
+import sys
+import requests
+from pathlib import Path
+from subprocess import run, DEVNULL
 
-[ $# -lt 1 ] && _params_required 1 && exit 1
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from _main import _log, _error, _params_required
 
-SHORTENED_URL=$(curl -s -d "url=$1" "http://tinyurl.com/api-create.php")
 
-echo -n $SHORTENED_URL | xclip -selection clipboard
-_log $SHORTENED_URL
+
+def shorten_url(url: str) -> str:
+    """Shorten URL using TinyURL API."""
+    try:
+        response = requests.post( "http://tinyurl.com/api-create.php", data={"url": url}, timeout=10 )
+        response.raise_for_status()
+        return response.text.strip()
+    except requests.RequestException as e:
+        _error(f"Error al acortar URL: {e}")
+        return ""
+
+
+def copy_to_clipboard(text: str) -> bool:
+    """Copy text to clipboard using xclip."""
+    try:
+        run(["xclip", "-selection", "clipboard"], input=text, text=True, check=True)
+        return True
+    except Exception:
+        return False
+
+
+if __name__ == "__main__":
+    _params_required(1)
+
+    url = sys.argv[1]
+    shortened = shorten_url(url)
+
+    if shortened:
+        if copy_to_clipboard(shortened):
+            _log(shortened)
+        else:
+            _error("No se pudo copiar al portapapeles")

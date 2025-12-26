@@ -2,78 +2,137 @@
 # ? description : Find audio info. Find audio metadata with api and generate ffmpeg to update metadata, copy to clipboard
 # ? usage       : get_metadata [audio]
 
+import sys
+from pathlib import Path
 
-def get_metadata(file_path) -> dict:
-    import requests
-    from mutagen.easyid3 import EasyID3
-    from mutagen.mp3 import MP3
+import requests
+from mutagen.easyid3 import EasyID3
+from mutagen.mp3 import MP3
+from mutagen.id3 import ID3NoHeaderError
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from _main import _log, _success, _error
 
+
+def get_metadata(file_path: Path) -> dict:
     m = {}
 
-    def song_api(song, artist):
-        q = f"{song}+{artist}".replace(" ", "+")
-        data = requests.get(f"https://api.deezer.com/search?q={q}").json()["data"][0]
-        m = {
-            "title": data.get("title"),
-            "artist": data.get("artist")["name"],
-        }
+    def song_api(song: str, artist: str) -> dict:
+        """Get song metadata from Deezer API."""
+        q = f"{song} {artist}".replace(" ", "+")
+        try:
+            response = requests.get(f"https://api.deezer.com/search?q={q}", timeout=10)
+            response.raise_for_status()
+            data = response.json()["data"][0]
 
-        a_id = data.get("album")["id"]
-        data2 = requests.get(f"https://api.deezer.com/album/{a_id}").json()
-        m["album"] = (
-            data2["title"] if data2["title"] != "NA" else f"{data.get('title')} Single"
-        )
-        m["date"] = int(data2["release_date"].split("-")[0])
-        m["track"] = next(
-            (
-                i + 1
-                for i, obj in enumerate(data2["tracks"]["data"])
-                if obj.get("title") == m["title"]
-            ),
-            1,
-        )
-        m["genre"] = ", ".join([item["name"] for item in data2["genres"]["data"]])
-        return m
+            m = {
+                "title": data.get("title"),
+                "artist": data.get("artist")["name"],
+            }
+
+            a_id = data.get("album")["id"]
+            response2 = requests.get(f"https://api.deezer.com/album/{a_id}", timeout=10)
+            response2.raise_for_status()
+            data2 = response2.json()
+
+            m["album"] = (
+                data2["title"]
+                if data2["title"] != "NA"
+                else f"{data.get('title')} Single"
+            )
+            m["date"] = int(data2["release_date"].split("-")[0])
+            m["track"] = next(
+                (
+                    i + 1
+                    for i, obj in enumerate(data2["tracks"]["data"])
+                    if obj.get("title") == m["title"]
+                ),
+                1,
+            )
+            m["genre"] = ", ".join([item["name"] for item in data2["genres"]["data"]])
+            return m
+        except Exception as e:
+            _error(f"Error al obtener datos de la API: {e}")
+            return {}
 
     try:
-        audio = MP3(file_path, ID3=EasyID3)
+        audio = MP3(str(file_path), ID3=EasyID3)
         metadata = audio.items()
         datos = {k: v[0] for k, v in metadata}
+
         m = {
             "_file": str(file_path),
-            "title": datos["title"],
-            "artist": datos["artist"],
-            "album": datos["album"],
-            "date": int(datos["date"]),
-            "track": int(datos["tracknumber"]),
+            "title": datos.get("title", ""),
+            "artist": datos.get("artist", ""),
+            "album": datos.get("album", ""),
+            "date": int(datos.get("date", "0") or "0"),
+            "track": int(datos.get("tracknumber", "0") or "0"),
             "genre": "",
         }
-        m.update(song_api(datos["title"], datos["artist"]))
-    except Exception:
-        pass
+
+        # Update with API data
+        api_data = song_api(m["title"], m["artist"])
+        if api_data:
+            m.update(api_data)
+
+    except ID3NoHeaderError:
+        _error(f"No se encontraron metadatos ID3 en {file_path}")
+        return {}
+    except Exception as e:
+        _error(f"Error al leer metadatos: {e}")
+        return {}
+
     return m
 
 
-def make_ffmpeg_script(metadatos: dict):
-    from shlex import quote
+def update_metadata_with_mutagen(metadatos: dict) -> bool:
+    """Update metadata directly using mutagen (faster than ffmpeg)."""
+    try:
+        file_path = Path(metadatos["_file"])
+        audio = MP3(str(file_path), ID3=EasyID3)
 
-    formatted_metadata = []
-    for key, value in metadatos.items():
-        if key != "_file":
-            formatted_metadata.append(f"-metadata {key}={quote(str(value))}")
-    file = quote(metadatos.get("_file"))
-    tfile = "temp.mp3"
-    return f"ffmpeg -loglevel quiet -y -i {file} {' '.join(formatted_metadata)} -codec copy {tfile} && mv -f {tfile} {file}"
+        # Update metadata
+        if "title" in metadatos:
+            audio["title"] = metadatos["title"]
+        if "artist" in metadatos:
+            audio["artist"] = metadatos["artist"]
+        if "album" in metadatos:
+            audio["album"] = metadatos["album"]
+        if "date" in metadatos:
+            audio["date"] = str(metadatos["date"])
+        if "track" in metadatos:
+            audio["tracknumber"] = str(metadatos["track"])
+        if "genre" in metadatos:
+            audio["genre"] = metadatos["genre"]
+
+        audio.save()
+        return True
+    except Exception as e:
+        _error(f"Error al actualizar metadatos con mutagen: {e}")
+        return False
 
 
 if __name__ == "__main__":
     from json import dumps
-    from subprocess import run
-    from sys import argv
 
-    songs = argv[1:]
+    if len(sys.argv) < 2:
+        _error("Uso: get_metadata [audio(s)]")
+        sys.exit(1)
+
+    songs = [Path(f) for f in sys.argv[1:]]
+
     for song_file in songs:
+        if not song_file.exists():
+            _error(f"Archivo no encontrado: {song_file}")
+            continue
+
+        _log(f"Procesando: {song_file.name}")
         m = get_metadata(song_file)
-        f = make_ffmpeg_script(m)
-        run(f, shell=True)
-        print(dumps(m, indent=4, ensure_ascii=False))
+
+        if m:
+            # Try to update with mutagen first (faster)
+            if update_metadata_with_mutagen(m):
+                _success(f"Metadatos actualizados: {song_file.name}")
+            else:
+                _error(f"No se pudieron actualizar los metadatos: {song_file.name}")
+
+            print(dumps(m, indent=4, ensure_ascii=False))
