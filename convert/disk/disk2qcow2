@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # ? description: Convert a file to qcow2 format.
-# ? usage      : to_qcow2 [disk(s)]
+# ? usage      : disk2qcow2 [disk(s)]
 
 . "$HOME/.bin/_main.sh"
 

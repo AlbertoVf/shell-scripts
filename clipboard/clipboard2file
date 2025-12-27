@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # ? description: pastes the content of the clipboard into a specified file or creates a new file in a specified directory.
-# ? usage      : clipboard_to_file [file|directory]
+# ? usage      : clipboard2file [file|directory]
 
 . "$HOME/.bin/_main.sh"
 

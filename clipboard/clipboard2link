@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # ? description: Create .desktop file with an url.
-# ? usage      : clipboard_to_link [none]
+# ? usage      : clipboard2link [none]
 
 . "$HOME/.bin/_main.sh"
 

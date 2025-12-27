@@ -1,19 +1,19 @@
 #!/usr/bin/env python
 # ? description: Convert image to jpg format.
-# ? usage      : to_jpg [image(s)]
+# ? usage      : image2jpg [image(s)]
 
 import sys
 from pathlib import Path
-from concurrent.futures import ProcessPoolExecutor, as_completed
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from _main import _log, _success, _error, _params_required
 
 
-def convert_image(input_path: Path) -> tuple[bool, str]:
+def convert_image(input_path: Path) -> bool:
     """Convert a single image file to JPG format."""
     output_path = input_path.parent / f"{input_path.stem}.jpg"
+    _log(f"Procesando: {input_path.name}")
 
     try:
         with Image.open(input_path) as img:
@@ -28,9 +28,10 @@ def convert_image(input_path: Path) -> tuple[bool, str]:
                 img = img.convert("RGB")
 
             img.save(output_path, "JPEG", quality=100, optimize=True)
-        return True, f"Convertido: {input_path.name} -> {output_path.name}"
+        return True
     except Exception as e:
-        return False, f"Error al convertir {input_path.name}: {e}"
+        _error(f"Error al convertir {input_path.name}: {e}")
+        return False
 
 
 if __name__ == "__main__":
@@ -42,17 +43,20 @@ if __name__ == "__main__":
         _error("No se encontraron archivos válidos")
         sys.exit(1)
 
-    with ProcessPoolExecutor() as executor:
-        futures = {executor.submit(convert_image, f): f for f in files}
+    if len(files) == 1:
+        file = files[0]
+        if convert_image(file):
+            _success(f"Convertido {file.name}")
+    else:
+        from concurrent.futures import ProcessPoolExecutor, as_completed
 
-        for future in as_completed(futures):
-            file = futures[future]
-            _log(f"Procesando: {file.name}")
-            try:
-                success, message = future.result()
-                if success:
-                    _success(message)
-                else:
-                    _error(message)
-            except Exception as e:
-                _error(f"Error inesperado con {file.name}: {e}")
+        with ProcessPoolExecutor() as executor:
+            futures = {executor.submit(convert_image, f): f for f in files}
+
+            for future in as_completed(futures):
+                file = futures[future]
+                try:
+                    if future.result():
+                        _success(f"Convertido {file.name}")
+                except Exception as e:
+                    _error(f"Error inesperado con {file.name}: {e}")

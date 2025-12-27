@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # ? description: Make folder with the clipboard content.
-# ? usage      : clipboard_to_folder [none]
+# ? usage      : clipboard2folder [none]
 
 . "$HOME/.bin/_main.sh"
 
