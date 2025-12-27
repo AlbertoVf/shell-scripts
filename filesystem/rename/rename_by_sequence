@@ -6,13 +6,13 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from _main import _log, _success, _error, _params_required
+from _main import _message, _params_required
 
 
 def _rn(old_path: Path, new_path: Path) -> bool:
     if new_path != old_path:
         old_path.rename(new_path)
-        _success(f"mv {old_path.name} -> {new_path.name}")
+        _message.success(f"mv {old_path.name} -> {new_path.name}")
         return True
     return False
 
@@ -45,7 +45,7 @@ if __name__ == "__main__":
 
     for folder in folders:
         if not folder.exists() or not folder.is_dir():
-            _error(f"'{folder}' no es un directorio válido")
+            _message.error(f"'{folder}' no es un directorio válido")
             continue
 
         files = sorted(
@@ -54,7 +54,7 @@ if __name__ == "__main__":
         )
 
         if not files:
-            _log(f"No hay archivos en '{folder}'")
+            _message.log(f"No hay archivos en '{folder}'")
             continue
 
         mode = sys.argv[1]
@@ -66,4 +66,4 @@ if __name__ == "__main__":
         elif mode == "-s":
             with_numeric_sequence(files, False)
         else:
-            _error(f"Modo inválido: {mode}. Use -d, -n o -s")
+            _message.error(f"Modo inválido: {mode}. Use -d, -n o -s")

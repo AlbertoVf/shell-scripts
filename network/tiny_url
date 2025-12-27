@@ -8,7 +8,7 @@ from pathlib import Path
 from subprocess import run, DEVNULL
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from _main import _log, _error, _params_required
+from _main import _message, _params_required
 
 
 
@@ -19,7 +19,7 @@ def shorten_url(url: str) -> str:
         response.raise_for_status()
         return response.text.strip()
     except requests.RequestException as e:
-        _error(f"Error al acortar URL: {e}")
+        _message.error(f"Error al acortar URL: {e}")
         return ""
 
 
@@ -40,6 +40,6 @@ if __name__ == "__main__":
 
     if shortened:
         if copy_to_clipboard(shortened):
-            _log(shortened)
+            _message.log(shortened)
         else:
-            _error("No se pudo copiar al portapapeles")
+            _message.error("No se pudo copiar al portapapeles")

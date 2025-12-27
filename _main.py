@@ -4,62 +4,74 @@ import sys
 from pathlib import Path
 from datetime import datetime
 from subprocess import run, DEVNULL
+from enum import Enum
 
 
-def save_log(level: str, message: str) -> None:
-    script_name = Path(sys.argv[0]).name
-    log_dir = Path.home() / ".local/state/shellscripts"
-    log_dir.mkdir(parents=True, exist_ok=True)
-    log_file = log_dir / f"{script_name}.log"
-
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    log_entry = f"[{timestamp}] [{level}] {message}\n"
-
-    with open(log_file, "a", encoding="utf-8") as f:
-        f.write(log_entry)
+class MessageType(Enum):
+    LOG = "log"
+    SUCCESS = "success"
+    ERROR = "error"
+    WARNING = "warning"
 
 
-def emit_message(sound: str, status: str, message: str) -> None:
-    if sys.stdout.isatty():
-        reset = "\033[0m"
-        print(f"{status} {message} {reset}", flush=True)
-    else:
-        print(message, flush=True)
+class Message:
+    def __init__(self):
+        self.script_name = Path(sys.argv[0]).name
+        self.log_dir = Path.home() / ".local/state/shellscripts"
+        self.log_dir.mkdir(parents=True, exist_ok=True)
+        self.log_file = self.log_dir / f"{self.script_name}.log"
 
-    # Send desktop notification
-    run(["notify-send", message], check=False, stdout=DEVNULL, stderr=DEVNULL)
-    # Play sound
-    sound_path = f"/usr/share/sounds/freedesktop/stereo/{sound}.oga"
-    run(["paplay", sound_path], check=False, stdout=DEVNULL, stderr=DEVNULL)
+        # Configuración de tipos de mensaje
+        self.message_types = {
+            MessageType.LOG: { "color": "\033[1m\033[30m", "symbol": "[*]", "sound": "message", "log_level": "DEBUG" },
+            MessageType.SUCCESS: { "color": "\033[1m\033[32m", "symbol": "[+]", "sound": "complete", "log_level": "INFO" },
+            MessageType.ERROR: { "color": "\033[1m\033[31m", "symbol": "[-]", "sound": "dialog-error", "log_level": "ERROR" },
+            MessageType.WARNING: { "color": "\033[1m\033[33m", "symbol": "[!]", "sound": "dialog-warning", "log_level": "ALERT" }
+        }
+
+    def _save_log(self, level: str, message: str) -> None:
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        log_entry = f"[{timestamp}] [{level}] {message}\n"
+
+        with open(self.log_file, "a", encoding="utf-8") as f:
+            f.write(log_entry)
+
+    def _emit_message(self, sound: str, status: str, message: str) -> None:
+        if sys.stdout.isatty():
+            reset = "\033[0m"
+            print(f"{status} {message} {reset}", flush=True)
+        else:
+            print(message, flush=True)
+
+        # Send desktop notification
+        run(["notify-send", message], check=False, stdout=DEVNULL, stderr=DEVNULL)
+        # Play sound
+        sound_path = f"/usr/share/sounds/freedesktop/stereo/{sound}.oga"
+        run(["paplay", sound_path], check=False, stdout=DEVNULL, stderr=DEVNULL)
+
+    def _message(self, msg_type: MessageType, message: str) -> None:
+        config = self.message_types[msg_type]
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        status = f"{config['color']} {config['symbol']} {timestamp} »"
+
+        self._emit_message(config['sound'], status, message)
+        self._save_log(config['log_level'], message)
+
+    def log(self, message: str) -> None:
+        self._message(MessageType.LOG, message)
+
+    def success(self, message: str) -> None:
+        self._message(MessageType.SUCCESS, message)
+
+    def error(self, message: str) -> None:
+        self._message(MessageType.ERROR, message)
+
+    def warning(self, message: str) -> None:
+        self._message(MessageType.WARNING, message)
 
 
-def _log(message: str) -> None:
-    timestamp = datetime.now().strftime("%H:%M:%S")
-    status = f"\033[1m\033[30m [*] {timestamp} »"
-    emit_message("message", status, message)
-    save_log("DEBUG", message)
-
-
-def _success(message: str) -> None:
-    timestamp = datetime.now().strftime("%H:%M:%S")
-    status = f"\033[1m\033[32m [+] {timestamp} »"
-    emit_message("complete", status, message)
-    save_log("INFO", message)
-
-
-def _error(message: str) -> None:
-    timestamp = datetime.now().strftime("%H:%M:%S")
-    status = f"\033[1m\033[31m [-] {timestamp} »"
-    emit_message("dialog-error", status, message)
-    save_log("ERROR", message)
-
-
-def _warning(message: str) -> None:
-    timestamp = datetime.now().strftime("%H:%M:%S")
-    status = f"\033[1m\033[33m [!] {timestamp} »"
-    emit_message("dialog-warning", status, message)
-    save_log("ALERT", message)
-
+# Instancia global de Message
+_message = Message()
 
 def _params_required(num_params: int) -> None:
     if len(sys.argv) - 1 < num_params:
@@ -76,5 +88,17 @@ def _params_required(num_params: int) -> None:
         if usage:
             error_msg += f"\n{usage}"
 
-        _error(error_msg)
+        _message.error(error_msg)
         sys.exit(1)
+
+def _valid_files(args) -> list[Path]:
+    files = []
+    for f in args:
+        path = Path(f)
+        if path.exists() and path.is_file():
+            files.append(path)
+
+    if not files:
+        _message.error("No se encontraron archivos válidos")
+        sys.exit(1)
+    return files

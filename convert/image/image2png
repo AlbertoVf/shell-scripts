@@ -7,13 +7,13 @@ from pathlib import Path
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from _main import _log, _success, _error, _params_required
+from _main import _message, _params_required
 
 
 def convert_image(input_path: Path) -> bool:
     """Convert a single image file to PNG format."""
     output_path = input_path.parent / f"{input_path.stem}.png"
-    _log(f"Procesando: {input_path.name}")
+    _message.log(f"Procesando: {input_path.name}")
 
     try:
         with Image.open(input_path) as img:
@@ -33,7 +33,7 @@ def convert_image(input_path: Path) -> bool:
             img.save(output_path, "PNG", optimize=True)
         return True
     except Exception as e:
-        _error(f"Error al convertir {input_path.name}: {e}")
+        _message.error(f"Error al convertir {input_path.name}: {e}")
         return False
 
 
@@ -43,13 +43,13 @@ if __name__ == "__main__":
     files = [Path(f) for f in sys.argv[1:] if Path(f).exists() and Path(f).is_file()]
 
     if not files:
-        _error("No se encontraron archivos válidos")
+        _message.error("No se encontraron archivos válidos")
         sys.exit(1)
 
     if len(files) == 1:
         file = files[0]
         if convert_image(file):
-            _success(f"Convertido {file.name}")
+            _message.success(f"Convertido {file.name}")
     else:
         from concurrent.futures import ProcessPoolExecutor, as_completed
 
@@ -60,6 +60,6 @@ if __name__ == "__main__":
                 file = futures[future]
                 try:
                     if future.result():
-                        _success(f"Convertido {file.name}")
+                        _message.success(f"Convertido {file.name}")
                 except Exception as e:
-                    _error(f"Error inesperado con {file.name}: {e}")
+                    _message.error(f"Error inesperado con {file.name}: {e}")

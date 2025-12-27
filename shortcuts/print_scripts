@@ -7,7 +7,7 @@ import re
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from _main import _log
+from _main import _message
 
 HELP_TAG = r"^\#\s\?"
 DOTFILES_PATH = Path.home() / ".bin"
@@ -42,7 +42,7 @@ def read_help(file_path: Path):
                 if re.match(HELP_TAG, line):
                     help_lines.append(line.strip())
     except Exception as e:
-        _log(f"Error al leer {file_path}: {e}")
+        _message.log(f"Error al leer {file_path}: {e}")
 
     if help_lines:
         decorate(file_path, help_lines)

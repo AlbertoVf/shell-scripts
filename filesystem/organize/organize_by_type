@@ -7,7 +7,7 @@ from pathlib import Path
 from subprocess import check_output
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from _main import _log, _success, _error
+from _main import _message
 
 home = Path.home()
 xdg_user_dir = lambda type: check_output(["xdg-user-dir", type.upper()], universal_newlines=True).strip()
@@ -36,14 +36,14 @@ def organize_folder(folder: list[Path]):
                 target_path = Path(f"{dir}/{file.name}")
 
                 if target_path.exists():
-                    _error(f"{file.name} ya existe en {dir}")
+                    _message.error(f"{file.name} ya existe en {dir}")
                     break
 
                 try:
                     file.rename(target_path)
-                    _success(f"{file.name} -> {dir}")
+                    _message.success(f"{file.name} -> {dir}")
                 except Exception as e:
-                    _error(f"Error al mover {file.name}: {e}")
+                    _message.error(f"Error al mover {file.name}: {e}")
                 finally:
                     break
 
@@ -55,6 +55,6 @@ if __name__ == "__main__":
     files = [file for file in folder.iterdir() if file.is_file()]
 
     if not files:
-        _log("No se encontraron archivos para organizar")
+        _message.log("No se encontraron archivos para organizar")
         sys.exit(0)
     organize_folder(files)

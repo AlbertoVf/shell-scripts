@@ -7,7 +7,7 @@ from pathlib import Path
 from subprocess import run, check_output, DEVNULL
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from _main import _log, _success
+from _main import _message
 
 
 def get_contributors(directory: Path = None):
@@ -18,7 +18,7 @@ def get_contributors(directory: Path = None):
             import os
             os.chdir(directory)
         except Exception:
-            _error(f"No se pudo cambiar al directorio: {directory}")
+            _message.error(f"No se pudo cambiar al directorio: {directory}")
             return
     else:
         directory = Path.cwd()
@@ -35,7 +35,7 @@ def get_contributors(directory: Path = None):
             text=True, stderr=DEVNULL
         ).strip()
 
-        _log(f"Contributors: [{current_branch}] <{remote_url}>")
+        _message.log(f"Contributors: [{current_branch}] <{remote_url}>")
 
         # Use git shortlog for much better performance (single query)
         result = check_output(
@@ -56,14 +56,13 @@ def get_contributors(directory: Path = None):
             os.chdir(original_dir)
 
     except Exception as e:
-        _error(f"Error al obtener contribuidores: {e}")
+        _message.error(f"Error al obtener contribuidores: {e}")
         if directory != Path.cwd():
             import os
             os.chdir(original_dir)
 
 
 if __name__ == "__main__":
-    from _main import _error
 
     directory = Path(sys.argv[1]) if len(sys.argv) > 1 else None
     get_contributors(directory)

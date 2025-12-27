@@ -7,13 +7,13 @@ from pathlib import Path
 from subprocess import run, DEVNULL
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from _main import _log, _success, _error, _params_required
+from _main import _message, _params_required, _valid_files
 
 
 def convert_audio(input_path: Path) -> bool:
     """Convert a single audio file to MP3 format."""
     output_path = input_path.parent / f"{input_path.stem}.mp3"
-    _log(f"Procesando: {input_path.name}")
+    _message.log(f"Procesando: {input_path.name}")
 
     result = run(
         ["ffmpeg", "-y", "-i", str(input_path),
@@ -29,18 +29,14 @@ def convert_audio(input_path: Path) -> bool:
 if __name__ == "__main__":
     _params_required(1)
 
-    files = [Path(f) for f in sys.argv[1:] if Path(f).exists() and Path(f).is_file()]
-
-    if not files:
-        _error("No se encontraron archivos válidos")
-        sys.exit(1)
+    files = _valid_files(sys.argv[1:])
 
     if len(files) == 1:
         file = files[0]
         if convert_audio(file):
-            _success(f"Convertido {file.name}")
+            _message.success(f"Convertido {file.name}")
         else:
-            _error(f"Error al convertir {file.name}")
+            _message.error(f"Error al convertir {file.name}")
     else:
         from concurrent.futures import ProcessPoolExecutor, as_completed
 
@@ -51,8 +47,8 @@ if __name__ == "__main__":
                 file = futures[future]
                 try:
                     if future.result():
-                        _success(f"Convertido {file.name}")
+                        _message.success(f"Convertido {file.name}")
                     else:
-                        _error(f"Error al convertir {file.name}")
+                        _message.error(f"Error al convertir {file.name}")
                 except Exception as e:
-                    _error(f"Error inesperado con {file.name}: {e}")
+                    _message.error(f"Error inesperado con {file.name}: {e}")

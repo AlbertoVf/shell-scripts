@@ -10,7 +10,7 @@ from mutagen.easyid3 import EasyID3
 from mutagen.mp3 import MP3
 from mutagen.id3 import ID3NoHeaderError
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from _main import _log, _success, _error
+from _main import _message
 
 
 def get_metadata(file_path: Path) -> dict:
@@ -51,7 +51,7 @@ def get_metadata(file_path: Path) -> dict:
             m["genre"] = ", ".join([item["name"] for item in data2["genres"]["data"]])
             return m
         except Exception as e:
-            _error(f"Error al obtener datos de la API: {e}")
+            _message.error(f"Error al obtener datos de la API: {e}")
             return {}
 
     try:
@@ -75,10 +75,10 @@ def get_metadata(file_path: Path) -> dict:
             m.update(api_data)
 
     except ID3NoHeaderError:
-        _error(f"No se encontraron metadatos ID3 en {file_path}")
+        _message.error(f"No se encontraron metadatos ID3 en {file_path}")
         return {}
     except Exception as e:
-        _error(f"Error al leer metadatos: {e}")
+        _message.error(f"Error al leer metadatos: {e}")
         return {}
 
     return m
@@ -107,7 +107,7 @@ def update_metadata_with_mutagen(metadatos: dict) -> bool:
         audio.save()
         return True
     except Exception as e:
-        _error(f"Error al actualizar metadatos con mutagen: {e}")
+        _message.error(f"Error al actualizar metadatos con mutagen: {e}")
         return False
 
 
@@ -115,24 +115,24 @@ if __name__ == "__main__":
     from json import dumps
 
     if len(sys.argv) < 2:
-        _error("Uso: get_metadata [audio(s)]")
+        _message.error("Uso: get_metadata [audio(s)]")
         sys.exit(1)
 
     songs = [Path(f) for f in sys.argv[1:]]
 
     for song_file in songs:
         if not song_file.exists():
-            _error(f"Archivo no encontrado: {song_file}")
+            _message.error(f"Archivo no encontrado: {song_file}")
             continue
 
-        _log(f"Procesando: {song_file.name}")
+        _message.log(f"Procesando: {song_file.name}")
         m = get_metadata(song_file)
 
         if m:
             # Try to update with mutagen first (faster)
             if update_metadata_with_mutagen(m):
-                _success(f"Metadatos actualizados: {song_file.name}")
+                _message.success(f"Metadatos actualizados: {song_file.name}")
             else:
-                _error(f"No se pudieron actualizar los metadatos: {song_file.name}")
+                _message.error(f"No se pudieron actualizar los metadatos: {song_file.name}")
 
             print(dumps(m, indent=4, ensure_ascii=False))
